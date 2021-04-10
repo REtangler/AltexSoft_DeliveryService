@@ -57,31 +57,25 @@ namespace AltexSoft_DeliveryService
             
             if (!ValidateData(destinations, clients, prices, currencies)) return fullPrice;
 
-            decimal[] _prices = prices.ToArray();
+            decimal[] pricesArray = prices.ToArray();
             
             for (int i = 0; i < destinations.Count(); i++)
             {
                 int discount = default;
 
-                EURtoUSD(currencies.ElementAt(i), ref _prices[i]);
+                ConvertEURtoUSD(currencies.ElementAt(i), ref pricesArray[i]);
 
-                StreetPrivilege(destinations.ElementAt(i), ref _prices[i]);
+                SetStreetPrice(destinations.ElementAt(i), ref pricesArray[i]);
 
-                try
-                {
-                    NextStreetSameName(destinations.ElementAt(i), ref discount, destinations.ElementAt(i + 1));
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    // Ignore
-                }
+                if (i > 0)
+                    SetSameStreetDiscount(destinations.ElementAt(i), ref discount, destinations.ElementAt(i - 1));
 
-                YoungDiscount(ref discount, infantsIds, childrenIds, i);
+                SetYoungDiscount(ref discount, infantsIds, childrenIds, i);
 
-                _prices[i] *= (100 - discount) / 100m;
+                pricesArray[i] *= (100 - discount) / 100m;
             }
 
-            fullPrice = _prices.Sum();
+            fullPrice = pricesArray.Sum();
 
             return fullPrice;
         }
@@ -96,13 +90,13 @@ namespace AltexSoft_DeliveryService
                             prices.Count() == currencies.Count();
         }
 
-        private void EURtoUSD(string currency, ref decimal price)
+        private void ConvertEURtoUSD(string currency, ref decimal price)
         {
             if (currency.Equals("EUR"))
                 price *= 1.19m;
         }
 
-        private void StreetPrivilege(string address, ref decimal price)
+        private void SetStreetPrice(string address, ref decimal price)
         {
             if (address.Contains("Wayne Street"))
                 price += 10;
@@ -110,15 +104,15 @@ namespace AltexSoft_DeliveryService
                 price -= 5.36m;
         }
 
-        private void NextStreetSameName(string address, ref int discount, string destination)
+        private void SetSameStreetDiscount(string address, ref int discount, string prevAddress)
         {
-            string subAddress = address.Substring(4);
+            string subAddress = address.Substring(address.IndexOf(' ') + 1);
 
-            if (destination.Contains(subAddress))
+            if (prevAddress.Contains(subAddress))
                 discount += 15;
         }
 
-        private void YoungDiscount(ref int discount, IEnumerable<int> infantsIds, IEnumerable<int> childrenIds, int iteration)
+        private void SetYoungDiscount(ref int discount, IEnumerable<int> infantsIds, IEnumerable<int> childrenIds, int iteration)
         {
             if (childrenIds.Contains(iteration))
                 discount += 25;
