@@ -6,7 +6,11 @@ namespace AltexSoft_DeliveryService
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var homework = new HomeWork();
+            var result = homework.InvokePriceCalculation();
+
+            Console.WriteLine(result);
+            Console.ReadLine();
         }
     }
 }
