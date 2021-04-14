@@ -6,6 +6,15 @@ namespace AltexSoft_DeliveryService
 {
     internal class HomeWork
     {
+        private const int InfantDiscount = 50;
+        private const int ChildrenDiscount = 25;
+        private const int SameStreetDiscount = 15;
+
+        private const decimal StreetPrivilegeDiscount = 5.36m;
+        private const decimal StreetPrivilegePenalty = 10;
+
+        private const decimal EurToUsdExchangeRate = 1.19m;
+
         private decimal GetFullPrice(
             IEnumerable<string> destinations,
             IEnumerable<string> clients,
@@ -57,20 +66,20 @@ namespace AltexSoft_DeliveryService
             
             if (!ValidateData(destinations, clients, prices, currencies)) return fullPrice;
 
-            decimal[] pricesArray = prices.ToArray();
+            var pricesArray = prices.ToArray();
             
             for (int i = 0; i < destinations.Count(); i++)
             {
                 int discount = default;
 
-                ConvertEURtoUSD(currencies.ElementAt(i), ref pricesArray[i]);
+                pricesArray[i] = ConvertEurToUsd(currencies.ElementAt(i), pricesArray[i]);
 
-                SetStreetPrice(destinations.ElementAt(i), ref pricesArray[i]);
+                pricesArray[i] = SetStreetPrice(destinations.ElementAt(i), pricesArray[i]);
 
                 if (i > 0)
-                    SetSameStreetDiscount(destinations.ElementAt(i), ref discount, destinations.ElementAt(i - 1));
+                    discount = SetSameStreetDiscount(destinations.ElementAt(i), discount, destinations.ElementAt(i - 1));
 
-                SetYoungDiscount(ref discount, infantsIds, childrenIds, i);
+                discount = SetYoungDiscount(discount, infantsIds, childrenIds, i);
 
                 pricesArray[i] *= (100 - discount) / 100m;
             }
@@ -90,34 +99,38 @@ namespace AltexSoft_DeliveryService
                             prices.Count() == currencies.Count();
         }
 
-        private void ConvertEURtoUSD(string currency, ref decimal price)
+        private decimal ConvertEurToUsd(string currency, decimal price)
         {
             if (currency.Equals("EUR"))
-                price *= 1.19m;
+                return price * EurToUsdExchangeRate;
+            return price;
         }
 
-        private void SetStreetPrice(string address, ref decimal price)
+        private decimal SetStreetPrice(string address, decimal price)
         {
             if (address.Contains("Wayne Street"))
-                price += 10;
+                price += StreetPrivilegePenalty;
             else if (address.Contains("North Heather Street"))
-                price -= 5.36m;
+                price -= StreetPrivilegeDiscount;
+            return price;
         }
 
-        private void SetSameStreetDiscount(string address, ref int discount, string prevAddress)
+        private int SetSameStreetDiscount(string address, int discount, string prevAddress)
         {
-            string subAddress = address.Substring(address.IndexOf(' ') + 1);
+            var subAddress = address.Substring(address.IndexOf(' ') + 1);
 
             if (prevAddress.Contains(subAddress))
-                discount += 15;
+                discount += SameStreetDiscount;
+            return discount;
         }
 
-        private void SetYoungDiscount(ref int discount, IEnumerable<int> infantsIds, IEnumerable<int> childrenIds, int iteration)
+        private int SetYoungDiscount(int discount, IEnumerable<int> infantsIds, IEnumerable<int> childrenIds, int iteration)
         {
             if (childrenIds.Contains(iteration))
-                discount += 25;
+                discount += ChildrenDiscount;
             else if (infantsIds.Contains(iteration))
-                discount += 50;
+                discount += InfantDiscount;
+            return discount;
         }
     }
 }
