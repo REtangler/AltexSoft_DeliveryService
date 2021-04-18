@@ -15,5 +15,17 @@ namespace DeliveryService
         public IList<PcPeripheral> PcPeripherals { get; set; }
 
         public decimal FullPrice { get; set; }
+
+        public Order(int id, IList<PcPart> pcParts, IList<PcPeripheral> pcPeripherals)
+        {
+            Id = id;
+            PcParts = pcParts;
+            PcPeripherals = pcPeripherals;
+        }
+
+        public Order()
+        {
+
+        }
     }
 }
