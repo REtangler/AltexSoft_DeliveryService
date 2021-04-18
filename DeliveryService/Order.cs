@@ -25,7 +25,8 @@ namespace DeliveryService
 
         public Order()
         {
-
+            PcParts = new List<PcPart>();
+            PcPeripherals = new List<PcPeripheral>();
         }
     }
 }
