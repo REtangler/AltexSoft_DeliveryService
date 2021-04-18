@@ -7,35 +7,25 @@ using System.Threading.Tasks;
 
 namespace DeliveryService
 {
-    class PcPart : IProduceable
+    public class PcPart : IProduceable
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public PcPartType PcPartType { get; set; }
+        public string Category { get; set; }
 
         public decimal Price { get; set; }
 
         public string Manufacturer { get; set; }
 
-        public void CreateProduct(int id, string name, decimal price, string manufacturer, PcPartType type)
+        public void CreateProduct(int id, string name, decimal price, string manufacturer, string category)
         {
             Id = id;
             Name = name;
-            PcPartType = type;
+            Category = category;
             Price = price;
             Manufacturer = manufacturer;
-        }
-
-        public void CreateProduct(int id, string name, decimal price, string manufacturer, PcPeripheralType type)
-        {
-            throw new Exception("Wrong parameter used! Change product type!");
-        }
-
-        public void DeleteProduct()
-        {
-            throw new NotImplementedException();
         }
     }
 }

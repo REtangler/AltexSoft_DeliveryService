@@ -8,10 +8,6 @@ namespace DeliveryService
 {
     public interface IProduceable
     {
-        void CreateProduct(int id, string name, decimal price, string manufacturer, PcPartType type);
-
-        void CreateProduct(int id, string name, decimal price, string manufacturer, PcPeripheralType type);
-
-        void DeleteProduct();
+        void CreateProduct(int id, string name, decimal price, string manufacturer, string category);
     }
 }
