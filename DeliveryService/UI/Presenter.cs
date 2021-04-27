@@ -4,9 +4,9 @@ using DeliveryService.Models;
 
 namespace DeliveryService.UI
 {
-    class Presenter : IPresentable
+    public class Presenter : IPresentable
     {
-        public string ShowActiveOrders(List<Order> orders)
+        public string ShowActiveOrders(IList<Order> orders)
         {
             var output = string.Empty;
 
@@ -73,7 +73,7 @@ namespace DeliveryService.UI
             return output;
         }
 
-        public string ShowPcPeripherals(List<PcPeripheral> pcPeripherals)
+        public string ShowPcPeripherals(IList<PcPeripheral> pcPeripherals)
         {
             var output = string.Empty;
 
@@ -91,7 +91,7 @@ namespace DeliveryService.UI
             return output;
         }
 
-        public string ShowPcParts(List<PcPart> pcParts)
+        public string ShowPcParts(IList<PcPart> pcParts)
         {
             var output = string.Empty;
 

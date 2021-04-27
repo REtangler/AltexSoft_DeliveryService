@@ -5,9 +5,9 @@ namespace DeliveryService.Interfaces
 {
     public interface IPresentable
     {
-        string ShowActiveOrders(List<Order> orders);
+        string ShowActiveOrders(IList<Order> orders);
         string ShowOrder(Order order);
-        string ShowPcPeripherals(List<PcPeripheral> pcPeripherals);
-        string ShowPcParts(List<PcPart> pcParts);
+        string ShowPcPeripherals(IList<PcPeripheral> pcPeripherals);
+        string ShowPcParts(IList<PcPart> pcParts);
     }
 }

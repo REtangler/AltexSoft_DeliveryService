@@ -4,6 +4,6 @@ namespace DeliveryService.Interfaces
 {
     public interface IControllable
     {
-        Storage Start(Storage storage);
+        Storage Start();
     }
 }

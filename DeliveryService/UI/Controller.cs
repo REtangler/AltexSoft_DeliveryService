@@ -7,19 +7,18 @@ using DeliveryService.Interfaces;
 
 namespace DeliveryService.UI
 {
-    class Controller : IControllable
+    public class Controller : IControllable
     {
-        private static List<PcPart> _pcParts;
-        private static List<PcPeripheral> _pcPeripherals;
-        private static List<Order> _orders;
+        private readonly Storage _storage;
 
-        public Storage Start(Storage storage)
+        public Controller(Storage storage)
         {
-            _pcParts = storage.PcParts.ToList();
-            _pcPeripherals = storage.PcPeripherals.ToList();
-            _orders = storage.Orders.ToList();
+            _storage = storage;
+        }
 
-            var presenter = new Presenter();
+        public Storage Start()
+        {
+           var presenter = new Presenter();
 
             while (true)
             {
@@ -28,13 +27,12 @@ namespace DeliveryService.UI
                                   "0 - Exit");
                 var input = Console.ReadLine();
 
-                if (input == string.Empty)
+                if (input == string.Empty || !int.TryParse(input, out var choice))
                 {
+                    Console.Clear();
                     Console.WriteLine("Enter a number!");
                     continue;
                 }
-
-                var choice = int.Parse(input);
 
                 if (choice == 1)    // Business entry point
                 {
@@ -49,30 +47,29 @@ namespace DeliveryService.UI
                                           "0 - Main menu");
                         input = Console.ReadLine();
 
-                        if (input == string.Empty)
+                        if (input == string.Empty || !int.TryParse(input, out choice))
                         {
+                            Console.Clear();
                             Console.WriteLine("Enter a number!");
                             continue;
                         }
 
-                        choice = int.Parse(input);
-
                         if (choice == 1)
-                            _pcParts.Add(CreatePcPart());
+                            _storage.PcParts.Add(CreatePcPart());
 
                         else if (choice == 2)
-                            _pcPeripherals.Add(CreatePcPeripheral());
+                            _storage.PcPeripherals.Add(CreatePcPeripheral());
 
                         else if (choice == 3)
-                            Console.WriteLine(presenter.ShowPcParts(_pcParts));
+                            Console.WriteLine(presenter.ShowPcParts(_storage.PcParts.ToList()));
 
                         else if (choice == 4)
-                            Console.WriteLine(presenter.ShowPcPeripherals(_pcPeripherals));
+                            Console.WriteLine(presenter.ShowPcPeripherals(_storage.PcPeripherals));
 
                         else if (choice == 5)
                         {
                             Console.Clear();
-                            Console.WriteLine(presenter.ShowActiveOrders(_orders));
+                            Console.WriteLine(presenter.ShowActiveOrders(_storage.Orders));
                         }
 
                         else if (choice == 0)
@@ -87,8 +84,8 @@ namespace DeliveryService.UI
                 {
                     Console.Clear();
 
-                    var currentOrder = new Order {Id = _orders.Count};
-                    _orders.Add(currentOrder);
+                    var currentOrder = new Order {Id = _storage.Orders.Count};
+                    _storage.Orders.Add(currentOrder);
 
                     while (true)
                     {
@@ -98,26 +95,24 @@ namespace DeliveryService.UI
                                           "0 - Main menu");
                         input = Console.ReadLine();
 
-                        if (input == string.Empty)
+                        if (input == string.Empty || !int.TryParse(input, out choice))
                         {
                             Console.Clear();
                             Console.WriteLine("Enter a number!");
                             continue;
                         }
 
-                        choice = int.Parse(input);
-
                         if (choice == 1)
                         {
                             Console.Clear();
-                            Console.WriteLine(presenter.ShowPcParts(_pcParts));
+                            Console.WriteLine(presenter.ShowPcParts(_storage.PcParts));
                             AddPcPartsToOrder(currentOrder);
                         }
 
                         else if (choice == 2)
                         {
                             Console.Clear();
-                            Console.WriteLine(presenter.ShowPcPeripherals(_pcPeripherals));
+                            Console.WriteLine(presenter.ShowPcPeripherals(_storage.PcPeripherals));
                             AddPcPeripheralsToOrder(currentOrder);
                         }
 
@@ -133,7 +128,7 @@ namespace DeliveryService.UI
                     }
 
                     if (currentOrder.FullPrice == default)
-                        _orders.RemoveAt(currentOrder.Id);
+                        _storage.Orders.RemoveAt(currentOrder.Id);
 
                     Console.Clear();
                     continue;
@@ -145,10 +140,10 @@ namespace DeliveryService.UI
                 Console.WriteLine("Enter a correct number.");
             }
 
-            return new Storage {PcPeripherals = _pcPeripherals, Orders = _orders, PcParts = _pcParts};
+            return new Storage {PcPeripherals = _storage.PcPeripherals, Orders = _storage.Orders, PcParts = _storage.PcParts};
         }
 
-        private static PcPeripheral CreatePcPeripheral()
+        private PcPeripheral CreatePcPeripheral()
         {
             Console.Clear();
             Console.Write("Enter a name for the peripheral: ");
@@ -182,11 +177,11 @@ namespace DeliveryService.UI
             Console.Clear();
 
             var pcPeripheral = new PcPeripheral();
-            pcPeripheral.CreateProduct(_pcPeripherals.Count, name, price, manufacturer, category, amount);
+            pcPeripheral.CreateProduct(_storage.PcPeripherals.Count, name, price, manufacturer, category, amount);
             return pcPeripheral;
         }
 
-        private static PcPart CreatePcPart()
+        private PcPart CreatePcPart()
         {
             Console.Clear();
             Console.Write("Enter a name for the part: ");
@@ -220,11 +215,11 @@ namespace DeliveryService.UI
             Console.Clear();
 
             var pcPart = new PcPart();
-            pcPart.CreateProduct(_pcParts.Count, name, price, manufacturer, category, amount);
+            pcPart.CreateProduct(_storage.PcParts.Count, name, price, manufacturer, category, amount);
             return pcPart;
         }
 
-        private static void AddPcPartsToOrder(Order order)
+        private void AddPcPartsToOrder(Order order)
         {
             Console.WriteLine("Enter product Id to add it to your order.\n" +
                               "Enter empty line to stop ordering PC parts.");
@@ -237,18 +232,18 @@ namespace DeliveryService.UI
                 if (input == string.Empty)
                     break;
 
-                if (int.TryParse(input, out var choice) && choice < _pcParts.Count)
+                if (int.TryParse(input, out var choice) && choice < _storage.PcParts.Count)
                 {
-                    if (_pcParts[choice].Amount <= 0)
+                    if (_storage.PcParts[choice].Amount <= 0)
                     {
                         Console.WriteLine("Item is out of stock!");
                         continue;
                     }
-                    _orders[order.Id].PcParts.Add(_pcParts[choice]);
-                    _pcParts[choice].Amount--;
+                    _storage.Orders[order.Id].PcParts.Add(_storage.PcParts[choice]);
+                    _storage.PcParts[choice].Amount--;
                     Console.Clear();
-                    Console.WriteLine(presenter.ShowPcParts(_pcParts));
-                    Console.WriteLine($"{_pcParts[choice].Name} was added to your order.");
+                    Console.WriteLine(presenter.ShowPcParts(_storage.PcParts));
+                    Console.WriteLine($"{_storage.PcParts[choice].Name} was added to your order.");
                     Console.WriteLine("Enter product Id to add it to your order.\n" +
                                       "Enter empty line to stop ordering PC parts.");
                 }
@@ -258,7 +253,7 @@ namespace DeliveryService.UI
             Console.Clear();
         }
 
-        private static void AddPcPeripheralsToOrder(Order order)
+        private void AddPcPeripheralsToOrder(Order order)
         {
             Console.WriteLine("Enter product Id to add it to your order.\n" +
                               "Enter empty line to stop ordering PC peripherals.");
@@ -271,18 +266,18 @@ namespace DeliveryService.UI
                 if (input == string.Empty)
                     break;
 
-                if (int.TryParse(input, out var choice) && choice < _pcPeripherals.Count)
+                if (int.TryParse(input, out var choice) && choice < _storage.PcPeripherals.Count)
                 {
-                    if (_pcPeripherals[choice].Amount <= 0)
+                    if (_storage.PcPeripherals[choice].Amount <= 0)
                     {
                         Console.WriteLine("Item is out of stock!");
                         continue;
                     }
-                    _orders[order.Id].PcPeripherals.Add(_pcPeripherals[choice]);
-                    _pcPeripherals[choice].Amount--;
+                    _storage.Orders[order.Id].PcPeripherals.Add(_storage.PcPeripherals[choice]);
+                    _storage.PcPeripherals[choice].Amount--;
                     Console.Clear();
-                    Console.WriteLine(presenter.ShowPcPeripherals(_pcPeripherals));
-                    Console.WriteLine($"{_pcPeripherals[choice].Name} was added to your order.");
+                    Console.WriteLine(presenter.ShowPcPeripherals(_storage.PcPeripherals));
+                    Console.WriteLine($"{_storage.PcPeripherals[choice].Name} was added to your order.");
                     Console.WriteLine("Enter product Id to add it to your order.\n" +
                                       "Enter empty line to stop ordering PC peripherals.");
                 }

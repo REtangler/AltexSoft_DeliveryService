@@ -9,9 +9,9 @@ namespace DeliveryService
         {
             var data = new Storage();
 
-            var controller = new Controller();
+            var controller = new Controller(data);
 
-            data = controller.Start(data);
+            data = controller.Start();
         }
     }
 }
