@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DeliveryService.Interfaces;
 
-namespace DeliveryService
+namespace DeliveryService.Models
 {
     public class PcPart : IProduceable
     {
@@ -18,14 +13,16 @@ namespace DeliveryService
         public decimal Price { get; set; }
 
         public string Manufacturer { get; set; }
+        public int Amount { get; set; }
 
-        public void CreateProduct(int id, string name, decimal price, string manufacturer, string category)
+        public void CreateProduct(int id, string name, decimal price, string manufacturer, string category, int amount)
         {
             Id = id;
             Name = name;
             Category = category;
             Price = price;
             Manufacturer = manufacturer;
+            Amount = amount;
         }
     }
 }

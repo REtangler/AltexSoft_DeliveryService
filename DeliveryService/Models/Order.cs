@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace DeliveryService
+namespace DeliveryService.Models
 {
     public class Order
     {
@@ -27,6 +23,25 @@ namespace DeliveryService
         {
             PcParts = new List<PcPart>();
             PcPeripherals = new List<PcPeripheral>();
+        }
+
+        public void RecalculatePrice()
+        {
+            if (PcParts.Count is 0 && PcPeripherals.Count is 0)
+            {
+                FullPrice = default;
+                return;
+            }
+
+            foreach (var pcPart in PcParts)
+            {
+                FullPrice += pcPart.Price;
+            }
+
+            foreach (var pcPeripheral in PcPeripherals)
+            {
+                FullPrice += pcPeripheral.Price;
+            }
         }
     }
 }
