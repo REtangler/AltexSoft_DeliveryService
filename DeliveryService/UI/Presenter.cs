@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
@@ -8,32 +9,32 @@ namespace DeliveryService.UI
     {
         public string ShowActiveOrders(IList<Order> orders)
         {
-            var output = string.Empty;
-
             if (orders.Count is 0)
             {
                 return "There are no active orders!";
             }
 
+            var sb = new StringBuilder();
+
             foreach (var order in orders)
             {
-                output += $"Order Id #{order.Id}\n" +
-                          $"Full price: {order.FullPrice}\n";
+                sb.Append($"Order Id #{order.Id}\n" +
+                          $"Full price: {order.FullPrice}\n");
             }
 
-            return output;
+            return sb.ToString();
         }
 
         public string ShowOrder(Order order)
         {
-            var output = string.Empty;
-
             if (order.FullPrice == default)
             {
                 return "Your order is empty!";
             }
 
-            output += $"Order Id: {order.Id}\n";
+            var sb = new StringBuilder();
+
+            sb.Append($"Order Id: {order.Id}\n");
 
             if (order.PcParts.Count > 0)
             {
@@ -41,15 +42,15 @@ namespace DeliveryService.UI
                 {
                     var pcPart = order.PcParts[i];
 
-                    output += $"PC part #{i + 1}\n" +
+                    sb.Append($"PC part #{i + 1}\n" +
                               $"Id: {pcPart.Id}\n" +
                               $"Name: {pcPart.Name}\n" +
                               $"Category: {pcPart.Category}\n" +
                               $"Price: {pcPart.Price}\n" +
-                              $"Manufacturer: {pcPart.Manufacturer}\n";
+                              $"Manufacturer: {pcPart.Manufacturer}\n");
                 }
 
-                output += "----------END OF PC PARTS LIST----------\n";
+                sb.Append("----------END OF PC PARTS LIST----------\n");
             }
 
             if (order.PcPeripherals.Count > 0)
@@ -58,55 +59,55 @@ namespace DeliveryService.UI
                 {
                     var pcPeripheral = order.PcPeripherals[i];
 
-                    output += $"PC peripheral #{i + 1}\n" +
+                    sb.Append($"PC peripheral #{i + 1}\n" +
                               $"Id: {pcPeripheral.Id}\n" +
                               $"Name: {pcPeripheral.Name}\n" +
                               $"Category: {pcPeripheral.Category}\n" +
                               $"Price: {pcPeripheral.Price}\n" +
-                              $"Manufacturer: {pcPeripheral.Manufacturer}\n";
+                              $"Manufacturer: {pcPeripheral.Manufacturer}\n");
                 }
-                output += "----------END OF PC PERIPHERALS LIST----------\n";
+                sb.Append("----------END OF PC PERIPHERALS LIST----------\n");
             }
 
-            output += $"Total price: {order.FullPrice}";
+            sb.Append($"Total price: {order.FullPrice}");
 
-            return output;
+            return sb.ToString();
         }
 
         public string ShowPcPeripherals(IList<PcPeripheral> pcPeripherals)
         {
-            var output = string.Empty;
+            var sb = new StringBuilder();
 
             foreach (var pcPeripheral in pcPeripherals)
             {
-                output += $"Id: {pcPeripheral.Id}\n" +
+                sb.Append($"Id: {pcPeripheral.Id}\n" +
                           $"Name: {pcPeripheral.Name}\n" +
                           $"Category: {pcPeripheral.Category}\n" +
                           $"Price: {pcPeripheral.Price}\n" +
                           $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
-                          $"Amount: {pcPeripheral.Amount}\n";
+                          $"Amount: {pcPeripheral.Amount}\n");
             }
-            output += "----------END OF LIST----------\n";
+            sb.Append("----------END OF LIST----------\n");
 
-            return output;
+            return sb.ToString();
         }
 
         public string ShowPcParts(IList<PcPart> pcParts)
         {
-            var output = string.Empty;
+            var sb = new StringBuilder();
 
             foreach (var pcPart in pcParts)
             {
-                output += $"Id: {pcPart.Id}\n" +
+                sb.Append($"Id: {pcPart.Id}\n" +
                           $"Name: {pcPart.Name}\n" +
                           $"Category: {pcPart.Category}\n" +
                           $"Price: {pcPart.Price}\n" +
                           $"Manufacturer: {pcPart.Manufacturer}\n" +
-                          $"Amount: {pcPart.Amount}\n";
+                          $"Amount: {pcPart.Amount}\n");
             }
-            output += "----------END OF LIST----------\n";
+            sb.Append("----------END OF LIST----------\n");
 
-            return output;
+            return sb.ToString();
         }
     }
 }
