@@ -33,16 +33,22 @@ namespace DeliveryService.UI
                 }
 
                 if (choice == 1)
-                    storage.PcParts.Add(itemsController.CreatePcPart(storage));
+                    storage.PcParts.Add(itemsController.CreatePcPart(storage.PcParts.Count));
 
                 else if (choice == 2)
-                    storage.PcPeripherals.Add(itemsController.CreatePcPeripheral(storage));
+                    storage.PcPeripherals.Add(itemsController.CreatePcPeripheral(storage.PcPeripherals.Count));
 
                 else if (choice == 3)
+                {
+                    Console.Clear();
                     Console.WriteLine(presenter.ShowPcParts(storage.PcParts.ToList()));
+                }
 
                 else if (choice == 4)
+                {
+                    Console.Clear();
                     Console.WriteLine(presenter.ShowPcPeripherals(storage.PcPeripherals));
+                }
 
                 else if (choice == 5)
                 {

@@ -10,7 +10,7 @@ namespace DeliveryService.UI
 {
     public class ItemsController : IItemsController
     {
-        public PcPeripheral CreatePcPeripheral(IStorable storage)
+        public PcPeripheral CreatePcPeripheral(int id)
         {
             Console.Clear();
             Console.Write("Enter a name for the peripheral: ");
@@ -44,11 +44,11 @@ namespace DeliveryService.UI
             Console.Clear();
 
             var pcPeripheral = new PcPeripheral();
-            pcPeripheral.CreateProduct(storage.PcPeripherals.Count, name, price, manufacturer, category, amount);
+            pcPeripheral.CreateProduct(id, name, price, manufacturer, category, amount);
             return pcPeripheral;
         }
 
-        public PcPart CreatePcPart(IStorable storage)
+        public PcPart CreatePcPart(int id)
         {
             Console.Clear();
             Console.Write("Enter a name for the part: ");
@@ -82,7 +82,7 @@ namespace DeliveryService.UI
             Console.Clear();
 
             var pcPart = new PcPart();
-            pcPart.CreateProduct(storage.PcParts.Count, name, price, manufacturer, category, amount);
+            pcPart.CreateProduct(id, name, price, manufacturer, category, amount);
             return pcPart;
         }
 

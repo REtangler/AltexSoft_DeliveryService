@@ -9,8 +9,8 @@ namespace DeliveryService.Interfaces
 {
     public interface IItemsController
     {
-        PcPeripheral CreatePcPeripheral(IStorable storage);
-        PcPart CreatePcPart(IStorable storage);
+        PcPeripheral CreatePcPeripheral(int id);
+        PcPart CreatePcPart(int id);
         IStorable AddPcPartsToOrder(IStorable storage, int id);
         IStorable AddPcPeripheralsToOrder(IStorable storage, int id);
     }
