@@ -9,16 +9,16 @@ namespace DeliveryService.UI
 {
     public class Controller : IControllable
     {
-        private readonly Storage _storage;
+        private readonly IStorable _storage;
 
-        public Controller(Storage storage)
+        public Controller(IStorable storage)
         {
             _storage = storage;
         }
 
         public Storage Start()
         {
-           var presenter = new Presenter();
+            var presenter = new Presenter();
 
             while (true)
             {
