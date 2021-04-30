@@ -49,6 +49,7 @@ namespace DeliveryService.UI
                 if (choice == 2)
                 {
                     Console.Clear();
+
                     int currentOrderId;
                     (_storage, currentOrderId) = dialogue.ClientDialogue(_storage);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DeliveryService.Interfaces;
+using DeliveryService.Logic;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI
@@ -67,9 +68,42 @@ namespace DeliveryService.UI
         {
             var itemsController = new ItemsController();
             var presenter = new Presenter();
+            var regex = new RegExpression();
 
             var currentOrder = new Order {Id = storage.Orders.Count};
             storage.Orders.Add(currentOrder);
+
+            while (true)
+            {
+                Console.WriteLine("Enter your phone number: ");
+                var input = Console.ReadLine();
+
+                if (input != string.Empty && regex.CheckNumber(input))
+                {
+                    storage.Orders[currentOrder.Id].PhoneNumber = input;
+                    break;
+                }
+
+                Console.Clear();
+            }
+
+            Console.Clear();
+
+            while (true)
+            {
+                Console.WriteLine("Enter your address: ");
+                var input = Console.ReadLine();
+
+                if (input != string.Empty && regex.CheckAddress(input))
+                {
+                    storage.Orders[currentOrder.Id].Address = input;
+                    break;
+                }
+
+                Console.Clear();
+            }
+
+            Console.Clear();
 
             while (true)
             {

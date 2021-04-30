@@ -19,7 +19,9 @@ namespace DeliveryService.UI
             foreach (var order in orders)
             {
                 sb.Append($"Order Id #{order.Id}\n" +
-                          $"Full price: {order.FullPrice}\n");
+                          $"Address: {order.Address}\n" +
+                          $"Phone Number: {order.PhoneNumber}\n" +
+                          $"Full price: {order.FullPrice}\n\n");
             }
 
             return sb.ToString();
@@ -69,6 +71,8 @@ namespace DeliveryService.UI
                 sb.Append("----------END OF PC PERIPHERALS LIST----------\n");
             }
 
+            sb.Append($"Address: {order.Address}\n");
+            sb.Append($"Phone Number: {order.PhoneNumber}\n");
             sb.Append($"Total price: {order.FullPrice}");
 
             return sb.ToString();
