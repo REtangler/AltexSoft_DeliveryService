@@ -11,17 +11,7 @@ namespace DeliveryService.Models
 
         public IList<PcPeripheral> PcPeripherals { get; set; }
 
-        private decimal _fullPrice;
-        public decimal FullPrice
-        {
-            get
-            {
-                RecalculatePrice();
-                return _fullPrice;
-            }
-            set => _fullPrice = value;
-        }
-
+        public decimal FullPrice { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
 
@@ -38,21 +28,22 @@ namespace DeliveryService.Models
             PcPeripherals = new List<PcPeripheral>();
         }
 
-        private void RecalculatePrice()
+        public void RecalculatePrice()
         {
-            _fullPrice = default;
-
             if (PcParts.Count is 0 && PcPeripherals.Count is 0)
+            {
+                FullPrice = default;
                 return;
+            }
 
             foreach (var pcPart in PcParts)
             {
-                _fullPrice += pcPart.Price;
+                FullPrice += pcPart.Price;
             }
 
             foreach (var pcPeripheral in PcPeripherals)
             {
-                _fullPrice += pcPeripheral.Price;
+                FullPrice += pcPeripheral.Price;
             }
         }
     }
