@@ -10,57 +10,87 @@ namespace DeliveryService.UI
     public class Presenter : IPresentable, IMenuPresentable, IItemPresentable, IDialogue
     {
         private readonly RegExpression _regExpression;
+        private readonly Controller _controller;
+        private readonly IStorable _storage;
 
-        public Presenter()
+        public Presenter(Controller controller, RegExpression regExp)
         {
-            _regExpression = new RegExpression();
+            _regExpression = regExp;
+            _controller = controller;
+            _storage = _controller.GetStorage();
         }
 
-        public IStorable BusinessDialogue(IStorable storage)
+        public void Start()
+        {
+            while (true)
+            {
+                var choice = ShowMainMenu();
+
+                if (choice == 1)
+                {
+                    Console.Clear();
+
+                    StartBusinessDialogue();
+
+                    Console.Clear();
+                    continue;
+                }
+
+                if (choice == 2)
+                {
+                    Console.Clear();
+
+                    var currentOrderId = StartClientDialogue();
+
+                    _controller.DeleteEmptyOrder(currentOrderId);
+
+                    Console.Clear();
+                    continue;
+                }
+
+                if (choice == 0)
+                    break;
+            }
+        }
+
+        public void StartBusinessDialogue()
         {
             while (true)
             {
                 var choice = ShowBusinessMenu();
 
                 if (choice == 1)
-                    storage.PcParts.Add(GetPcPartInfo(storage.PcParts.Count));
-
+                    _controller.SaveBusinessData(choice, GetPcPartInfo());
+                
                 else if (choice == 2)
-                    storage.PcPeripherals.Add(GetPcPeripheralInfo(storage.PcPeripherals.Count));
+                    _controller.SaveBusinessData(choice, GetPcPeripheralInfo());
 
                 else if (choice == 3)
                 {
                     Console.Clear();
-                    ShowPcParts(storage.PcParts.ToList());
+                    ShowPcParts(_storage.PcParts.ToList());
                 }
 
                 else if (choice == 4)
                 {
                     Console.Clear();
-                    ShowPcPeripherals(storage.PcPeripherals);
+                    ShowPcPeripherals(_storage.PcPeripherals);
                 }
 
                 else if (choice == 5)
                 {
                     Console.Clear();
-                    ShowActiveOrders(storage.Orders);
+                    ShowActiveOrders(_storage.Orders);
                 }
 
                 else if (choice == 0)
                     break;
             }
-
-            return storage;
         }
 
-        public (IStorable, int) ClientDialogue(IStorable storage)
+        public int StartClientDialogue()
         {
-            var currentOrder = new Order
-            {
-                Id = storage.Orders.Count,
-                PhoneNumber = GetClientPhoneNumber(),
-                Address = GetClientAddress()
-            };
+            var currentOrder = _controller.CreateOrder(GetClientPhoneNumber(), GetClientAddress());
 
             while (true)
             {
@@ -70,11 +100,11 @@ namespace DeliveryService.UI
                 {
                     while (true)
                     {
-                        int? itemId = AddPcPartsToOrder(storage);
+                        int? itemId = AddPcPartsToOrder();
                         if (itemId is null)
                             break;
-                        currentOrder.PcParts.Add(storage.PcParts[(int)itemId]);
-                        storage.PcParts[(int)itemId].Amount--;
+
+                        _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
                     }
                     Console.Clear();
                 }
@@ -83,11 +113,11 @@ namespace DeliveryService.UI
                 {
                     while (true)
                     {
-                        int? itemId = AddPcPeripheralsToOrder(storage);
+                        int? itemId = AddPcPeripheralsToOrder();
                         if (itemId is null)
                             break;
-                        currentOrder.PcPeripherals.Add(storage.PcPeripherals[(int)itemId]);
-                        storage.PcPeripherals[(int)itemId].Amount--;
+
+                        _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
                     }
                     Console.Clear();
                 }
@@ -101,9 +131,7 @@ namespace DeliveryService.UI
                     break;
             }
 
-            storage.Orders.Add(currentOrder);
-
-            return (storage, currentOrder.Id);
+            return currentOrder.Id;
         }
 
         public string GetClientPhoneNumber()
@@ -139,14 +167,14 @@ namespace DeliveryService.UI
                 Console.Clear();
             }
         }
-        public int? AddPcPartsToOrder(IStorable storage)
+        public int? AddPcPartsToOrder()
         {
             int choice;
 
             while (true)
             {
                 Console.Clear();
-                ShowPcParts(storage.PcParts);
+                ShowPcParts(_storage.PcParts);
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC parts.");
 
@@ -154,9 +182,9 @@ namespace DeliveryService.UI
                 if (input == string.Empty)
                     return null;
 
-                if (int.TryParse(input, out choice) && choice < storage.PcParts.Count)
+                if (int.TryParse(input, out choice) && choice < _storage.PcParts.Count)
                 {
-                    if (storage.PcParts[choice].Amount <= 0)
+                    if (_storage.PcParts[choice].Amount <= 0)
                     {
                         Console.WriteLine("Item is out of stock!");
                         continue;
@@ -169,14 +197,14 @@ namespace DeliveryService.UI
             return choice;
         }
 
-        public int? AddPcPeripheralsToOrder(IStorable storage)
+        public int? AddPcPeripheralsToOrder()
         {
             int choice;
 
             while (true)
             {
                 Console.Clear();
-                ShowPcPeripherals(storage.PcPeripherals);
+                ShowPcPeripherals(_storage.PcPeripherals);
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC peripherals.");
 
@@ -184,9 +212,9 @@ namespace DeliveryService.UI
                 if (input == string.Empty)
                     return null;
 
-                if (int.TryParse(input, out choice) && choice < storage.PcPeripherals.Count)
+                if (int.TryParse(input, out choice) && choice < _storage.PcPeripherals.Count)
                 {
-                    if (storage.PcPeripherals[choice].Amount <= 0)
+                    if (_storage.PcPeripherals[choice].Amount <= 0)
                     {
                         Console.WriteLine("Item is out of stock!");
                         continue;
@@ -199,7 +227,7 @@ namespace DeliveryService.UI
             return choice;
         }
 
-        public PcPeripheral GetPcPeripheralInfo(int id)
+        public PcPeripheral GetPcPeripheralInfo()
         {
             Console.Clear();
             Console.Write("Enter a name for the peripheral: ");
@@ -233,12 +261,12 @@ namespace DeliveryService.UI
             Console.Clear();
 
             var pcPeripheral = new PcPeripheral();
-            pcPeripheral.CreateProduct(id, name, price, manufacturer, category, amount);
+            pcPeripheral.CreateProduct(default, name, price, manufacturer, category, amount);
 
             return pcPeripheral;
         }
 
-        public PcPart GetPcPartInfo(int id)
+        public PcPart GetPcPartInfo()
         {
             Console.Clear();
             Console.Write("Enter a name for the part: ");
@@ -272,7 +300,7 @@ namespace DeliveryService.UI
             Console.Clear();
 
             var pcPart = new PcPart();
-            pcPart.CreateProduct(id, name, price, manufacturer, category, amount);
+            pcPart.CreateProduct(default, name, price, manufacturer, category, amount);
             return pcPart;
         }
 

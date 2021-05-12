@@ -4,10 +4,13 @@ namespace DeliveryService.Interfaces
 {
     public interface IPresentable
     {
-        int? AddPcPartsToOrder(IStorable storage);
-        int? AddPcPeripheralsToOrder(IStorable storage);
-        PcPeripheral GetPcPeripheralInfo(int id);
-        PcPart GetPcPartInfo(int id);
+        void Start();
+        void StartBusinessDialogue();
+        int StartClientDialogue();
+        int? AddPcPartsToOrder();
+        int? AddPcPeripheralsToOrder();
+        PcPeripheral GetPcPeripheralInfo();
+        PcPart GetPcPartInfo();
         string GetClientAddress();
         string GetClientPhoneNumber();
     }
