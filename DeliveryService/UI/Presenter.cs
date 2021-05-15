@@ -60,10 +60,10 @@ namespace DeliveryService.UI
                 var choice = ShowBusinessMenu();
 
                 if (choice == 1)
-                    _controller.SaveBusinessData(choice, GetPcPartInfo());
+                    _controller.AddPcPartToDb(GetPcPartInfo());
                 
                 else if (choice == 2)
-                    _controller.SaveBusinessData(choice, GetPcPeripheralInfo());
+                    _controller.AddPcPeripheralToDb(GetPcPeripheralInfo());
 
                 else if (choice == 3)
                 {
@@ -104,7 +104,7 @@ namespace DeliveryService.UI
                         if (itemId is null)
                             break;
 
-                        _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
+                        _controller.AddPcPartToOrder(currentOrder.Id, (int)itemId);
                     }
                     Console.Clear();
                 }
@@ -117,7 +117,7 @@ namespace DeliveryService.UI
                         if (itemId is null)
                             break;
 
-                        _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
+                        _controller.AddPcPeripheralToOrder(currentOrder.Id, (int)itemId);
                     }
                     Console.Clear();
                 }
