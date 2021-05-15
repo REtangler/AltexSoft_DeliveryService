@@ -12,12 +12,14 @@ namespace DeliveryService.UI
         private readonly RegExpression _regExpression;
         private readonly Controller _controller;
         private readonly IStorable _storage;
+        private readonly Logger _logger;
 
-        public Presenter(Controller controller, RegExpression regExp)
+        public Presenter(Controller controller, RegExpression regExp, Logger logger)
         {
             _regExpression = regExp;
             _controller = controller;
             _storage = _controller.GetStorage();
+            _logger = logger;
         }
 
         public void Start()
@@ -60,10 +62,18 @@ namespace DeliveryService.UI
                 var choice = ShowBusinessMenu();
 
                 if (choice == 1)
-                    _controller.SaveBusinessData(choice, GetPcPartInfo());
-                
+                {
+                    var product = GetPcPartInfo();
+                    _controller.SaveBusinessData(choice, product);
+                    _logger.Log($"PC part \"{product.Name}\" x{product.Amount} was added to marketplace");
+                }
+
                 else if (choice == 2)
-                    _controller.SaveBusinessData(choice, GetPcPeripheralInfo());
+                {
+                    var product = GetPcPeripheralInfo();
+                    _controller.SaveBusinessData(choice, product);
+                    _logger.Log($"PC peripheral \"{product.Name}\" x{product.Amount} was added to marketplace");
+                }
 
                 else if (choice == 3)
                 {
@@ -105,6 +115,7 @@ namespace DeliveryService.UI
                             break;
 
                         _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
+                        _logger.Log($"PC part #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
                 }
@@ -118,6 +129,7 @@ namespace DeliveryService.UI
                             break;
 
                         _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
+                        _logger.Log($"PC peripheral #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
                 }
