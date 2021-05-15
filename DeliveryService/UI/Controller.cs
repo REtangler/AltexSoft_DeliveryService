@@ -1,72 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DeliveryService.Models;
-using DeliveryService.Data;
+﻿using System.Linq;
 using DeliveryService.Interfaces;
+using DeliveryService.Models;
 
 namespace DeliveryService.UI
 {
     public class Controller : IControllable
     {
-        private IStorable _storage;
+        private readonly IStorable _storage;
 
         public Controller(IStorable storage)
         {
             _storage = storage;
         }
 
-        public Storage Start()
+        public IStorable GetStorage()
         {
-            var presenter = new Presenter();
+            return _storage;
+        }
 
-            while (true)
+        public void AddPcPartToDb(IProduceable product)
+        {
+            var pcPart = (PcPart)product;
+            pcPart.Id = _storage.PcParts.Count == 0 ? 0 : _storage.PcParts.Max(x => x.Id) + 1;
+            _storage.PcParts.Add(pcPart);
+        }
+
+        public void AddPcPeripheralToDb(IProduceable product)
+        {
+            var pcPeripheral = (PcPeripheral)product;
+            pcPeripheral.Id = _storage.PcPeripherals.Count == 0 ? 0 : _storage.PcPeripherals.Max(x => x.Id) + 1;
+            _storage.PcPeripherals.Add(pcPeripheral);
+        }
+
+        public void AddPcPartToOrder(int orderId, int itemId)
+        {
+            _storage.Orders[orderId].PcParts.Add(_storage.PcParts[itemId]);
+            _storage.PcParts[itemId].Amount--;
+            _storage.Orders[orderId].FullPrice = _storage.Orders[orderId].RecalculatePrice();
+        }
+
+        public void AddPcPeripheralToOrder(int orderId, int itemId)
+        {
+            _storage.Orders[orderId].PcPeripherals.Add(_storage.PcPeripherals[itemId]);
+            _storage.PcPeripherals[itemId].Amount--;
+            _storage.Orders[orderId].FullPrice = _storage.Orders[orderId].RecalculatePrice();
+        }
+
+        public void DeleteEmptyOrder(int orderId)
+        {
+            if (_storage.Orders[orderId].FullPrice == default)
+                _storage.Orders.RemoveAt(orderId);
+        }
+
+        public Order CreateOrder(string phoneNumber, string address)
+        {
+            var order = new Order
             {
-                Console.WriteLine("1 - Business\n" +
-                                  "2 - Client\n" +
-                                  "0 - Exit");
-                var input = Console.ReadLine();
+                Id = _storage.Orders.Count == 0 ? 0 : _storage.Orders.Max(x => x.Id) + 1,
+                PhoneNumber = phoneNumber,
+                Address = address
+            };
 
-                if (input == string.Empty || !int.TryParse(input, out var choice))
-                {
-                    Console.Clear();
-                    Console.WriteLine("Enter a number!");
-                    continue;
-                }
+            _storage.Orders.Add(order);
 
-                var dialogue = new Dialogues();
-
-                if (choice == 1)
-                {
-                    Console.Clear();
-
-                    _storage = dialogue.BusinessDialogue(_storage);
-
-                    Console.Clear();
-                    continue;
-                }
-
-                if (choice == 2)
-                {
-                    Console.Clear();
-
-                    int currentOrderId;
-                    (_storage, currentOrderId) = dialogue.ClientDialogue(_storage);
-
-                    if (_storage.Orders[currentOrderId].FullPrice == default)
-                        _storage.Orders.RemoveAt(currentOrderId);
-
-                    Console.Clear();
-                    continue;
-                }
-
-                if (choice == 0)
-                    break;
-
-                Console.WriteLine("Enter a correct number.");
-            }
-
-            return new Storage {PcPeripherals = _storage.PcPeripherals, Orders = _storage.Orders, PcParts = _storage.PcParts};
+            return order;
         }
     }
 }

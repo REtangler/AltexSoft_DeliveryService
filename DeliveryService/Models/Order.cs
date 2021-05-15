@@ -15,6 +15,9 @@ namespace DeliveryService.Models
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
 
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+
         public Order(int id, IList<PcPart> pcParts, IList<PcPeripheral> pcPeripherals)
         {
             Id = id;
@@ -28,23 +31,24 @@ namespace DeliveryService.Models
             PcPeripherals = new List<PcPeripheral>();
         }
 
-        public void RecalculatePrice()
+        public decimal RecalculatePrice()
         {
+            decimal fullPrice = default;
+
             if (PcParts.Count is 0 && PcPeripherals.Count is 0)
-            {
-                FullPrice = default;
-                return;
-            }
+                return fullPrice;
 
             foreach (var pcPart in PcParts)
             {
-                FullPrice += pcPart.Price;
+                fullPrice += pcPart.Price;
             }
 
             foreach (var pcPeripheral in PcPeripherals)
             {
-                FullPrice += pcPeripheral.Price;
+                fullPrice += pcPeripheral.Price;
             }
+
+            return fullPrice;
         }
     }
 }

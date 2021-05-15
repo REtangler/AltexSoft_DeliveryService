@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
-using DeliveryService.Models;
+﻿using DeliveryService.Models;
 
 namespace DeliveryService.Interfaces
 {
     public interface IPresentable
     {
-        string ShowActiveOrders(IList<Order> orders);
-        string ShowOrder(Order order);
-        string ShowPcPeripherals(IList<PcPeripheral> pcPeripherals);
-        string ShowPcParts(IList<PcPart> pcParts);
+        void Start();
+        void StartBusinessDialogue();
+        int StartClientDialogue();
+        int? AddPcPartsToOrder();
+        int? AddPcPeripheralsToOrder();
+        PcPeripheral GetPcPeripheralInfo();
+        PcPart GetPcPartInfo();
+        string GetClientAddress();
+        string GetClientPhoneNumber();
     }
 }
