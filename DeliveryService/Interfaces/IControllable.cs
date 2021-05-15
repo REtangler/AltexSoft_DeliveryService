@@ -5,8 +5,10 @@ namespace DeliveryService.Interfaces
     public interface IControllable
     {
         IStorable GetStorage();
-        void SaveBusinessData(int choice, IProduceable product);
-        void SaveClientData(int choice, int orderId, int itemId);
+        void AddPcPartToDb(IProduceable product);
+        void AddPcPeripheralToDb(IProduceable product);
+        void AddPcPartToOrder(int orderId, int itemId);
+        void AddPcPeripheralToOrder(int orderId, int itemId);
         void DeleteEmptyOrder(int orderId);
         Order CreateOrder(string phoneNumber, string address);
     }

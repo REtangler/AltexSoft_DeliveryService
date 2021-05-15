@@ -1,4 +1,5 @@
-﻿using DeliveryService.Interfaces;
+﻿using System.Linq;
+using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI
@@ -17,47 +18,31 @@ namespace DeliveryService.UI
             return _storage;
         }
 
-        public void SaveBusinessData(int choice, IProduceable product)
+        public void AddPcPartToDb(IProduceable product)
         {
-            switch (choice)
-            {
-                case 1:
-                {
-                    var pcPart = (PcPart)product;
-                    pcPart.Id = _storage.PcParts.Count;
-                    _storage.PcParts.Add(pcPart);
-                    break;
-                }
-
-                case 2:
-                {
-                    var pcPeripheral = (PcPeripheral)product;
-                    pcPeripheral.Id = _storage.PcPeripherals.Count;
-                    _storage.PcPeripherals.Add(pcPeripheral);
-                    break;
-                }
-            }
+            var pcPart = (PcPart)product;
+            pcPart.Id = _storage.PcParts.Count == 0 ? 0 : _storage.PcParts.Max(x => x.Id) + 1;
+            _storage.PcParts.Add(pcPart);
         }
 
-        public void SaveClientData(int choice, int orderId, int itemId)
+        public void AddPcPeripheralToDb(IProduceable product)
         {
-            switch (choice)
-            {
-                case 1:
-                {
-                    _storage.Orders[orderId].PcParts.Add(_storage.PcParts[itemId]);
-                    _storage.PcParts[itemId].Amount--;
-                    break;
-                }
+            var pcPeripheral = (PcPeripheral)product;
+            pcPeripheral.Id = _storage.PcPeripherals.Count == 0 ? 0 : _storage.PcPeripherals.Max(x => x.Id) + 1;
+            _storage.PcPeripherals.Add(pcPeripheral);
+        }
 
-                case 2:
-                {
-                    _storage.Orders[orderId].PcPeripherals.Add(_storage.PcPeripherals[itemId]);
-                    _storage.PcPeripherals[itemId].Amount--;
-                    break;
-                }
-            }
+        public void AddPcPartToOrder(int orderId, int itemId)
+        {
+            _storage.Orders[orderId].PcParts.Add(_storage.PcParts[itemId]);
+            _storage.PcParts[itemId].Amount--;
+            _storage.Orders[orderId].FullPrice = _storage.Orders[orderId].RecalculatePrice();
+        }
 
+        public void AddPcPeripheralToOrder(int orderId, int itemId)
+        {
+            _storage.Orders[orderId].PcPeripherals.Add(_storage.PcPeripherals[itemId]);
+            _storage.PcPeripherals[itemId].Amount--;
             _storage.Orders[orderId].FullPrice = _storage.Orders[orderId].RecalculatePrice();
         }
 
@@ -71,7 +56,7 @@ namespace DeliveryService.UI
         {
             var order = new Order
             {
-                Id = _storage.Orders.Count,
+                Id = _storage.Orders.Count == 0 ? 0 : _storage.Orders.Max(x => x.Id) + 1,
                 PhoneNumber = phoneNumber,
                 Address = address
             };

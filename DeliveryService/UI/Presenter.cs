@@ -64,14 +64,14 @@ namespace DeliveryService.UI
                 if (choice == 1)
                 {
                     var product = GetPcPartInfo();
-                    _controller.SaveBusinessData(choice, product);
+                    _controller.AddPcPartToDb(product);
                     _logger.Log($"PC part \"{product.Name}\" x{product.Amount} was added to marketplace");
                 }
-
+                
                 else if (choice == 2)
                 {
                     var product = GetPcPeripheralInfo();
-                    _controller.SaveBusinessData(choice, product);
+                    _controller.AddPcPeripheralToDb(product);
                     _logger.Log($"PC peripheral \"{product.Name}\" x{product.Amount} was added to marketplace");
                 }
 
@@ -114,7 +114,7 @@ namespace DeliveryService.UI
                         if (itemId is null)
                             break;
 
-                        _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
+                        _controller.AddPcPartToOrder(currentOrder.Id, (int)itemId);
                         _logger.Log($"PC part #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
@@ -128,7 +128,7 @@ namespace DeliveryService.UI
                         if (itemId is null)
                             break;
 
-                        _controller.SaveClientData(choice, currentOrder.Id, (int)itemId);
+                        _controller.AddPcPeripheralToOrder(currentOrder.Id, (int)itemId);
                         _logger.Log($"PC peripheral #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
