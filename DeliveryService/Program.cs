@@ -9,7 +9,7 @@ namespace DeliveryService
         static void Main(string[] args)
         {
             var data = new Storage();
-            var regExp = new RegExpression();
+            var regExp = new RegExpressionValidator();
 
             var controller = new Controller(data);
 
