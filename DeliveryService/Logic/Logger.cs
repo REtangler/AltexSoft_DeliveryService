@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DeliveryService.Interfaces;
 
 namespace DeliveryService.Logic
 {
-    public class Logger
+    public class Logger : ILogger
     {
-        private string FilePath { get; init; }
-        private string FileName { get; init; }
+        public string FilePath { get; init; }
+        public string FileName { get; init; }
 
         public Logger()
         {

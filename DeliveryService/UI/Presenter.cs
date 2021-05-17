@@ -12,9 +12,9 @@ namespace DeliveryService.UI
         private readonly RegExpression _regExpression;
         private readonly Controller _controller;
         private readonly IStorable _storage;
-        private readonly Logger _logger;
+        private readonly ILogger _logger;
 
-        public Presenter(Controller controller, RegExpression regExp, Logger logger)
+        public Presenter(Controller controller, RegExpression regExp, ILogger logger)
         {
             _regExpression = regExp;
             _controller = controller;
