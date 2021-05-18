@@ -1,21 +1,17 @@
 ﻿using System.Linq;
+using System.Text;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI
 {
-    public class Controller : IControllable
+    public class Controller : IControllable, IItemPresentable
     {
         private readonly IStorable _storage;
 
         public Controller(IStorable storage)
         {
             _storage = storage;
-        }
-
-        public IStorable GetStorage()
-        {
-            return _storage;
         }
 
         public void AddPcPartToDb(IProduceable product)
@@ -64,6 +60,65 @@ namespace DeliveryService.UI
             _storage.Orders.Add(order);
 
             return order;
+        }
+
+        public bool CanAddPcPartsToOrder(int choice)
+        {
+            return _storage.PcParts.Any(x => x.Id == choice) && _storage.PcParts[choice].Amount > 0;
+        }
+
+        public bool CanAddPcPeripheralsToOrder(int choice)
+        {
+            return _storage.PcPeripherals.Any(x => x.Id == choice) && _storage.PcPeripherals[choice].Amount > 0;
+        }
+
+        public string ShowActiveOrders()
+        {
+            var sb = new StringBuilder();
+            if (_storage.Orders.Count is 0)
+                return "There are no active orders!";
+            
+            foreach (var order in _storage.Orders)
+            {
+                sb.Append($"Order Id #{order.Id}\n" +
+                                  $"Address: {order.Address}\n" +
+                                  $"Phone Number: {order.PhoneNumber}\n" +
+                                  $"Full price: {order.FullPrice}\n\n");
+            }
+
+            return sb.ToString();
+        }
+
+        public string ShowPcPeripherals()
+        {
+            var sb = new StringBuilder();
+            foreach (var pcPeripheral in _storage.PcPeripherals)
+            {
+                sb.Append($"Id: {pcPeripheral.Id}\n" +
+                                  $"Name: {pcPeripheral.Name}\n" +
+                                  $"Category: {pcPeripheral.Category}\n" +
+                                  $"Price: {pcPeripheral.Price}\n" +
+                                  $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
+                                  $"Amount: {pcPeripheral.Amount}\n");
+            }
+            sb.Append("----------END OF LIST----------\n");
+            return sb.ToString();
+        }
+
+        public string ShowPcParts()
+        {
+            var sb = new StringBuilder();
+            foreach (var pcPart in _storage.PcParts)
+            {
+                sb.Append($"Id: {pcPart.Id}\n" +
+                                  $"Name: {pcPart.Name}\n" +
+                                  $"Category: {pcPart.Category}\n" +
+                                  $"Price: {pcPart.Price}\n" +
+                                  $"Manufacturer: {pcPart.Manufacturer}\n" +
+                                  $"Amount: {pcPart.Amount}\n");
+            }
+            sb.Append("----------END OF LIST----------\n");
+            return sb.ToString();
         }
     }
 }
