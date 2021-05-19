@@ -64,19 +64,19 @@ namespace DeliveryService.UI
                 else if (choice == 3)
                 {
                     Console.Clear();
-                    Console.WriteLine(_controller.ShowPcParts());
+                    ShowPcParts();
                 }
 
                 else if (choice == 4)
                 {
                     Console.Clear();
-                    Console.WriteLine(_controller.ShowPcPeripherals());
+                    ShowPcPeripherals();
                 }
 
                 else if (choice == 5)
                 {
                     Console.Clear();
-                    Console.WriteLine(_controller.ShowActiveOrders());
+                    ShowOrders();
                 }
 
                 else if (choice == 0)
@@ -147,6 +147,51 @@ namespace DeliveryService.UI
             }
         }
 
+        public void ShowOrders()
+        {
+            var orders = _controller.GetOrders();
+            if (orders.Count is 0)
+                Console.WriteLine("There are no orders!");
+            
+            foreach (var order in orders)
+            {
+                Console.WriteLine($"Order Id #{order.Id}\n" +
+                          $"Address: {order.Address}\n" +
+                          $"Phone Number: {order.PhoneNumber}\n" +
+                          $"Full price: {order.FullPrice}\n\n");
+            }
+        }
+
+        public void ShowPcPeripherals()
+        {
+            var pcPeripherals = _controller.GetPcPeripherals();
+            foreach (var pcPeripheral in pcPeripherals)
+            {
+                Console.WriteLine($"Id: {pcPeripheral.Id}\n" +
+                          $"Name: {pcPeripheral.Name}\n" +
+                          $"Category: {pcPeripheral.Category}\n" +
+                          $"Price: {pcPeripheral.Price}\n" +
+                          $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
+                          $"Amount: {pcPeripheral.Amount}\n");
+            }
+            Console.WriteLine("----------END OF LIST----------\n");
+        }
+
+        public void ShowPcParts()
+        {
+            var pcParts = _controller.GetPcParts();
+            foreach (var pcPart in pcParts)
+            {
+                Console.WriteLine($"Id: {pcPart.Id}\n" +
+                          $"Name: {pcPart.Name}\n" +
+                          $"Category: {pcPart.Category}\n" +
+                          $"Price: {pcPart.Price}\n" +
+                          $"Manufacturer: {pcPart.Manufacturer}\n" +
+                          $"Amount: {pcPart.Amount}\n");
+            }
+            Console.WriteLine("----------END OF LIST----------\n");
+        }
+
         public string GetClientAddress()
         {
             while (true)
@@ -170,7 +215,7 @@ namespace DeliveryService.UI
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(_controller.ShowPcParts());
+                ShowPcParts();
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC parts.");
 
@@ -197,7 +242,7 @@ namespace DeliveryService.UI
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(_controller.ShowPcPeripherals());
+                ShowPcPeripherals();
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC peripherals.");
 

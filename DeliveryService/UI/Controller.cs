@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI
 {
-    public class Controller : IControllable, IItemPresentable
+    public class Controller : IControllable
     {
         private readonly IStorable _storage;
 
@@ -72,53 +72,19 @@ namespace DeliveryService.UI
             return _storage.PcPeripherals.Any(x => x.Id == choice) && _storage.PcPeripherals[choice].Amount > 0;
         }
 
-        public string ShowActiveOrders()
+        public IList<Order> GetOrders()
         {
-            var sb = new StringBuilder();
-            if (_storage.Orders.Count is 0)
-                return "There are no active orders!";
-            
-            foreach (var order in _storage.Orders)
-            {
-                sb.Append($"Order Id #{order.Id}\n" +
-                                  $"Address: {order.Address}\n" +
-                                  $"Phone Number: {order.PhoneNumber}\n" +
-                                  $"Full price: {order.FullPrice}\n\n");
-            }
-
-            return sb.ToString();
+            return _storage.Orders;
         }
 
-        public string ShowPcPeripherals()
+        public IEnumerable<PcPeripheral> GetPcPeripherals()
         {
-            var sb = new StringBuilder();
-            foreach (var pcPeripheral in _storage.PcPeripherals)
-            {
-                sb.Append($"Id: {pcPeripheral.Id}\n" +
-                                  $"Name: {pcPeripheral.Name}\n" +
-                                  $"Category: {pcPeripheral.Category}\n" +
-                                  $"Price: {pcPeripheral.Price}\n" +
-                                  $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
-                                  $"Amount: {pcPeripheral.Amount}\n");
-            }
-            sb.Append("----------END OF LIST----------\n");
-            return sb.ToString();
+            return _storage.PcPeripherals;
         }
 
-        public string ShowPcParts()
+        public IEnumerable<PcPart> GetPcParts()
         {
-            var sb = new StringBuilder();
-            foreach (var pcPart in _storage.PcParts)
-            {
-                sb.Append($"Id: {pcPart.Id}\n" +
-                                  $"Name: {pcPart.Name}\n" +
-                                  $"Category: {pcPart.Category}\n" +
-                                  $"Price: {pcPart.Price}\n" +
-                                  $"Manufacturer: {pcPart.Manufacturer}\n" +
-                                  $"Amount: {pcPart.Amount}\n");
-            }
-            sb.Append("----------END OF LIST----------\n");
-            return sb.ToString();
+            return _storage.PcParts;
         }
     }
 }

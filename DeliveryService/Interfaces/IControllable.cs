@@ -1,4 +1,5 @@
-﻿using DeliveryService.Models;
+﻿using System.Collections.Generic;
+using DeliveryService.Models;
 
 namespace DeliveryService.Interfaces
 {
@@ -12,5 +13,8 @@ namespace DeliveryService.Interfaces
         Order CreateOrder(string phoneNumber, string address);
         bool CanAddPcPeripheralsToOrder(int choice);
         bool CanAddPcPartsToOrder(int choice);
+        IList<Order> GetOrders();
+        IEnumerable<PcPeripheral> GetPcPeripherals();
+        IEnumerable<PcPart> GetPcParts();
     }
 }
