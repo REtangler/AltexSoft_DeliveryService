@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DeliveryService.Data;
+using DeliveryService.Logic;
+using DeliveryService.UI;
 
 namespace DeliveryService
 {
@@ -6,7 +8,14 @@ namespace DeliveryService
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var data = new Storage();
+            var regExp = new RegExpression();
+
+            var controller = new Controller(data);
+
+            var presenter = new Presenter(controller, regExp);
+
+            presenter.Start();
         }
     }
 }
