@@ -13,5 +13,8 @@ namespace DeliveryService.Interfaces
         PcPart GetPcPartInfo();
         string GetClientAddress();
         string GetClientPhoneNumber();
+        void ShowOrders();
+        void ShowPcPeripherals();
+        void ShowPcParts();
     }
 }
