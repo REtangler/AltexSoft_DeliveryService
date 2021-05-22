@@ -1,25 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using DeliveryService.Interfaces;
 using DeliveryService.Logic;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI
 {
-    public class Presenter : IPresentable, IMenuPresentable, IItemPresentable, IDialogue
+    public class Presenter : IPresentable, IMenuPresentable, IDialogue
     {
         private readonly RegExpression _regExpression;
         private readonly Controller _controller;
-        private readonly IStorable _storage;
-        private readonly ILogger _logger;
 
         public Presenter(Controller controller, RegExpression regExp, ILogger logger)
         {
             _regExpression = regExp;
             _controller = controller;
-            _storage = _controller.GetStorage();
-            _logger = logger;
         }
 
         public void Start()
@@ -78,19 +72,19 @@ namespace DeliveryService.UI
                 else if (choice == 3)
                 {
                     Console.Clear();
-                    ShowPcParts(_storage.PcParts.ToList());
+                    ShowPcParts();
                 }
 
                 else if (choice == 4)
                 {
                     Console.Clear();
-                    ShowPcPeripherals(_storage.PcPeripherals);
+                    ShowPcPeripherals();
                 }
 
                 else if (choice == 5)
                 {
                     Console.Clear();
-                    ShowActiveOrders(_storage.Orders);
+                    ShowOrders();
                 }
 
                 else if (choice == 0)
@@ -163,6 +157,51 @@ namespace DeliveryService.UI
             }
         }
 
+        public void ShowOrders()
+        {
+            var orders = _controller.GetOrders();
+            if (orders.Count is 0)
+                Console.WriteLine("There are no orders!");
+            
+            foreach (var order in orders)
+            {
+                Console.WriteLine($"Order Id #{order.Id}\n" +
+                          $"Address: {order.Address}\n" +
+                          $"Phone Number: {order.PhoneNumber}\n" +
+                          $"Full price: {order.FullPrice}\n\n");
+            }
+        }
+
+        public void ShowPcPeripherals()
+        {
+            var pcPeripherals = _controller.GetPcPeripherals();
+            foreach (var pcPeripheral in pcPeripherals)
+            {
+                Console.WriteLine($"Id: {pcPeripheral.Id}\n" +
+                          $"Name: {pcPeripheral.Name}\n" +
+                          $"Category: {pcPeripheral.Category}\n" +
+                          $"Price: {pcPeripheral.Price}\n" +
+                          $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
+                          $"Amount: {pcPeripheral.Amount}\n");
+            }
+            Console.WriteLine("----------END OF LIST----------\n");
+        }
+
+        public void ShowPcParts()
+        {
+            var pcParts = _controller.GetPcParts();
+            foreach (var pcPart in pcParts)
+            {
+                Console.WriteLine($"Id: {pcPart.Id}\n" +
+                          $"Name: {pcPart.Name}\n" +
+                          $"Category: {pcPart.Category}\n" +
+                          $"Price: {pcPart.Price}\n" +
+                          $"Manufacturer: {pcPart.Manufacturer}\n" +
+                          $"Amount: {pcPart.Amount}\n");
+            }
+            Console.WriteLine("----------END OF LIST----------\n");
+        }
+
         public string GetClientAddress()
         {
             while (true)
@@ -186,7 +225,7 @@ namespace DeliveryService.UI
             while (true)
             {
                 Console.Clear();
-                ShowPcParts(_storage.PcParts);
+                ShowPcParts();
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC parts.");
 
@@ -194,15 +233,12 @@ namespace DeliveryService.UI
                 if (input == string.Empty)
                     return null;
 
-                if (int.TryParse(input, out choice) && choice < _storage.PcParts.Count)
-                {
-                    if (_storage.PcParts[choice].Amount <= 0)
-                    {
-                        Console.WriteLine("Item is out of stock!");
-                        continue;
-                    }
+                if (!int.TryParse(input, out choice))
+                    continue;
+
+                if (_controller.CanAddPcPartsToOrder(choice))
                     break;
-                }
+                
                 Console.WriteLine("Enter correct Id or empty line to stop ordering PC parts!");
             }
 
@@ -216,7 +252,7 @@ namespace DeliveryService.UI
             while (true)
             {
                 Console.Clear();
-                ShowPcPeripherals(_storage.PcPeripherals);
+                ShowPcPeripherals();
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC peripherals.");
 
@@ -224,15 +260,12 @@ namespace DeliveryService.UI
                 if (input == string.Empty)
                     return null;
 
-                if (int.TryParse(input, out choice) && choice < _storage.PcPeripherals.Count)
-                {
-                    if (_storage.PcPeripherals[choice].Amount <= 0)
-                    {
-                        Console.WriteLine("Item is out of stock!");
-                        continue;
-                    }
+                if (!int.TryParse(input, out choice))
+                    continue;
+
+                if (_controller.CanAddPcPeripheralsToOrder(choice))
                     break;
-                }
+
                 Console.WriteLine("Enter correct Id or empty line to stop ordering PC peripherals!");
             }
 
@@ -390,24 +423,7 @@ namespace DeliveryService.UI
             return choice;
         }
 
-        public void ShowActiveOrders(IList<Order> orders)
-        {
-            if (orders.Count is 0)
-            {
-                Console.WriteLine("There are no active orders!");
-                return;
-            }
-
-            foreach (var order in orders)
-            {
-                Console.WriteLine($"Order Id #{order.Id}\n" +
-                          $"Address: {order.Address}\n" +
-                          $"Phone Number: {order.PhoneNumber}\n" +
-                          $"Full price: {order.FullPrice}\n\n");
-            }
-        }
-
-        public void ShowOrder(Order order)
+        private static void ShowOrder(IOrder order)
         {
             Console.Clear();
 
@@ -455,35 +471,6 @@ namespace DeliveryService.UI
             Console.WriteLine($"Address: {order.Address}\n");
             Console.WriteLine($"Phone Number: {order.PhoneNumber}\n");
             Console.WriteLine($"Total price: {order.FullPrice}");
-        }
-
-        public void ShowPcPeripherals(IList<PcPeripheral> pcPeripherals)
-        {
-            Console.Clear();
-            foreach (var pcPeripheral in pcPeripherals)
-            {
-                Console.WriteLine($"Id: {pcPeripheral.Id}\n" +
-                          $"Name: {pcPeripheral.Name}\n" +
-                          $"Category: {pcPeripheral.Category}\n" +
-                          $"Price: {pcPeripheral.Price}\n" +
-                          $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
-                          $"Amount: {pcPeripheral.Amount}\n");
-            }
-            Console.WriteLine("----------END OF LIST----------\n");
-        }
-
-        public void ShowPcParts(IList<PcPart> pcParts)
-        {
-            foreach (var pcPart in pcParts)
-            {
-                Console.WriteLine($"Id: {pcPart.Id}\n" +
-                          $"Name: {pcPart.Name}\n" +
-                          $"Category: {pcPart.Category}\n" +
-                          $"Price: {pcPart.Price}\n" +
-                          $"Manufacturer: {pcPart.Manufacturer}\n" +
-                          $"Amount: {pcPart.Amount}\n");
-            }
-            Console.WriteLine("----------END OF LIST----------\n");
         }
     }
 }

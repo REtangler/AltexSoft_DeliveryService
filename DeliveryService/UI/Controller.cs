@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
@@ -11,11 +12,6 @@ namespace DeliveryService.UI
         public Controller(IStorable storage)
         {
             _storage = storage;
-        }
-
-        public IStorable GetStorage()
-        {
-            return _storage;
         }
 
         public void AddPcPartToDb(IProduceable product)
@@ -64,6 +60,31 @@ namespace DeliveryService.UI
             _storage.Orders.Add(order);
 
             return order;
+        }
+
+        public bool CanAddPcPartsToOrder(int choice)
+        {
+            return _storage.PcParts.Any(x => x.Id == choice) && _storage.PcParts[choice].Amount > 0;
+        }
+
+        public bool CanAddPcPeripheralsToOrder(int choice)
+        {
+            return _storage.PcPeripherals.Any(x => x.Id == choice) && _storage.PcPeripherals[choice].Amount > 0;
+        }
+
+        public IList<Order> GetOrders()
+        {
+            return _storage.Orders;
+        }
+
+        public IEnumerable<PcPeripheral> GetPcPeripherals()
+        {
+            return _storage.PcPeripherals;
+        }
+
+        public IEnumerable<PcPart> GetPcParts()
+        {
+            return _storage.PcParts;
         }
     }
 }
