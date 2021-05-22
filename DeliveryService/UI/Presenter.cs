@@ -9,11 +9,13 @@ namespace DeliveryService.UI
     {
         private readonly RegExpression _regExpression;
         private readonly Controller _controller;
+        private readonly ILogger _logger;
 
         public Presenter(Controller controller, RegExpression regExp, ILogger logger)
         {
             _regExpression = regExp;
             _controller = controller;
+            _logger = logger;
         }
 
         public void Start()
