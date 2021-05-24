@@ -16,5 +16,6 @@ namespace DeliveryService.Interfaces
         IList<Order> GetOrders();
         IEnumerable<PcPeripheral> GetPcPeripherals();
         IEnumerable<PcPart> GetPcParts();
+        void Serialize();
     }
 }

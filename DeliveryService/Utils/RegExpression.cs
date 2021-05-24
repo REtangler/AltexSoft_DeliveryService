@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using DeliveryService.Interfaces;
 
-namespace DeliveryService.Logic
+namespace DeliveryService.Utils
 {
     public class RegExpression : IRegEx
     {

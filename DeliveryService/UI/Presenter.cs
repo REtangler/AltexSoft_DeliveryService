@@ -1,6 +1,6 @@
 ﻿using System;
 using DeliveryService.Interfaces;
-using DeliveryService.Logic;
+using DeliveryService.Utils;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI

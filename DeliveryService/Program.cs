@@ -1,5 +1,5 @@
 ﻿using DeliveryService.Data;
-using DeliveryService.Logic;
+using DeliveryService.Utils;
 using DeliveryService.UI;
 
 namespace DeliveryService
@@ -8,10 +8,12 @@ namespace DeliveryService
     {
         static void Main(string[] args)
         {
-            var data = new Storage();
+            var serializer = new Serializer();
             var regExp = new RegExpression();
 
-            var controller = new Controller(data);
+            var data = serializer.DeserializeFromFile();
+
+            var controller = new Controller(data, serializer);
 
             var presenter = new Presenter(controller, regExp);
 
