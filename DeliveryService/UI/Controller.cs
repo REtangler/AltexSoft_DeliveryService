@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System;
+using System.Diagnostics;
 using System.Linq;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
@@ -9,11 +11,16 @@ namespace DeliveryService.UI
     {
         private readonly IStorable _storage;
         private readonly ISerializable _serializer;
+        private readonly ICacheable _cache;
 
-        public Controller(IStorable storage, ISerializable serializer)
+        private readonly Action<string> _debugHandler;
+
+        public Controller(IStorable storage, ISerializable serializer, ICacheable cache)
         {
             _storage = storage;
             _serializer = serializer;
+            _cache = cache;
+            _debugHandler = listName => { Debug.WriteLine($"{listName} was added to cache"); };
         }
 
         public void AddPcPartToDb(IProduceable product)
@@ -83,16 +90,31 @@ namespace DeliveryService.UI
 
         public IList<Order> GetOrders()
         {
+            var orders = _cache.GetList<Order>();
+            if (orders != null) 
+                return orders;
+
+            _cache.AddList(_storage.Orders, _debugHandler);
             return _storage.Orders;
         }
 
         public IEnumerable<PcPeripheral> GetPcPeripherals()
         {
+            var peripherals = _cache.GetList<PcPeripheral>();
+            if (peripherals != null) 
+                return peripherals;
+
+            _cache.AddList(_storage.PcPeripherals, _debugHandler);
             return _storage.PcPeripherals;
         }
 
         public IEnumerable<PcPart> GetPcParts()
         {
+            var parts = _cache.GetList<PcPart>();
+            if (parts != null) 
+                return parts;
+
+            _cache.AddList(_storage.PcParts, _debugHandler);
             return _storage.PcParts;
         }
 
