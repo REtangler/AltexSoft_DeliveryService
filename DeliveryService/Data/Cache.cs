@@ -7,6 +7,7 @@ namespace DeliveryService.Data
 {
     public class Cache : ICacheable
     {
+        private static readonly object Lock = new object();
         private readonly IList<object> _currentList;
         private readonly IList<DateTime> _timings;
 
@@ -18,37 +19,45 @@ namespace DeliveryService.Data
 
         public void AddList<T>(IList<T> list, Action<string> debugHandler)
         {
-            if (_currentList.Count < 2)
+            lock (Lock)
             {
-                _currentList.Add(list);
-                _timings.Add(DateTime.Now);
-            }
-            else
-            {
-                _currentList.RemoveAt(0);
-                _timings.RemoveAt(0);
+                if (_currentList.Count < 2)
+                {
+                    _currentList.Add(list);
+                    _timings.Add(DateTime.Now);
+                }
+                else
+                {
+                    _currentList.RemoveAt(0);
+                    _timings.RemoveAt(0);
 
-                _currentList.Add(list);
-                _timings.Add(DateTime.Now);
+                    _currentList.Add(list);
+                    _timings.Add(DateTime.Now);
+                }
+
+                debugHandler.Invoke(typeof(T).Name);
             }
-            debugHandler.Invoke(typeof(T).Name);
         }
 
         public IList<T> GetList<T>()
         {
-            var tempList = (IList<T>)_currentList.SingleOrDefault(x => typeof(List<T>) == x.GetType());
-            if (tempList is null) 
-                return null;
-
-            var ind = _currentList.IndexOf(tempList);
-            if (Math.Abs(DateTime.Now.Minute - _timings[ind].Minute) > 2)
+            lock (Lock)
             {
-                _currentList.RemoveAt(ind);
-                _timings.RemoveAt(ind);
-                return null;
-            }
+                var tempList = (IList<T>)_currentList.SingleOrDefault(x => typeof(List<T>) == x.GetType());
+                if (tempList is null) 
+                    return null;
 
-            return tempList;
+                var ind = _currentList.IndexOf(tempList);
+
+                if (Math.Abs(DateTime.Now.Minute - _timings[ind].Minute) > 2)
+                {
+                    _currentList.RemoveAt(ind);
+                    _timings.RemoveAt(ind);
+                    return null;
+                }
+
+                return tempList;
+            }
         }
     }
 }
