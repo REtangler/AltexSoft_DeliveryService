@@ -10,7 +10,7 @@ using DeliveryService.Interfaces;
 
 namespace DeliveryService.Utils
 {
-    class Serializer : ISerializable
+    public class Serializer : ISerializable
     {
         public string FilePath { get; init; }
         public string FileName { get; init; }
