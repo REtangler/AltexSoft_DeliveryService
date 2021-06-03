@@ -1,6 +1,6 @@
 ﻿namespace DeliveryService.Interfaces
 {
-    public interface IRegEx
+    public interface IValidator
     {
         bool CheckNumber(string input);
         bool CheckAddress(string input);
