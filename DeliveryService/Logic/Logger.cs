@@ -19,10 +19,9 @@ namespace DeliveryService.Logic
         {
             using var fileStream = new FileStream(FilePath, FileMode.Append);
             using var streamWriter = new StreamWriter(fileStream);
-            
-            streamWriter.WriteLine($"Log Entry: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
-            streamWriter.WriteLine(message);
-            streamWriter.WriteLine();
+
+            var logEntry = $"Log Entry: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}\n{message}\n\n";
+            streamWriter.WriteLine(logEntry);
         }
     }
 }
