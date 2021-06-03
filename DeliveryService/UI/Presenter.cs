@@ -7,13 +7,13 @@ namespace DeliveryService.UI
 {
     public class Presenter : IPresentable, IMenuPresentable, IDialogue
     {
-        private readonly RegExpression _regExpression;
+        private readonly IValidator _regExpressionValidator;
         private readonly Controller _controller;
         private readonly ILogger _logger;
 
-        public Presenter(Controller controller, RegExpression regExp, ILogger logger)
+        public Presenter(Controller controller, IValidator regExp, ILogger logger)
         {
-            _regExpression = regExp;
+            _regExpressionValidator = regExp;
             _controller = controller;
             _logger = logger;
         }
@@ -149,7 +149,7 @@ namespace DeliveryService.UI
                 Console.WriteLine("Enter your phone number: ");
                 var input = Console.ReadLine();
 
-                if (input != string.Empty && _regExpression.CheckNumber(input))
+                if (input != string.Empty && _regExpressionValidator.CheckNumber(input))
                 {
                     Console.Clear();
                     return input;
@@ -211,7 +211,7 @@ namespace DeliveryService.UI
                 Console.WriteLine("Enter your address: ");
                 var input = Console.ReadLine();
 
-                if (input != string.Empty && _regExpression.CheckAddress(input))
+                if (input != string.Empty && _regExpressionValidator.CheckAddress(input))
                 {
                     Console.Clear();
                     return input;
