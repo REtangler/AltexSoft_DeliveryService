@@ -12,7 +12,6 @@ namespace DeliveryService.Models
         public IList<PcPeripheral> PcPeripherals { get; set; }
 
         public decimal FullPrice { get; set; }
-
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
 

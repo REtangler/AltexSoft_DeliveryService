@@ -7,13 +7,15 @@ namespace DeliveryService.UI
 {
     public class Presenter : IPresentable, IMenuPresentable, IDialogue
     {
-        private readonly RegExpression _regExpression;
+        private readonly IValidator _regExpressionValidator;
         private readonly Controller _controller;
+        private readonly ILogger _logger;
 
-        public Presenter(Controller controller, RegExpression regExp)
+        public Presenter(Controller controller, IValidator regExp, ILogger logger)
         {
-            _regExpression = regExp;
+            _regExpressionValidator = regExp;
             _controller = controller;
+            _logger = logger;
         }
 
         public void Start()
@@ -56,10 +58,18 @@ namespace DeliveryService.UI
                 var choice = ShowBusinessMenu();
 
                 if (choice == 1)
-                    _controller.AddPcPartToDb(GetPcPartInfo());
+                {
+                    var product = GetPcPartInfo();
+                    _controller.AddPcPartToDb(product);
+                    _logger.Log($"PC part \"{product.Name}\" x{product.Amount} was added to marketplace");
+                }
                 
                 else if (choice == 2)
-                    _controller.AddPcPeripheralToDb(GetPcPeripheralInfo());
+                {
+                    var product = GetPcPeripheralInfo();
+                    _controller.AddPcPeripheralToDb(product);
+                    _logger.Log($"PC peripheral \"{product.Name}\" x{product.Amount} was added to marketplace");
+                }
 
                 else if (choice == 3)
                 {
@@ -101,6 +111,7 @@ namespace DeliveryService.UI
                             break;
 
                         _controller.AddPcPartToOrder(currentOrder.Id, (int)itemId);
+                        _logger.Log($"PC part #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
                 }
@@ -114,6 +125,7 @@ namespace DeliveryService.UI
                             break;
 
                         _controller.AddPcPeripheralToOrder(currentOrder.Id, (int)itemId);
+                        _logger.Log($"PC peripheral #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
                 }
@@ -137,7 +149,7 @@ namespace DeliveryService.UI
                 Console.WriteLine("Enter your phone number: ");
                 var input = Console.ReadLine();
 
-                if (input != string.Empty && _regExpression.CheckNumber(input))
+                if (input != string.Empty && _regExpressionValidator.CheckNumber(input))
                 {
                     Console.Clear();
                     return input;
@@ -199,7 +211,7 @@ namespace DeliveryService.UI
                 Console.WriteLine("Enter your address: ");
                 var input = Console.ReadLine();
 
-                if (input != string.Empty && _regExpression.CheckAddress(input))
+                if (input != string.Empty && _regExpressionValidator.CheckAddress(input))
                 {
                     Console.Clear();
                     return input;
