@@ -9,11 +9,13 @@ namespace DeliveryService.UI
     {
         private readonly IValidator _regExpressionValidator;
         private readonly Controller _controller;
+        private readonly ILogger _logger;
 
-        public Presenter(Controller controller, IValidator regExp)
+        public Presenter(Controller controller, IValidator regExp, ILogger logger)
         {
             _regExpressionValidator = regExp;
             _controller = controller;
+            _logger = logger;
         }
 
         public void Start()
@@ -56,10 +58,18 @@ namespace DeliveryService.UI
                 var choice = ShowBusinessMenu();
 
                 if (choice == 1)
-                    _controller.AddPcPartToDb(GetPcPartInfo());
+                {
+                    var product = GetPcPartInfo();
+                    _controller.AddPcPartToDb(product);
+                    _logger.Log($"PC part \"{product.Name}\" x{product.Amount} was added to marketplace");
+                }
                 
                 else if (choice == 2)
-                    _controller.AddPcPeripheralToDb(GetPcPeripheralInfo());
+                {
+                    var product = GetPcPeripheralInfo();
+                    _controller.AddPcPeripheralToDb(product);
+                    _logger.Log($"PC peripheral \"{product.Name}\" x{product.Amount} was added to marketplace");
+                }
 
                 else if (choice == 3)
                 {
@@ -101,6 +111,7 @@ namespace DeliveryService.UI
                             break;
 
                         _controller.AddPcPartToOrder(currentOrder.Id, (int)itemId);
+                        _logger.Log($"PC part #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
                 }
@@ -114,6 +125,7 @@ namespace DeliveryService.UI
                             break;
 
                         _controller.AddPcPeripheralToOrder(currentOrder.Id, (int)itemId);
+                        _logger.Log($"PC peripheral #{(int)itemId} was added to order #{currentOrder.Id}");
                     }
                     Console.Clear();
                 }
