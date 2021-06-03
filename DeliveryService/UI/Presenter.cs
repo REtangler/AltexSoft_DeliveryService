@@ -7,10 +7,10 @@ namespace DeliveryService.UI
 {
     public class Presenter : IPresentable, IMenuPresentable, IDialogue
     {
-        private readonly IRegEx _regExpressionValidator;
+        private readonly IValidator _regExpressionValidator;
         private readonly Controller _controller;
 
-        public Presenter(Controller controller, IRegEx regExp)
+        public Presenter(Controller controller, IValidator regExp)
         {
             _regExpressionValidator = regExp;
             _controller = controller;

@@ -3,7 +3,7 @@ using DeliveryService.Interfaces;
 
 namespace DeliveryService.Logic
 {
-    public class Validator : IRegEx
+    public class Validator : IValidator
     {
         private static readonly string PhoneNumberPattern = @"(\+38)?0\(?\d{2}\)?\s?\d{3}\s?\d{2}\s?\d{2}\b";
         private readonly Regex _regexNumber;
