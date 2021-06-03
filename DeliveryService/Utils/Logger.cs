@@ -2,7 +2,7 @@
 using System.IO;
 using DeliveryService.Interfaces;
 
-namespace DeliveryService.Logic
+namespace DeliveryService.Utils
 {
     public class Logger : ILogger
     {
