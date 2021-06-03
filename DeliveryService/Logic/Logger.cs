@@ -12,17 +12,17 @@ namespace DeliveryService.Logic
         public Logger()
         {
             FileName = DateTime.Now.ToShortDateString() + ".txt";
-            FilePath = AppDomain.CurrentDomain.BaseDirectory + "/" + FileName;
+            FilePath = AppDomain.CurrentDomain.BaseDirectory + FileName;
         }
 
         public void Log(string message)
         {
-            using var f = new FileStream(FilePath, FileMode.Append);
-            using var w = new StreamWriter(f);
+            using var fileStream = new FileStream(FilePath, FileMode.Append);
+            using var streamWriter = new StreamWriter(fileStream);
             
-            w.WriteLine($"Log Entry: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
-            w.WriteLine(message);
-            w.WriteLine();
+            streamWriter.WriteLine($"Log Entry: {DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+            streamWriter.WriteLine(message);
+            streamWriter.WriteLine();
         }
     }
 }
