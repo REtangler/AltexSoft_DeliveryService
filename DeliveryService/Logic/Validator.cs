@@ -3,17 +3,17 @@ using DeliveryService.Interfaces;
 
 namespace DeliveryService.Logic
 {
-    public class RegExpressionValidator : IRegEx
+    public class Validator : IRegEx
     {
-        private static readonly string NumberPattern = @"(\+38)?0\(?\d{2}\)?\s?\d{3}\s?\d{2}\s?\d{2}\b";
+        private static readonly string PhoneNumberPattern = @"(\+38)?0\(?\d{2}\)?\s?\d{3}\s?\d{2}\s?\d{2}\b";
         private readonly Regex _regexNumber;
 
         private static readonly string AddressPattern = @"((ул)(ица)?)(\s|\.)[А-Я][а-я]+(\,|\.)\s?д(ом)?\.?\s?\d+\,?\s?((кв)(артира)?)?\.?\s?\d+\b";
         private readonly Regex _regexAddress;
 
-        public RegExpressionValidator()
+        public Validator()
         {
-            _regexNumber = new Regex(NumberPattern, RegexOptions.Compiled);
+            _regexNumber = new Regex(PhoneNumberPattern, RegexOptions.Compiled);
             _regexAddress = new Regex(AddressPattern, RegexOptions.Compiled);
         }
 
