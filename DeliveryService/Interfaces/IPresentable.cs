@@ -16,5 +16,6 @@ namespace DeliveryService.Interfaces
         void ShowOrders();
         void ShowPcPeripherals();
         void ShowPcParts();
+        void ChooseCurrency();
     }
 }

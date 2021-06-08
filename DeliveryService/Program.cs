@@ -1,5 +1,5 @@
 ﻿using DeliveryService.Data;
-using DeliveryService.Logic;
+using DeliveryService.Utils;
 using DeliveryService.UI;
 
 namespace DeliveryService
@@ -11,10 +11,11 @@ namespace DeliveryService
             var data = new Storage();
             var regExp = new Validator();
             var logger = new Logger();
+            var exchanger = new CurrencyExchanger();
 
             var controller = new Controller(data);
 
-            var presenter = new Presenter(controller, regExp, logger);
+            var presenter = new Presenter(controller, regExp, logger, exchanger);
 
             presenter.Start();
         }

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using DeliveryService.Interfaces;
-using DeliveryService.Logic;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI
@@ -10,12 +10,15 @@ namespace DeliveryService.UI
         private readonly IValidator _regExpressionValidator;
         private readonly Controller _controller;
         private readonly ILogger _logger;
+        private readonly IExchangeable _exchanger;
+        private string _convertTo;
 
-        public Presenter(Controller controller, IValidator regExp, ILogger logger)
+        public Presenter(Controller controller, IValidator regExp, ILogger logger, IExchangeable exchanger)
         {
             _regExpressionValidator = regExp;
             _controller = controller;
             _logger = logger;
+            _exchanger = exchanger;
         }
 
         public void Start()
@@ -28,6 +31,8 @@ namespace DeliveryService.UI
                 {
                     Console.Clear();
 
+                    ChooseCurrency();
+
                     StartBusinessDialogue();
 
                     Console.Clear();
@@ -37,6 +42,8 @@ namespace DeliveryService.UI
                 if (choice == 2)
                 {
                     Console.Clear();
+
+                    ChooseCurrency();
 
                     var currentOrderId = StartClientDialogue();
 
@@ -49,6 +56,43 @@ namespace DeliveryService.UI
                 if (choice == 0)
                     break;
             }
+        }
+
+        public void ChooseCurrency()
+        {
+            var currencies = _exchanger.GetAllCurrencies().Result;
+            while (true)
+            {
+                Console.WriteLine("Choose your preferred currency:");
+                foreach (var currency in currencies)
+                {
+                    Console.Write(currency + ", ");
+                }
+
+                Console.Write("\b\b.\n");
+
+                var input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Choose a currency!");
+                    continue;
+                }
+
+                var match = currencies.FirstOrDefault(x => x.Contains(input.ToUpper()));
+                if (match is null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Choose a currency from the list!");
+                    continue;
+                }
+
+                _convertTo = match;
+                break;
+            }
+
+            Console.Clear();
         }
 
         public void StartBusinessDialogue()
@@ -167,10 +211,11 @@ namespace DeliveryService.UI
             
             foreach (var order in orders)
             {
+                var convertedCurrency = _exchanger.ExchangeCurrency(order.FullPrice, _convertTo);
                 Console.WriteLine($"Order Id #{order.Id}\n" +
                           $"Address: {order.Address}\n" +
                           $"Phone Number: {order.PhoneNumber}\n" +
-                          $"Full price: {order.FullPrice}\n\n");
+                          $"Full price: {order.FullPrice} UAH, {convertedCurrency} {_convertTo}\n\n");
             }
         }
 
@@ -179,10 +224,11 @@ namespace DeliveryService.UI
             var pcPeripherals = _controller.GetPcPeripherals();
             foreach (var pcPeripheral in pcPeripherals)
             {
+                var convertedCurrency = _exchanger.ExchangeCurrency(pcPeripheral.Price, _convertTo);
                 Console.WriteLine($"Id: {pcPeripheral.Id}\n" +
                           $"Name: {pcPeripheral.Name}\n" +
                           $"Category: {pcPeripheral.Category}\n" +
-                          $"Price: {pcPeripheral.Price}\n" +
+                          $"Price: {pcPeripheral.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                           $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
                           $"Amount: {pcPeripheral.Amount}\n");
             }
@@ -194,10 +240,11 @@ namespace DeliveryService.UI
             var pcParts = _controller.GetPcParts();
             foreach (var pcPart in pcParts)
             {
+                var convertedCurrency = _exchanger.ExchangeCurrency(pcPart.Price, _convertTo);
                 Console.WriteLine($"Id: {pcPart.Id}\n" +
                           $"Name: {pcPart.Name}\n" +
                           $"Category: {pcPart.Category}\n" +
-                          $"Price: {pcPart.Price}\n" +
+                          $"Price: {pcPart.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                           $"Manufacturer: {pcPart.Manufacturer}\n" +
                           $"Amount: {pcPart.Amount}\n");
             }
