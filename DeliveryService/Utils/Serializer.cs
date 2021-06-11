@@ -12,13 +12,13 @@ namespace DeliveryService.Utils
 {
     public class Serializer : ISerializable
     {
-        public string FilePath { get; init; }
-        public string FileName { get; init; }
+        public string FilePath { get; }
+        public string FileName { get; }
 
         public Serializer()
         {
             FileName = "DataStorage.json";
-            FilePath = AppDomain.CurrentDomain.BaseDirectory + "/" + FileName;
+            FilePath = AppDomain.CurrentDomain.BaseDirectory + FileName;
         }
 
         public void SerializeAndSave(IStorable storage)
