@@ -1,4 +1,4 @@
-﻿using DeliveryService.Data;
+using DeliveryService.Data;
 using DeliveryService.Utils;
 using DeliveryService.UI;
 
@@ -8,12 +8,14 @@ namespace DeliveryService
     {
         static void Main(string[] args)
         {
-            var data = new Storage();
+            var serializer = new Serializer();
             var regExp = new Validator();
             var logger = new Logger();
             var exchanger = new CurrencyExchanger();
 
-            var controller = new Controller(data);
+            var data = serializer.DeserializeFromFile();
+
+            var controller = new Controller(data, serializer);
 
             var presenter = new Presenter(controller, regExp, logger, exchanger);
 

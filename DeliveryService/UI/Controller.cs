@@ -8,10 +8,12 @@ namespace DeliveryService.UI
     public class Controller : IControllable
     {
         private readonly IStorable _storage;
+        private readonly ISerializable _serializer;
 
-        public Controller(IStorable storage)
+        public Controller(IStorable storage, ISerializable serializer)
         {
             _storage = storage;
+            _serializer = serializer;
         }
 
         public void AddPcPartToDb(IProduceable product)
@@ -19,6 +21,7 @@ namespace DeliveryService.UI
             var pcPart = (PcPart)product;
             pcPart.Id = _storage.PcParts.Count == 0 ? 0 : _storage.PcParts.Max(x => x.Id) + 1;
             _storage.PcParts.Add(pcPart);
+            _serializer.SerializeAndSave(_storage);
         }
 
         public void AddPcPeripheralToDb(IProduceable product)
@@ -26,6 +29,7 @@ namespace DeliveryService.UI
             var pcPeripheral = (PcPeripheral)product;
             pcPeripheral.Id = _storage.PcPeripherals.Count == 0 ? 0 : _storage.PcPeripherals.Max(x => x.Id) + 1;
             _storage.PcPeripherals.Add(pcPeripheral);
+            _serializer.SerializeAndSave(_storage);
         }
 
         public void AddPcPartToOrder(int orderId, int itemId)
@@ -45,7 +49,12 @@ namespace DeliveryService.UI
         public void DeleteEmptyOrder(int orderId)
         {
             if (_storage.Orders[orderId].FullPrice == default)
+            {
                 _storage.Orders.RemoveAt(orderId);
+                return;
+            }
+
+            _serializer.SerializeAndSave(_storage);
         }
 
         public Order CreateOrder(string phoneNumber, string address)
