@@ -1,4 +1,4 @@
-﻿using DeliveryService.Data;
+using DeliveryService.Data;
 using DeliveryService.Utils;
 using DeliveryService.UI;
 

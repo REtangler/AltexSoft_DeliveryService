@@ -8,9 +8,9 @@ namespace DeliveryService.Interfaces
 {
     public interface ISerializable
     {
-        string FilePath { get; init; }
+        string FilePath { get; }
 
-        string FileName { get; init; }
+        string FileName { get; }
 
         void SerializeAndSave(IStorable storage);
 
