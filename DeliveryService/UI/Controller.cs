@@ -90,31 +90,31 @@ namespace DeliveryService.UI
 
         public IList<Order> GetOrders()
         {
-            var orders = _cache.GetList<Order>();
+            var orders = _cache.GetObjectFromCache<Order>();
             if (orders != null) 
                 return orders;
 
-            _cache.AddList(_storage.Orders, _debugHandler);
+            _cache.AddObjectToCache(_storage.Orders, _debugHandler);
             return _storage.Orders;
         }
 
         public IEnumerable<PcPeripheral> GetPcPeripherals()
         {
-            var peripherals = _cache.GetList<PcPeripheral>();
+            var peripherals = _cache.GetObjectFromCache<PcPeripheral>();
             if (peripherals != null) 
                 return peripherals;
 
-            _cache.AddList(_storage.PcPeripherals, _debugHandler);
+            _cache.AddObjectToCache(_storage.PcPeripherals, _debugHandler);
             return _storage.PcPeripherals;
         }
 
         public IEnumerable<PcPart> GetPcParts()
         {
-            var parts = _cache.GetList<PcPart>();
+            var parts = _cache.GetObjectFromCache<PcPart>();
             if (parts != null) 
                 return parts;
 
-            _cache.AddList(_storage.PcParts, _debugHandler);
+            _cache.AddObjectToCache(_storage.PcParts, _debugHandler);
             return _storage.PcParts;
         }
     }

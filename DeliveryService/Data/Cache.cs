@@ -8,30 +8,30 @@ namespace DeliveryService.Data
     public class Cache : ICacheable
     {
         private static readonly object Lock = new object();
-        private readonly IList<object> _currentList;
+        private readonly IList<object> _cachedObjects;
         private readonly IList<DateTime> _timings;
 
         public Cache()
         {
-            _currentList = new List<object>(2);
+            _cachedObjects = new List<object>(2);
             _timings = new List<DateTime>(2);
         }
 
-        public void AddList<T>(IList<T> list, Action<string> debugHandler)
+        public void AddObjectToCache<T>(IList<T> list, Action<string> debugHandler)
         {
             lock (Lock)
             {
-                if (_currentList.Count < 2)
+                if (_cachedObjects.Count <= 2)
                 {
-                    _currentList.Add(list);
+                    _cachedObjects.Add(list);
                     _timings.Add(DateTime.Now);
                 }
                 else
                 {
-                    _currentList.RemoveAt(0);
+                    _cachedObjects.RemoveAt(0);
                     _timings.RemoveAt(0);
 
-                    _currentList.Add(list);
+                    _cachedObjects.Add(list);
                     _timings.Add(DateTime.Now);
                 }
 
@@ -39,20 +39,20 @@ namespace DeliveryService.Data
             }
         }
 
-        public IList<T> GetList<T>()
+        public IList<T> GetObjectFromCache<T>()
         {
             lock (Lock)
             {
-                var tempList = (IList<T>)_currentList.SingleOrDefault(x => typeof(List<T>) == x.GetType());
+                var tempList = (IList<T>)_cachedObjects.SingleOrDefault(x => typeof(List<T>) == x.GetType());
                 if (tempList is null) 
                     return null;
 
-                var ind = _currentList.IndexOf(tempList);
+                var indexOfList = _cachedObjects.IndexOf(tempList);
 
-                if (Math.Abs(DateTime.Now.Minute - _timings[ind].Minute) > 2)
+                if (Math.Abs(DateTime.Now.Minute - _timings[indexOfList].Minute) > 2)
                 {
-                    _currentList.RemoveAt(ind);
-                    _timings.RemoveAt(ind);
+                    _cachedObjects.RemoveAt(indexOfList);
+                    _timings.RemoveAt(indexOfList);
                     return null;
                 }
 
