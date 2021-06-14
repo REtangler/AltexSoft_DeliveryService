@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
 namespace DeliveryService.UI
 {
-    public class Controller : IControllable
+    public class Controller : IControllable, IExchangeable
     {
         private readonly IStorable _storage;
         private readonly ISerializable _serializer;
+        private readonly IExchangeable _exchanger;
 
-        public Controller(IStorable storage, ISerializable serializer)
+        public Controller(IStorable storage, ISerializable serializer, IExchangeable exchanger)
         {
             _storage = storage;
             _serializer = serializer;
+            _exchanger = exchanger;
         }
 
         public void AddPcPartToDb(IProduceable product)
@@ -94,6 +97,16 @@ namespace DeliveryService.UI
         public IEnumerable<PcPart> GetPcParts()
         {
             return _storage.PcParts;
+        }
+
+        public Task<decimal> ExchangeCurrency(decimal money, string convertTo)
+        {
+            return _exchanger.ExchangeCurrency(money, convertTo);
+        }
+
+        public Task<IList<string>> GetAllCurrencies()
+        {
+            return _exchanger.GetAllCurrencies();
         }
     }
 }

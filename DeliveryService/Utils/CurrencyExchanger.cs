@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DeliveryService.Extensions;
 using DeliveryService.Interfaces;
 using Newtonsoft.Json.Linq;
-using DeliveryService.Extensions;
 
 namespace DeliveryService.Utils
 {
@@ -14,7 +14,7 @@ namespace DeliveryService.Utils
     {
         private const string CurrencyUri = "https://free.currconv.com/api/v7/currencies?apiKey=ce0787c762396ee4fc33";
 
-        private string ConvertFrom { get; init; }
+        private string ConvertFrom { get; }
         private string ConvertTo { get; set; }
         private IList<string> Currencies { get; set; }
         private DateTime LastCurrencyCheck { get; set; }
@@ -24,12 +24,12 @@ namespace DeliveryService.Utils
             ConvertFrom = "UAH";
         }
 
-        public decimal ExchangeCurrency(decimal money, string convertTo)
+        public async Task<decimal> ExchangeCurrency(decimal money, string convertTo)
         {
             ConvertTo = convertTo;
 
-            var response = GetExchangeRatesAsync();
-            var exchangeRate = DeserializeResponseAsync(response.Result).Result;
+            var response = await GetExchangeRatesAsync();
+            var exchangeRate = await DeserializeResponseAsync(response);
 
             return money * exchangeRate;
         }
@@ -45,11 +45,8 @@ namespace DeliveryService.Utils
 
         private async Task<decimal> DeserializeResponseAsync(Stream responseStream)
         {
-            string jsonString;
-            using (var streamReader = new StreamReader(responseStream))
-            {
-                jsonString = await streamReader.ReadToEndAsync();
-            }
+            using var streamReader = new StreamReader(responseStream);
+            var jsonString = await streamReader.ReadToEndAsync();
 
             var parsedObject = JObject.Parse(jsonString);
             var exchangeRate = (decimal)parsedObject.SelectToken($"{ConvertFrom}_{ConvertTo}");
@@ -66,11 +63,8 @@ namespace DeliveryService.Utils
             var request = new HttpRequestMessage(HttpMethod.Get, CurrencyUri);
             var response = await client.SendAsync(request);
 
-            string jsonString;
-            using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync()))
-            {
-                jsonString = await streamReader.ReadToEndAsync();
-            }
+            using var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync());
+            var jsonString = await streamReader.ReadToEndAsync();
 
             var data = JObject.Parse(jsonString).SelectToken("results").Select(x => x.Last.SelectToken("id").ToString());
 

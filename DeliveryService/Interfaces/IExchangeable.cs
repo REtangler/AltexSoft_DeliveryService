@@ -9,7 +9,7 @@ namespace DeliveryService.Interfaces
 {
     public interface IExchangeable
     {
-        decimal ExchangeCurrency(decimal money, string convertTo);
+        Task<decimal> ExchangeCurrency(decimal money, string convertTo);
         Task<IList<string>> GetAllCurrencies();
     }
 }
