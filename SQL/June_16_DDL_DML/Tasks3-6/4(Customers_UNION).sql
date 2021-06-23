@@ -14,7 +14,7 @@ SELECT DISTINCT [CustomerID]
       ,[Fax]
   FROM [dbo].[Customers]
   WHERE Region = 'OR'
-  INTERSECT
+  UNION
   SELECT DISTINCT [CustomerID]
       ,[CompanyName]
       ,[ContactName]
@@ -27,7 +27,7 @@ SELECT DISTINCT [CustomerID]
       ,[Phone]
       ,[Fax]
   FROM [dbo].[Customers]
-  WHERE City = 'Portland'
+  WHERE City = 'Sao Paulo'
 GO
 
 
