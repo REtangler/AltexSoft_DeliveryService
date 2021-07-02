@@ -3,10 +3,10 @@ GO
 
 SELECT Region.RegionID
       ,[RegionDescription]
-  FROM [dbo].[Region]
-  LEFT OUTER JOIN Territories ON Territories.RegionID = Region.RegionID
-  LEFT OUTER JOIN [dbo].[EmployeeTerritories] ON EmployeeTerritories.TerritoryID = Territories.TerritoryID
-  WHERE EmployeeTerritories.TerritoryID IS NULL AND Territories.RegionID IS NULL
+  FROM [dbo].[EmployeeTerritories]
+  INNER JOIN Territories ON Territories.TerritoryID = EmployeeTerritories.TerritoryID
+  RIGHT JOIN [dbo].[Region] ON Region.RegionID = Territories.RegionID
+  WHERE Territories.RegionID IS NULL
 
 GO
 
