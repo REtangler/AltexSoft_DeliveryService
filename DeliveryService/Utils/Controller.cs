@@ -5,7 +5,7 @@ using System.Linq;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
-namespace DeliveryService.UI
+namespace DeliveryService.Utils
 {
     public class Controller : IControllable
     {

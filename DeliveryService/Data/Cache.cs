@@ -21,7 +21,7 @@ namespace DeliveryService.Data
         {
             lock (Lock)
             {
-                if (_cachedObjects.Count <= 2)
+                if (_cachedObjects.Count < 2)
                 {
                     _cachedObjects.Add(list);
                     _timings.Add(DateTime.Now);
