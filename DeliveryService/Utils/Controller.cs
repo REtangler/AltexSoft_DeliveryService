@@ -4,19 +4,19 @@ using System.Threading.Tasks;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
-namespace DeliveryService.UI
+namespace DeliveryService.Utils
 {
-    public class Controller : IControllable, IExchangeable
+    public class Controller : IControllable
     {
         private readonly IStorable _storage;
         private readonly ISerializable _serializer;
-        private readonly IExchangeable _exchanger;
+        private readonly ICurrencyRetriever _currencyRetriever;
 
-        public Controller(IStorable storage, ISerializable serializer, IExchangeable exchanger)
+        public Controller(IStorable storage, ISerializable serializer, ICurrencyRetriever currencyRetriever)
         {
             _storage = storage;
             _serializer = serializer;
-            _exchanger = exchanger;
+            _currencyRetriever = currencyRetriever;
         }
 
         public void AddPcPartToDb(IProduceable product)
@@ -99,14 +99,19 @@ namespace DeliveryService.UI
             return _storage.PcParts;
         }
 
-        public Task<decimal> ExchangeCurrency(decimal money, string convertTo)
+        public async Task<decimal> ExchangeCurrency(decimal money, string convertTo)
         {
-            return _exchanger.ExchangeCurrency(money, convertTo);
+            _currencyRetriever.ConvertTo = convertTo;
+            
+            var response = await _currencyRetriever.GetExchangeRatesAsync();
+            var exchangeRate = await _currencyRetriever.DeserializeResponseAsync(response);
+
+            return money * exchangeRate;
         }
 
         public Task<IList<string>> GetAllCurrencies()
         {
-            return _exchanger.GetAllCurrencies();
+            return _currencyRetriever.GetAllCurrencies();
         }
     }
 }

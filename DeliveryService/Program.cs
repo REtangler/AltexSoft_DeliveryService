@@ -4,18 +4,18 @@ using DeliveryService.UI;
 
 namespace DeliveryService
 {
-    class Program
+    internal static class Program
     {
-        static async Task Main(string[] args)
+        private static async Task Main()
         {
             var serializer = new Serializer();
             var regExp = new Validator();
             var logger = new Logger();
-            var exchanger = new CurrencyExchanger();
+            var currencyRetriever = new CurrencyRetriever();
 
             var data = serializer.DeserializeFromFile();
 
-            var controller = new Controller(data, serializer, exchanger);
+            var controller = new Controller(data, serializer, currencyRetriever);
 
             var presenter = new Presenter(controller, regExp, logger);
 

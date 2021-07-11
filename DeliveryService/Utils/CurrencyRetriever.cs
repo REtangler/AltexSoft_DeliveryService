@@ -10,31 +10,21 @@ using Newtonsoft.Json.Linq;
 
 namespace DeliveryService.Utils
 {
-    public class CurrencyExchanger : IExchangeable
+    public class CurrencyRetriever : ICurrencyRetriever
     {
         private const string CurrencyUri = "https://free.currconv.com/api/v7/currencies?apiKey=ce0787c762396ee4fc33";
 
         private string ConvertFrom { get; }
-        private string ConvertTo { get; set; }
+        public string ConvertTo { get; set; }
         private IList<string> Currencies { get; set; }
         private DateTime LastCurrencyCheck { get; set; }
 
-        public CurrencyExchanger()
+        public CurrencyRetriever()
         {
             ConvertFrom = "UAH";
         }
 
-        public async Task<decimal> ExchangeCurrency(decimal money, string convertTo)
-        {
-            ConvertTo = convertTo;
-
-            var response = await GetExchangeRatesAsync();
-            var exchangeRate = await DeserializeResponseAsync(response);
-
-            return money * exchangeRate;
-        }
-
-        private async Task<Stream> GetExchangeRatesAsync()
+        public async Task<Stream> GetExchangeRatesAsync()
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, $"https://free.currconv.com/api/v7/convert?q={ConvertFrom}_{ConvertTo}&compact=ultra&apiKey=ce0787c762396ee4fc33");
@@ -43,7 +33,7 @@ namespace DeliveryService.Utils
             return await response.Content.ReadAsStreamAsync();
         }
 
-        private async Task<decimal> DeserializeResponseAsync(Stream responseStream)
+        public async Task<decimal> DeserializeResponseAsync(Stream responseStream)
         {
             using var streamReader = new StreamReader(responseStream);
             var jsonString = await streamReader.ReadToEndAsync();

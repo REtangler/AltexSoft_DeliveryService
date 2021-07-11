@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
+using DeliveryService.Utils;
 
 namespace DeliveryService.UI
 {
@@ -175,7 +176,7 @@ namespace DeliveryService.UI
 
                 else if (choice == 3)
                 {
-                    ShowOrder(currentOrder);
+                    await ShowOrder(currentOrder);
                 }
 
                 else if (choice == 0)
@@ -471,7 +472,7 @@ namespace DeliveryService.UI
             return choice;
         }
 
-        private static void ShowOrder(IOrder order)
+        private async Task ShowOrder(IOrder order)
         {
             Console.Clear();
 
@@ -489,11 +490,13 @@ namespace DeliveryService.UI
                 {
                     var pcPart = order.PcParts[i];
 
+                    var convertedCurrency = await _controller.ExchangeCurrency(pcPart.Price, _convertTo);
+
                     Console.WriteLine($"PC part #{i + 1}\n" +
                               $"Id: {pcPart.Id}\n" +
                               $"Name: {pcPart.Name}\n" +
                               $"Category: {pcPart.Category}\n" +
-                              $"Price: {pcPart.Price}\n" +
+                              $"Price: {pcPart.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                               $"Manufacturer: {pcPart.Manufacturer}\n");
                 }
 
@@ -506,11 +509,13 @@ namespace DeliveryService.UI
                 {
                     var pcPeripheral = order.PcPeripherals[i];
 
+                    var convertedCurrency = await _controller.ExchangeCurrency(pcPeripheral.Price, _convertTo);
+
                     Console.WriteLine($"PC peripheral #{i + 1}\n" +
                               $"Id: {pcPeripheral.Id}\n" +
                               $"Name: {pcPeripheral.Name}\n" +
                               $"Category: {pcPeripheral.Category}\n" +
-                              $"Price: {pcPeripheral.Price}\n" +
+                              $"Price: {pcPeripheral.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                               $"Manufacturer: {pcPeripheral.Manufacturer}\n");
                 }
                 Console.WriteLine("----------END OF PC PERIPHERALS LIST----------\n");
