@@ -1,4 +1,4 @@
-name: .NET
+name: Build PR to main
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore "DeliveryService_EF/DeliveryService_EF.csproj"
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build "DeliveryService_EF/DeliveryService_EF.csproj" --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test "DeliveryService_EF/DeliveryService_EF.csproj" --no-build --verbosity normal
