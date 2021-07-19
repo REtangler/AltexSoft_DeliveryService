@@ -4,10 +4,10 @@ using DeliveryService_EF.Enums;
 
 namespace DeliveryService_EF.Models
 {
-    public class Orders
+    public class Order
     {
         public int Id { get; set; }
-        public IList<Products> ProductId { get; set; }
+        public IList<Product> ProductId { get; set; }
         public Client ClientId { get; set; }
         public Deliveryman DeliverymanId { get; set; }
         public DateTime OrderDate { get; set; }

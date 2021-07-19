@@ -2,7 +2,7 @@
 
 namespace DeliveryService_EF.Models
 {
-    public class DeliveryTariffs
+    public class DeliveryTariff
     {
         public int Id { get; set; }
         public ParcelWeight ParcelWeight { get; set; }

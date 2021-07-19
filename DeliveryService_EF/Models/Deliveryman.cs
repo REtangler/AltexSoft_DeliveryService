@@ -1,6 +1,6 @@
 ﻿namespace DeliveryService_EF.Models
 {
-    public class Deliverymen
+    public class Deliveryman
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
