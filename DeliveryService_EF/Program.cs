@@ -1,13 +1,254 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using DeliveryService_EF.Comparers;
 using DeliveryService_EF.Models;
+using DeliveryService_EF.Repos;
+using Microsoft.Extensions.Configuration;
 
 namespace DeliveryService_EF
 {
     public class Program
     {
         private static void Main()
+        {
+            var configuration = Initialize();
+            var repo = new DapperRepo(configuration);
+            var contribRepo = new DapperContribRepo(configuration);
+
+            //DapperTasks(repo);
+            DapperNestedTasks(repo);
+
+            //DapperContribTasks(contribRepo);
+
+            Console.ReadLine();
+        }
+
+        private static IConfiguration Initialize()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            return builder.Build();
+        }
+
+        private static void DapperTasks(DapperRepo repo)
+        {
+            Console.WriteLine("***** ***** ***** ***** *****");
+            Console.WriteLine($"***** ** {nameof(DapperTasks)} ** *****");
+            Console.WriteLine("***** ***** ***** ***** *****\n");
+
+            {
+                Console.WriteLine($"===== {nameof(repo.GetProducts)} =====");
+                var result = repo.GetProducts();
+                foreach (var product in result)
+                {
+                    Console.WriteLine($"{product.Name}, {product.Description}, {product.Price}, {product.AmountInStock}");
+                }
+                Console.WriteLine($"===== {nameof(repo.GetProducts)} =====\n");
+            }
+
+            {
+                Console.WriteLine($"===== {nameof(repo.GetProductById)} =====");
+                var result = repo.GetProductById(1);
+                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+                Console.WriteLine($"===== {nameof(repo.GetProductById)} =====\n");
+            }
+            //commented to not add same copy every time the program is launched
+           /* {
+                Console.WriteLine($"===== {nameof(repo.AddProduct)} =====");
+                var product = new Product
+                {
+                    Name = "MSI GeForce RTX 3090 Suprim X",
+                    Description = "Ultra high performance graphics card capable of ray tracing.",
+                    Price = 80999.00m,
+                    AmountInStock = 0
+                };
+                var result = repo.AddProduct(product);
+                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+                Console.WriteLine($"===== {nameof(repo.AddProduct)} =====\n");
+            }*/
+
+           {
+               Console.WriteLine($"===== {nameof(repo.UpdateProduct)} =====");
+               var result = repo.UpdateProduct(12, 1);
+               Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+               Console.WriteLine($"===== {nameof(repo.UpdateProduct)} =====\n");
+           }
+
+           {
+               Console.WriteLine($"===== {nameof(repo.DeleteProduct)} =====");
+
+               var productToDelete = new Product
+               {
+                   Name = "to be deleted",
+                   Description = "to be deleted",
+                   Price = 999,
+                   AmountInStock = 999
+               };
+
+               var deletedProduct = repo.AddProduct(productToDelete);
+
+               var result = repo.DeleteProduct(deletedProduct.Id);
+
+               Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+               Console.WriteLine($"===== {nameof(repo.DeleteProduct)} =====\n");
+           }
+
+           Console.WriteLine("***** ***** ***** ***** *****");
+           Console.WriteLine($"***** ** {nameof(DapperTasks)} ** *****");
+           Console.WriteLine("***** ***** ***** ***** *****\n");
+        }
+
+        private static void DapperNestedTasks(DapperRepo repo)
+        {
+            Console.WriteLine("***** ***** ***** ***** *****");
+            Console.WriteLine($"***** {nameof(DapperNestedTasks)} *****");
+            Console.WriteLine("***** ***** ***** ***** *****\n");
+
+            {
+                Console.WriteLine($"===== {nameof(repo.GetProductsNested)} =====");
+                var result = repo.GetProductsNested();
+                foreach (var product in result)
+                {
+                    Console.WriteLine($"{product.Name}, {product.Description}, {product.Price}, {product.AmountInStock}, {product.CategoryId?.Name}");
+                }
+                Console.WriteLine($"===== {nameof(repo.GetProductsNested)} =====\n");
+            }
+
+            {
+                Console.WriteLine($"===== {nameof(repo.GetProductByIdNested)} =====");
+                var product = repo.GetProductByIdNested(12);
+                Console.WriteLine($"{product.Name}, {product.Description}, {product.Price}, {product.AmountInStock}, {product.CategoryId?.Name}");
+                Console.WriteLine($"===== {nameof(repo.GetProductByIdNested)} =====\n");
+            }
+            //commented to not add same copy every time the program is launched
+            /*{
+                Console.WriteLine($"===== {nameof(repo.AddProductNested)} =====");
+                var product = new Product
+                {
+                    Name = "AFOX GeForce GT1030",
+                    Description = "Budget graphics card.",
+                    Price = 2639.00m,
+                    AmountInStock = 98
+                };
+                var result = repo.AddProductNested(product, Category.GetCategory(2)); // put incorrect category to then update it to correct one (should be 1)
+                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}, {result.CategoryId.Name}");
+                Console.WriteLine($"===== {nameof(repo.AddProductNested)} =====\n");
+            }*/
+
+            {
+                Console.WriteLine($"===== {nameof(repo.UpdateProductNested)} =====");
+                var result = repo.UpdateProductNested(1008, Category.GetCategory(1));
+                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}, {result.CategoryId.Name}");
+                Console.WriteLine($"===== {nameof(repo.UpdateProductNested)} =====\n");
+            }
+
+            {
+                Console.WriteLine($"===== {nameof(repo.DeleteProductNested)} =====");
+
+                var productToDelete = new Product
+                {
+                    Name = "to be deleted",
+                    Description = "to be deleted",
+                    Price = 999,
+                    AmountInStock = 999
+                };
+
+                var categoryToDelete = new Category
+                {
+                    Id = 1002,
+                    Name = "tbd",
+                    Description = "tbd"
+                };
+
+                repo.AddProductNested(productToDelete, categoryToDelete);
+                repo.AddProductNested(productToDelete, categoryToDelete);
+
+                var result = repo.DeleteProductNested(categoryToDelete.Id);
+
+                foreach (var product in result)
+                {
+                    Console.WriteLine($"{product.Name}, {product.Description}, {product.Price}, {product.AmountInStock}, {product.CategoryId.Name}");
+                }
+
+                Console.WriteLine($"===== {nameof(repo.DeleteProductNested)} =====\n");
+            }
+
+            Console.WriteLine("***** ***** ***** ***** *****");
+            Console.WriteLine($"***** {nameof(DapperNestedTasks)} *****");
+            Console.WriteLine("***** ***** ***** ***** *****\n");
+        }
+
+        private static void DapperContribTasks(DapperContribRepo contribRepo)
+        {
+            Console.WriteLine("***** ***** ***** ***** *****");
+            Console.WriteLine($"***** {nameof(DapperContribTasks)} ****");
+            Console.WriteLine("***** ***** ***** ***** *****\n");
+
+            {
+                Console.WriteLine($"===== {nameof(contribRepo.GetProducts)} =====");
+                var result = contribRepo.GetProducts();
+                foreach (var product in result)
+                {
+                    Console.WriteLine($"{product.Name}, {product.Description}, {product.Price}, {product.AmountInStock}");
+                }
+                Console.WriteLine($"===== {nameof(contribRepo.GetProducts)} =====\n");
+            }
+
+            {
+                Console.WriteLine($"===== {nameof(contribRepo.GetProductById)} =====");
+                var result = contribRepo.GetProductById(1);
+                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+                Console.WriteLine($"===== {nameof(contribRepo.GetProductById)} =====\n");
+            }
+            //commented to not add same copy every time the program is launched
+            /*{
+                Console.WriteLine($"===== {nameof(contribRepo.AddProduct)} =====");
+                var product = new Product
+                {
+                    Name = "AMD Ryzen Threadripper PRO 3975WX",
+                    Description = "Ultra high performance CPU.",
+                    Price = 88358.00m,
+                    AmountInStock = 0
+                };
+                var result = contribRepo.AddProduct(product);
+                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+                Console.WriteLine($"===== {nameof(contribRepo.AddProduct)} =====\n");
+            }*/
+
+            {
+               Console.WriteLine($"===== {nameof(contribRepo.UpdateProduct)} =====");
+               var result = contribRepo.UpdateProduct(12, 1);
+               Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+               Console.WriteLine($"===== {nameof(contribRepo.UpdateProduct)} =====\n");
+            }
+
+            {
+               Console.WriteLine($"===== {nameof(contribRepo.DeleteProduct)} =====");
+               var productToDelete = new Product
+               {
+                   Name = "to be deleted",
+                   Description = "to be deleted",
+                   Price = 999,
+                   AmountInStock = 999
+               };
+
+               var deletedProduct = contribRepo.AddProduct(productToDelete);
+
+               var result = contribRepo.DeleteProduct(deletedProduct.Id);
+
+               Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+               Console.WriteLine($"===== {nameof(contribRepo.DeleteProduct)} =====\n");
+            }
+
+            Console.WriteLine("***** ***** ***** ***** *****");
+            Console.WriteLine($"***** {nameof(DapperContribTasks)} ****");
+            Console.WriteLine("***** ***** ***** ***** *****\n");
+        }
+
+        private static void LinqTasks()
         {
             Task1();
             Console.WriteLine("Press enter to continue to next task.");
@@ -41,7 +282,6 @@ namespace DeliveryService_EF
 
             Task5B(1);
             Console.WriteLine("Press enter exit the program.");
-            Console.ReadLine();
         }
 
         private static void Task1()
