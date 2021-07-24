@@ -7,12 +7,12 @@ namespace DeliveryService_EF.Comparers
     {
         public bool Equals(Product x, Product y)
         {
-            return x.Name.Equals(y.Name);
+            return x.Type.Equals(y.Type);
         }
 
         public int GetHashCode(Product obj)
         {
-            return obj.Name.GetHashCode();
+            return obj.Type.GetHashCode();
         }
     }
 }

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
-using DeliveryService_EF.DTOs;
 using DeliveryService_EF.Interfaces;
 using DeliveryService_EF.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace DeliveryService_EF.Repos
 {
-    class DapperRepo : IDapperRepository
+    public class DapperRepo : IDapperRepository
     {
         private readonly IConfiguration _configuration;
 

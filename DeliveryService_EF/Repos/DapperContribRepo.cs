@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper.Contrib.Extensions;
 using DeliveryService_EF.DTOs;
 using DeliveryService_EF.Interfaces;
@@ -12,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DeliveryService_EF.Repos
 {
-    class DapperContribRepo : IDapperRepository
+    public class DapperContribRepo : IDapperRepository
     {
         private readonly IConfiguration _configuration;
 

@@ -18,6 +18,7 @@ namespace DeliveryService_EF.DTOs
         public int AmountInStock { get; set; }
         public int? CategoryId { get; set; }
         public int? SupplierId { get; set; }
+        public string Type { get; set; }
 
         public static Product MapToProduct(ProductDto productsDto)
         {
@@ -29,7 +30,8 @@ namespace DeliveryService_EF.DTOs
                 CategoryId = productsDto.CategoryId == null ? null : Category.GetCategory((int)productsDto.CategoryId),
                 Description = productsDto.Description,
                 Price = productsDto.Price,
-                SupplierId = productsDto.SupplierId == null ? null : Supplier.GetSupplier((int)productsDto.SupplierId)
+                SupplierId = productsDto.SupplierId == null ? null : Supplier.GetSupplier((int)productsDto.SupplierId),
+                Type = productsDto.Type
             };
         }
 
@@ -43,7 +45,8 @@ namespace DeliveryService_EF.DTOs
                 CategoryId = product.CategoryId?.Id,
                 Description = product.Description,
                 Price = product.Price,
-                SupplierId = product.SupplierId?.Id
+                SupplierId = product.SupplierId?.Id,
+                Type = product.Type
             };
         }
     }
