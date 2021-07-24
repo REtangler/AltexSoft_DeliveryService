@@ -9,6 +9,13 @@ namespace DeliveryService_EF
     {
         private static void Main()
         {
+            Lecture2Tasks();
+
+            Console.ReadLine();
+        }
+
+        private static void Lecture2Tasks()
+        {
             Task1();
             Console.WriteLine("Press enter to continue to next task.");
             Console.ReadLine();
@@ -41,7 +48,6 @@ namespace DeliveryService_EF
 
             Task5B(1);
             Console.WriteLine("Press enter exit the program.");
-            Console.ReadLine();
         }
 
         private static void Task1()

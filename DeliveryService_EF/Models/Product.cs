@@ -11,6 +11,7 @@ namespace DeliveryService_EF.Models
         public int AmountInStock { get; set; }
         public Category CategoryId { get; set; }
         public Supplier SupplierId { get; set; }
+        public string Type { get; set; }
 
         public static IList<Product> GetProducts()
         {
@@ -24,7 +25,8 @@ namespace DeliveryService_EF.Models
                     Price = 21250,
                     AmountInStock = 4,
                     CategoryId = Category.GetCategory(1),
-                    SupplierId = Supplier.GetSupplier(2)
+                    SupplierId = Supplier.GetSupplier(2),
+                    Type = "RTX 2070"
                 },
                 new Product
                 {
@@ -34,7 +36,8 @@ namespace DeliveryService_EF.Models
                     Price = 21250,
                     AmountInStock = 4,
                     CategoryId = Category.GetCategory(1),
-                    SupplierId = Supplier.GetSupplier(1)
+                    SupplierId = Supplier.GetSupplier(1),
+                    Type = "RTX 2070"
                 },
                 new Product
                 {
@@ -44,7 +47,8 @@ namespace DeliveryService_EF.Models
                     Price = 18050,
                     AmountInStock = 13,
                     CategoryId = Category.GetCategory(1),
-                    SupplierId = Supplier.GetSupplier(1)
+                    SupplierId = Supplier.GetSupplier(1),
+                    Type = "RX 470"
                 },
                 new Product
                 {
@@ -54,7 +58,8 @@ namespace DeliveryService_EF.Models
                     Price = 5099,
                     AmountInStock = 45,
                     CategoryId = Category.GetCategory(2),
-                    SupplierId = Supplier.GetSupplier(1)
+                    SupplierId = Supplier.GetSupplier(1),
+                    Type = "i7-10850K"
                 },
                 new Product
                 {
@@ -64,7 +69,8 @@ namespace DeliveryService_EF.Models
                     Price = 5099,
                     AmountInStock = 45,
                     CategoryId = Category.GetCategory(2),
-                    SupplierId = Supplier.GetSupplier(2)
+                    SupplierId = Supplier.GetSupplier(2),
+                    Type = "i7-10850K"
                 },
                 new Product
                 {
@@ -74,7 +80,8 @@ namespace DeliveryService_EF.Models
                     Price = 4749,
                     AmountInStock = 67,
                     CategoryId = Category.GetCategory(2),
-                    SupplierId = Supplier.GetSupplier(1)
+                    SupplierId = Supplier.GetSupplier(1),
+                    Type = "Ryzen 5040"
                 },
                 new Product
                 {
@@ -84,7 +91,8 @@ namespace DeliveryService_EF.Models
                     Price = 7199,
                     AmountInStock = 102,
                     CategoryId = Category.GetCategory(3),
-                    SupplierId = Supplier.GetSupplier(1)
+                    SupplierId = Supplier.GetSupplier(1),
+                    Type = "ASRock X570"
                 },
                 new Product
                 {
@@ -94,7 +102,8 @@ namespace DeliveryService_EF.Models
                     Price = 8499,
                     AmountInStock = 81,
                     CategoryId = Category.GetCategory(3),
-                    SupplierId = Supplier.GetSupplier(2)
+                    SupplierId = Supplier.GetSupplier(2),
+                    Type = "Asus Pro Q470M"
                 }
             };
         }
