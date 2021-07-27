@@ -9,12 +9,12 @@ namespace DeliveryService_EF
     {
         private static void Main()
         {
-            Lecture2Tasks();
+            LinqTasks();
 
             Console.ReadLine();
         }
 
-        private static void Lecture2Tasks()
+        private static void LinqTasks()
         {
             Task1();
             Console.WriteLine("Press enter to continue to next task.");
@@ -145,7 +145,7 @@ namespace DeliveryService_EF
         {
             Console.WriteLine("********** Task #5A **********");
 
-            var comparer = new Task5AComparer();
+            var comparer = new Task5Comparer();
 
             var products = Product.GetProducts();
 
@@ -168,7 +168,7 @@ namespace DeliveryService_EF
         {
             Console.WriteLine("********** Task #5B **********");
 
-            var comparer = new Task5BComparer();
+            var comparer = new Task5Comparer();
 
             var products = Product.GetProducts();
 
