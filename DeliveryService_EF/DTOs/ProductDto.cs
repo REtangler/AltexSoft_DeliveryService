@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper.Contrib.Extensions;
 using DeliveryService_EF.Models;
+
 
 namespace DeliveryService_EF.DTOs
 {
-    [Table("Products")]
+    [Dapper.Contrib.Extensions.Table("Products")]
     public class ProductDto
     {
         public int Id { get; set; }
@@ -16,8 +17,8 @@ namespace DeliveryService_EF.DTOs
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int AmountInStock { get; set; }
-        public int? CategoryId { get; set; }
-        public int? SupplierId { get; set; }
+        public int? Category { get; set; }
+        public int? Supplier { get; set; }
         public string Type { get; set; }
 
         public static Product MapToProduct(ProductDto productsDto)
@@ -27,10 +28,12 @@ namespace DeliveryService_EF.DTOs
                 Id = productsDto.Id,
                 Name = productsDto.Name,
                 AmountInStock = productsDto.AmountInStock,
-                CategoryId = productsDto.CategoryId == null ? null : Category.GetCategory((int)productsDto.CategoryId),
+                CategoryId = productsDto.Category,
+                Category = productsDto.Category == null ? null : Models.Category.GetCategory((int)productsDto.Category),
                 Description = productsDto.Description,
                 Price = productsDto.Price,
-                SupplierId = productsDto.SupplierId == null ? null : Supplier.GetSupplier((int)productsDto.SupplierId),
+                SupplierId = productsDto.Supplier,
+                Supplier = productsDto.Supplier == null ? null : Models.Supplier.GetSupplier((int)productsDto.Supplier),
                 Type = productsDto.Type
             };
         }
@@ -42,10 +45,10 @@ namespace DeliveryService_EF.DTOs
                 Id = product.Id,
                 Name = product.Name,
                 AmountInStock = product.AmountInStock,
-                CategoryId = product.CategoryId?.Id,
+                Category = product.Category?.Id,
                 Description = product.Description,
                 Price = product.Price,
-                SupplierId = product.SupplierId?.Id,
+                Supplier = product.Supplier?.Id,
                 Type = product.Type
             };
         }

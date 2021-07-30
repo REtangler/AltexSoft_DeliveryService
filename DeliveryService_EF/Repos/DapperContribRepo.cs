@@ -21,7 +21,7 @@ namespace DeliveryService_EF.Repos
 
         public IList<Product> GetProducts()
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection")))
             {
                 connection.Open();
 
@@ -44,7 +44,7 @@ namespace DeliveryService_EF.Repos
 
         public Product GetProductById(int id)
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection")))
             {
                 connection.Open();
 
@@ -61,7 +61,7 @@ namespace DeliveryService_EF.Repos
 
         public Product AddProduct(Product product)
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection")))
             {
                 connection.Open();
 
@@ -80,7 +80,7 @@ namespace DeliveryService_EF.Repos
 
         public Product UpdateProduct(int id, int amountInStock)
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection")))
             {
                 connection.Open();
 
@@ -100,7 +100,7 @@ namespace DeliveryService_EF.Repos
 
         public Product DeleteProduct(int id)
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection")))
             {
                 connection.Open();
 

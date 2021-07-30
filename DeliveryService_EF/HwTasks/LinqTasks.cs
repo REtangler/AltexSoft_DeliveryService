@@ -68,7 +68,7 @@ namespace DeliveryService_EF.HWtasks
             var products = Product.GetProducts()
                 .Select(x => new
                 {
-                    ProductName = x.Name, SupplierName = x.SupplierId.Name
+                    ProductName = x.Name, SupplierName = x.Supplier.Name
                 });
 
             foreach (var product in products)
@@ -88,7 +88,7 @@ namespace DeliveryService_EF.HWtasks
 
             var products = Product.GetProducts()
                 .Join(Supplier.GetSuppliers(), 
-                    p => p.SupplierId.Id, // here would be SupplierId as actual integer instead of object
+                    p => p.Supplier.Id, // here would be Supplier as actual integer instead of object
                     s => s.Id,
                     (p, s) => new {ProductName = p.Name, SupplierName = s.Name});
 
@@ -107,7 +107,7 @@ namespace DeliveryService_EF.HWtasks
             var products = Category.GetCategories()
                 .GroupJoin(Product.GetProducts(),
                     c => c.Id,
-                    p => p.CategoryId.Id,
+                    p => p.Category.Id,
                     (c, p) => new {CategoryName = c.Name, CategoryProducts = p});
 
             foreach (var product in products)
@@ -125,7 +125,7 @@ namespace DeliveryService_EF.HWtasks
             var products = Supplier.GetSuppliers()
                 .GroupJoin(Product.GetProducts(),
                     s => s.Id,
-                    p => p.SupplierId.Id,
+                    p => p.Supplier.Id,
                     (s, p) => new {SupplierName = s.Name, ProductCount = p.Count()})
                 .OrderByDescending(pCount => pCount.ProductCount);
 
@@ -146,9 +146,9 @@ namespace DeliveryService_EF.HWtasks
             var products = Product.GetProducts();
 
             var firstSupplierProducts = products.
-                Where(s => s.SupplierId.Id == firstSupplier);
+                Where(s => s.Supplier.Id == firstSupplier);
             var secondSupplierProducts = products
-                .Where(s => s.SupplierId.Id == secondSupplier);
+                .Where(s => s.Supplier.Id == secondSupplier);
 
             var mutualProducts = firstSupplierProducts.Intersect(secondSupplierProducts, comparer);
 
@@ -169,9 +169,9 @@ namespace DeliveryService_EF.HWtasks
             var products = Product.GetProducts();
 
             var productsOfSupplier = products
-                .Where(p => p.SupplierId.Id == supplierId);
+                .Where(p => p.Supplier.Id == supplierId);
             var otherProducts = products
-                .Where(p => p.SupplierId.Id != supplierId);
+                .Where(p => p.Supplier.Id != supplierId);
 
             var uniqueProducts = productsOfSupplier.Except(otherProducts, comparer);
                 

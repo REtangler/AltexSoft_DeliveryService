@@ -7,9 +7,9 @@ namespace DeliveryService_EF.Models
     public class Order
     {
         public int Id { get; set; }
-        public IList<Product> ProductId { get; set; }
-        public Client ClientId { get; set; }
-        public Deliveryman DeliverymanId { get; set; }
+        public IList<Product> Product { get; set; }
+        public Client Client { get; set; }
+        public Deliveryman Deliveryman { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime DeliveredDate { get; set; }
         public DeliveryTariff DeliveryPrice { get; set; }

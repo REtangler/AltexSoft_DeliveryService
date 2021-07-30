@@ -10,25 +10,9 @@ namespace DeliveryService_EF
     {
         private static void Main()
         {
-            var configuration = Initialize();
-            var repo = new DapperRepo(configuration);
-            var contribRepo = new DapperContribRepo(configuration);
-
-            DapperTasks.RunTasks(repo);
-            DapperNestedTasks.RunTasks(repo);
-
-            DapperContribTasks.RunTasks(contribRepo);
+            EfCoreCodeFirst.RunTasks();
 
             Console.ReadLine();
-        }
-
-        private static IConfiguration Initialize()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-            return builder.Build();
         }
     }
 }

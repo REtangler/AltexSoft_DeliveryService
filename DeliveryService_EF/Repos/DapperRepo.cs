@@ -22,7 +22,7 @@ namespace DeliveryService_EF.Repos
         {
             const string sql = "SELECT [Id], [Name], [Description], [Price], [AmountInStock] FROM [dbo].[Products]";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
@@ -39,14 +39,14 @@ namespace DeliveryService_EF.Repos
                 "FROM [dbo].[Products] LEFT JOIN [dbo].[Categories] " +
                 "ON Categories.Id = Products.CategoryId ";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
             var products = connection.Query<Product, Category, Product>(sql,
                     (product, category) =>
                     {
-                        product.CategoryId = category;
+                        product.Category = category;
                         return product;
                     })
                 .Distinct()
@@ -59,7 +59,7 @@ namespace DeliveryService_EF.Repos
         {
             var sql = "SELECT [Id], [Name], [Description], [Price], [AmountInStock] FROM [dbo].[Products] WHERE Products.Id = @Id";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
@@ -80,7 +80,7 @@ namespace DeliveryService_EF.Repos
                       "([Name] ,[Description] ,[Price] ,[AmountInStock]) " +
                       $"VALUES ('{product.Name}' ,'{product.Description}' ,{product.Price.ToString(CultureInfo.InvariantCulture)} ,{product.AmountInStock})";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
@@ -97,7 +97,7 @@ namespace DeliveryService_EF.Repos
                       "([Name] ,[Description] ,[Price] ,[AmountInStock], [CategoryId]) " +
                       $"VALUES (@ProductName, @ProductDescription, @ProductPrice, @ProductAmountInStock, @ProductCategoryId)";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
@@ -107,7 +107,7 @@ namespace DeliveryService_EF.Repos
                     ProductDescription = product.Description, 
                     ProductPrice = product.Price.ToString(CultureInfo.InvariantCulture), 
                     ProductAmountInStock = product.AmountInStock, 
-                    ProductCategoryId = category.Id
+                    ProductCategory = category.Id
 
                 });
 
@@ -121,7 +121,7 @@ namespace DeliveryService_EF.Repos
         {
             var sql = $"UPDATE [dbo].[Products] SET [AmountInStock] = {amountInStock} WHERE Products.Id = @ID";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
@@ -132,13 +132,13 @@ namespace DeliveryService_EF.Repos
 
         public Product UpdateProductNested(int id, Category category)
         {
-            var sql = "UPDATE [dbo].[Products] SET [CategoryId] = @CategoryId WHERE Products.Id = @ID";
+            var sql = "UPDATE [dbo].[Products] SET [Category] = @CategoryId WHERE Products.Id = @ID";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
-            connection.Execute(sql, new {Id = id, CategoryId = category.Id});
+            connection.Execute(sql, new {Id = id, Category = category.Id});
 
             return GetProductByIdNested(id);
         }
@@ -147,7 +147,7 @@ namespace DeliveryService_EF.Repos
         {
             var sql = $"DELETE FROM [dbo].[Products] WHERE Products.Id = {id}";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
@@ -161,25 +161,25 @@ namespace DeliveryService_EF.Repos
         public IList<Product> DeleteProductNested(int categoryId)
         {
             var sqlGetDeleted = "SELECT [Id], [Name], [Description], [Price], [AmountInStock], [CategoryId] " +
-                                "FROM [dbo].[Products] WHERE Products.CategoryId = @CategoryId";
-            var sql = "DELETE FROM [dbo].[Products] WHERE Products.CategoryId = @CategoryId";
+                                "FROM [dbo].[Products] WHERE Products.CategoryId = @Category";
+            var sql = "DELETE FROM [dbo].[Products] WHERE Products.CategoryId = @Category";
 
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DapperConnection"));
 
             connection.Open();
 
             var deletedProducts = connection.Query<Product, Category, Product>(sqlGetDeleted,
                     (product, category) =>
                     {
-                        product.CategoryId = category;
+                        product.Category = category;
                         return product;
                     },
-                    new {CategoryId = categoryId},
-                    splitOn: "CategoryId")
+                    new {Category = categoryId},
+                    splitOn: "Category")
                 .Distinct()
                 .ToList();;
 
-            connection.Execute(sql, new {CategoryId = categoryId});
+            connection.Execute(sql, new {Category = categoryId});
 
             return deletedProducts;
         }
