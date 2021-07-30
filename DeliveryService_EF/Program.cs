@@ -10,6 +10,8 @@ namespace DeliveryService_EF
         {
             LinqTasks.RunTasks();
             DapperHw.Run();
+            EfCoreCodeFirst.RunTasks();
+
             Console.ReadLine();
         }
     }
