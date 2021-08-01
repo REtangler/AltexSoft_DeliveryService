@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using DeliveryService_EF.Enums;
 
 namespace DeliveryService_EF.Models
@@ -7,6 +8,10 @@ namespace DeliveryService_EF.Models
     public class Order
     {
         public int Id { get; set; }
+        public int OrderNumber { get; set; }
+        public int ProductId { get; set; }
+
+        [NotMapped]
         public IList<Product> Product { get; set; }
         public Client Client { get; set; }
         public Deliveryman Deliveryman { get; set; }
