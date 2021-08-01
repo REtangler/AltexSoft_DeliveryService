@@ -26,14 +26,13 @@ namespace DeliveryService_EF.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             optionsBuilder.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=EFCoreCodeFirst;Trusted_Connection=True;MultipleActiveResultSets=True");
         }
 
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().HasMany<Order>();
-        }*/
+        }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
