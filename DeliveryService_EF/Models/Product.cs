@@ -7,7 +7,9 @@
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int AmountInStock { get; set; }
-        public Category CategoryId { get; set; }
-        public Supplier SupplierId { set; get; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+        public int SupplierId { get; set; }
+        public Supplier Supplier { set; get; }
     }
 }
