@@ -31,10 +31,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "Nvidia GPU capable of ray-tracing",
                     Price = 21250,
                     AmountInStock = 4,
-                    CategoryId = 1,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 1),
-                    SupplierId = 2,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 2),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("GPU")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("GPU")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Prom")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Prom")),
                     Type = "RTX 2070"
                 },
                 new Product
@@ -43,10 +43,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "Nvidia GPU capable of ray-tracing",
                     Price = 21250,
                     AmountInStock = 4,
-                    CategoryId = 1,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 1),
-                    SupplierId = 1,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 1),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("GPU")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("GPU")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Rozetka")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Rozetka")),
                     Type = "RTX 2070"
                 },
                 new Product
@@ -55,10 +55,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "AMD GPU",
                     Price = 18050,
                     AmountInStock = 13,
-                    CategoryId = 1,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 1),
-                    SupplierId = 1,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 1),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("GPU")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("GPU")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Rozetka")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Rozetka")),
                     Type = "RX 470"
                 },
                 new Product
@@ -67,10 +67,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "Intel multi-threaded CPU",
                     Price = 5099,
                     AmountInStock = 45,
-                    CategoryId = 2,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 2),
-                    SupplierId = 1,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 1),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("CPU")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("CPU")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Rozetka")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Rozetka")),
                     Type = "i7-10850K"
                 },
                 new Product
@@ -79,10 +79,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "Intel multi-threaded CPU",
                     Price = 5099,
                     AmountInStock = 45,
-                    CategoryId = 2,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 2),
-                    SupplierId = 2,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 2),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("CPU")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("CPU")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Prom")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Prom")),
                     Type = "i7-10850K"
                 },
                 new Product
@@ -91,10 +91,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "AMD performance oriented CPU",
                     Price = 4749,
                     AmountInStock = 67,
-                    CategoryId = 2,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 2),
-                    SupplierId = 1,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 1),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("CPU")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("CPU")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Rozetka")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Rozetka")),
                     Type = "Ryzen 5040"
                 },
                 new Product
@@ -103,10 +103,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "ASRock motherboard targeted at creators",
                     Price = 7199,
                     AmountInStock = 102,
-                    CategoryId = 3,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 3),
-                    SupplierId = 1,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 1),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("MB")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("MB")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Rozetka")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Rozetka")),
                     Type = "ASRock X570"
                 },
                 new Product
@@ -115,10 +115,10 @@ namespace DeliveryService_EF.HwTasks
                     Description = "Asus cutting-edge motherboard",
                     Price = 8499,
                     AmountInStock = 81,
-                    CategoryId = 3,
-                    Category = _db.Categories.SingleOrDefault(c => c.Id == 3),
-                    SupplierId = 2,
-                    Supplier = _db.Suppliers.SingleOrDefault(c => c.Id == 2),
+                    CategoryId = _db.Categories.Single(s => s.Name.Equals("MB")).Id,
+                    Category = _db.Categories.SingleOrDefault(c => c.Name.Equals("MB")),
+                    SupplierId = _db.Suppliers.Single(s => s.Name.Equals("Prom")).Id,
+                    Supplier = _db.Suppliers.SingleOrDefault(s => s.Name.Equals("Prom")),
                     Type = "Asus Pro Q470M"
                 }
             };
