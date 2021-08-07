@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using DeliveryService_EF.Comparers;
 using DeliveryService_EF.Models;
 
@@ -16,132 +19,171 @@ namespace DeliveryService_EF
 
         private static void LinqTasks()
         {
-            Task1();
-            Console.WriteLine("Press enter to continue to next task.");
-            Console.ReadLine();
-            Console.Clear();
-
-            Task2();
-            Console.WriteLine("Press enter to continue to next task.");
-            Console.ReadLine();
-            Console.Clear();
-
-            Task2Id();
-            Console.WriteLine("Press enter to continue to next task.");
-            Console.ReadLine();
-            Console.Clear();
-
-            Task3();
-            Console.WriteLine("Press enter to continue to next task.");
-            Console.ReadLine();
-            Console.Clear();
-
-            Task4();
-            Console.WriteLine("Press enter to continue to next task.");
-            Console.ReadLine();
-            Console.Clear();
-
-            Task5A(1, 2);
-            Console.WriteLine("Press enter to continue to next task.");
-            Console.ReadLine();
-            Console.Clear();
-
-            Task5B(1);
-            Console.WriteLine("Press enter exit the program.");
-        }
-
-        private static void Task1()
-        {
-            Console.WriteLine("********** Task #1 **********");
-
-            var products = Product.GetProducts()
-                .OrderBy(x => x.Name);
-
-            foreach (var product in products)
+            var t1Products = Task1();
+            foreach (var product in t1Products)
             {
                 Console.WriteLine($"Product name: {product.Name}\nPrice: {product.Price}\nDescription: {product.Description}\n===============\n");
             }
 
             Console.WriteLine("********** End of Task #1 **********\n\n");
+            Console.WriteLine("Press enter to continue to next task.");
+            Console.ReadLine();
+            Console.Clear();
+
+            var t2Products = Task2();
+            foreach (var product in t2Products)
+            {
+                Console.WriteLine($"Product name: {product.Item1}\nSupplier name: {product.Item2}\n===============\n");
+            }
+
+            Console.WriteLine("********** End of Task #2 **********\n\n");
+            Console.WriteLine("Press enter to continue to next task.");
+            Console.ReadLine();
+            Console.Clear();
+
+            var t2IdProducts = Task2Id();
+            foreach (var product in t2IdProducts)
+            {
+                Console.WriteLine($"Product name: {product.Item1}\nSupplier name: {product.Item2}\n===============\n");
+            }
+
+            Console.WriteLine("********** End of Task #2 using Supplier Id instead of an Supplier object **********\n\n");
+            Console.WriteLine("Press enter to continue to next task.");
+            Console.ReadLine();
+            Console.Clear();
+
+            var t3Products = Task3();
+            foreach (var product in t3Products)
+            {
+                Console.WriteLine($"Category name: {product.Item1}\nCategory count: {product.Item2.Count()}\n===============\n");
+            }
+
+            Console.WriteLine("********** End of Task #3 **********\n\n");
+            Console.WriteLine("Press enter to continue to next task.");
+            Console.ReadLine();
+            Console.Clear();
+
+            var t4Products = Task4();
+            foreach (var product in t4Products)
+            {
+                Console.WriteLine($"Supplier name: {product.Item1}\nProduct count: {product.Item2}\n===============\n");
+            }
+
+            Console.WriteLine("********** End of Task #4 **********\n\n");
+            Console.WriteLine("Press enter to continue to next task.");
+            Console.ReadLine();
+            Console.Clear();
+
+            var mutualProducts = Task5A(1, 2);
+            foreach (var product in mutualProducts)
+            {
+                Console.WriteLine(product.Name);
+            }
+            Console.WriteLine("********** End of Task #5A **********\n\n");
+            Console.WriteLine("Press enter to continue to next task.");
+            Console.ReadLine();
+            Console.Clear();
+
+            var uniqueProducts = Task5B(1);
+            foreach (var product in uniqueProducts)
+            {
+                Console.WriteLine(product.Name);
+            }
+            Console.WriteLine("********** End of Task #5B **********\n\n");
+            Console.WriteLine("Press enter exit the program.");
         }
 
-        private static void Task2()
+        private static List<Product> Task1()
+        {
+            Console.WriteLine("********** Task #1 **********");
+
+            var products = Product.GetProducts()
+                .OrderBy(x => x.Name).ToList();
+
+            return products;
+        }
+
+        private static List<(string, string)> Task2()
         {
             Console.WriteLine("********** Task #2 **********");
 
             var products = Product.GetProducts()
                 .Select(x => new
                 {
-                    ProductName = x.Name, SupplierName = x.SupplierId.Name
+                    ProductName = x.Name, SupplierName = x.Supplier.Name
                 });
 
+            var pList = new List<(string, string)>();
             foreach (var product in products)
             {
-                Console.WriteLine($"Product name: {product.ProductName}\nSupplier name: {product.SupplierName}\n===============\n");
+                pList.Add((product.ProductName, product.SupplierName));
             }
 
-            Console.WriteLine("********** End of Task #2 **********\n\n");
+            return pList;
         }
 
         /// <summary>
         /// If there was an integer Id instead of an object in Product model, we would do this using a Join
         /// </summary>
-        private static void Task2Id()
+        private static List<(string, string)> Task2Id()
         {
             Console.WriteLine("********** Task #2 using Supplier Id instead of an Supplier object **********");
 
             var products = Product.GetProducts()
                 .Join(Supplier.GetSuppliers(), 
-                    p => p.SupplierId.Id, // here would be SupplierId as actual integer instead of object
+                    p => p.Supplier.Id, // here would be Supplier as actual integer instead of object
                     s => s.Id,
                     (p, s) => new {ProductName = p.Name, SupplierName = s.Name});
 
+            var pList = new List<(string, string)>();
             foreach (var product in products)
             {
-                Console.WriteLine($"Product name: {product.ProductName}\nSupplier name: {product.SupplierName}\n===============\n");
+                pList.Add((product.ProductName, product.SupplierName));
             }
 
-            Console.WriteLine("********** End of Task #2 using Supplier Id instead of an Supplier object **********\n\n");
+            return pList;
         }
 
-        private static void Task3()
+        private static List<(string, IEnumerable<Product>)> Task3()
         {
             Console.WriteLine("********** Task #3 **********");
 
             var products = Category.GetCategories()
                 .GroupJoin(Product.GetProducts(),
                     c => c.Id,
-                    p => p.CategoryId.Id,
+                    p => p.Category.Id,
                     (c, p) => new {CategoryName = c.Name, CategoryProducts = p});
 
+            var pList = new List<(string, IEnumerable<Product>)>();
             foreach (var product in products)
             {
-                Console.WriteLine($"Category name: {product.CategoryName}\nCategory count: {product.CategoryProducts.Count()}\n===============\n");
+                pList.Add((product.CategoryName, product.CategoryProducts.ToList()));
             }
 
-            Console.WriteLine("********** End of Task #3 **********\n\n");
+            return pList;
         }
 
-        private static void Task4()
+        private static List<(string, int)> Task4()
         {
             Console.WriteLine("********** Task #4 **********");
 
             var products = Supplier.GetSuppliers()
                 .GroupJoin(Product.GetProducts(),
                     s => s.Id,
-                    p => p.SupplierId.Id,
+                    p => p.Supplier.Id,
                     (s, p) => new {SupplierName = s.Name, ProductCount = p.Count()})
-                .OrderByDescending(pCount => pCount.ProductCount);
+                .OrderByDescending(pCount => pCount.ProductCount).ToList();
 
+            var pList = new List<(string, int)>();
             foreach (var product in products)
             {
-                Console.WriteLine($"Supplier name: {product.SupplierName}\nProduct count: {product.ProductCount}\n===============\n");
+                pList.Add((product.SupplierName, product.ProductCount));
             }
 
-            Console.WriteLine("********** End of Task #4 **********\n\n");
+            return pList;
         }
 
-        private static void Task5A(int firstSupplier, int secondSupplier)
+        private static List<Product> Task5A(int firstSupplier, int secondSupplier)
         {
             Console.WriteLine("********** Task #5A **********");
 
@@ -150,21 +192,16 @@ namespace DeliveryService_EF
             var products = Product.GetProducts();
 
             var firstSupplierProducts = products.
-                Where(s => s.SupplierId.Id == firstSupplier);
+                Where(s => s.Supplier.Id == firstSupplier);
             var secondSupplierProducts = products
-                .Where(s => s.SupplierId.Id == secondSupplier);
+                .Where(s => s.Supplier.Id == secondSupplier);
 
             var mutualProducts = firstSupplierProducts.Intersect(secondSupplierProducts, comparer);
 
-            foreach (var product in mutualProducts)
-            {
-                Console.WriteLine(product.Name);
-            }
-
-            Console.WriteLine("********** End of Task #5A **********\n\n");
+            return mutualProducts.ToList();
         }
 
-        private static void Task5B(int supplierId)
+        private static List<Product> Task5B(int supplierId)
         {
             Console.WriteLine("********** Task #5B **********");
 
@@ -173,19 +210,13 @@ namespace DeliveryService_EF
             var products = Product.GetProducts();
 
             var productsOfSupplier = products
-                .Where(p => p.SupplierId.Id == supplierId);
+                .Where(p => p.Supplier.Id == supplierId);
             var otherProducts = products
-                .Where(p => p.SupplierId.Id != supplierId);
+                .Where(p => p.Supplier.Id != supplierId);
 
             var uniqueProducts = productsOfSupplier.Except(otherProducts, comparer);
-                
 
-            foreach (var product in uniqueProducts)
-            {
-                Console.WriteLine(product.Name);
-            }
-
-            Console.WriteLine("********** End of Task #5B **********\n\n");
+            return uniqueProducts.ToList();
         }
     }
 }
