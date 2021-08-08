@@ -12,17 +12,13 @@ namespace DeliveryService_EF.Data
 {
     public class DataContext : DbContext
     {
-        /*private readonly IConfiguration _configuration;
-
-        public DataContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public DataContext()
-        {
-
-        }*/
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<DeliveryTariff> DeliveryTariffs { get; set; }
+        public DbSet<Deliveryman> Deliverymen { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,13 +29,5 @@ namespace DeliveryService_EF.Data
         {
             modelBuilder.Entity<Product>().HasMany<Order>();
         }
-
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<DeliveryTariff> DeliveryTariffs { get; set; }
-        public DbSet<Deliveryman> Deliverymen { get; set; }
-        public DbSet<Order> Orders { get; set; }
     }
 }
