@@ -29,28 +29,16 @@ namespace DeliveryService_EF.HwTasks
                 Console.WriteLine($"===== {nameof(repo.GetProductById)} =====\n");
             }
             //commented to not add same copy every time the program is launched
-           /* {
-                Console.WriteLine($"===== {nameof(repo.AddProduct)} =====");
-                var product = new Product
-                {
-                    Name = "MSI GeForce RTX 3090 Suprim X",
-                    Description = "Ultra high performance graphics card capable of ray tracing.",
-                    Price = 80999.00m,
-                    AmountInStock = 0
-                };
-                var result = repo.AddProduct(product);
-                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
-                Console.WriteLine($"===== {nameof(repo.AddProduct)} =====\n");
-            }*/
+            //AddProduct(repo);
 
-           {
+            {
                Console.WriteLine($"===== {nameof(repo.UpdateProduct)} =====");
                var result = repo.UpdateProduct(12, 1);
                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
                Console.WriteLine($"===== {nameof(repo.UpdateProduct)} =====\n");
-           }
+            }
 
-           {
+            {
                Console.WriteLine($"===== {nameof(repo.DeleteProduct)} =====");
 
                var productToDelete = new Product
@@ -67,11 +55,26 @@ namespace DeliveryService_EF.HwTasks
 
                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
                Console.WriteLine($"===== {nameof(repo.DeleteProduct)} =====\n");
-           }
+            }
 
-           Console.WriteLine("***** ***** ***** ***** *****");
-           Console.WriteLine($"***** ** {nameof(DapperTasks)} ** *****");
-           Console.WriteLine("***** ***** ***** ***** *****\n");
+            Console.WriteLine("***** ***** ***** ***** *****");
+            Console.WriteLine($"***** ** {nameof(DapperTasks)} ** *****");
+            Console.WriteLine("***** ***** ***** ***** *****\n");
+        }
+
+        private static void AddProduct(DapperRepo repo)
+        {
+            Console.WriteLine($"===== {nameof(repo.AddProduct)} =====");
+            var product = new Product
+            {
+                Name = "MSI GeForce RTX 3090 Suprim X",
+                Description = "Ultra high performance graphics card capable of ray tracing.",
+                Price = 80999.00m,
+                AmountInStock = 0
+            };
+            var result = repo.AddProduct(product);
+            Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+            Console.WriteLine($"===== {nameof(repo.AddProduct)} =====\n");
         }
     }
 }
