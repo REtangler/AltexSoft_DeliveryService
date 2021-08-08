@@ -19,20 +19,20 @@ namespace DeliveryService_EF.HwTasks
             var db = new DataContext();
             db.Database.EnsureCreated();
 
-            var tasks = new EfCoreCodeFirstTasks(db);
+            EfCoreCodeFirstTasks._db = db;
 
             db.Database.ExecuteSqlRaw("DELETE FROM [Products] DBCC CHECKIDENT ('EFCoreCodeFirst.dbo.Products',RESEED, 1)");
             db.Database.ExecuteSqlRaw("DELETE FROM [Categories] DBCC CHECKIDENT ('EFCoreCodeFirst.dbo.Categories',RESEED, 1)");
             db.Database.ExecuteSqlRaw("DELETE FROM [Suppliers] DBCC CHECKIDENT ('EFCoreCodeFirst.dbo.Suppliers',RESEED, 1)");
 
-            tasks.AddCategories();
-            tasks.GetCategories();
+            EfCoreCodeFirstTasks.AddCategories();
+            EfCoreCodeFirstTasks.GetCategories();
 
-            tasks.AddSuppliers();
-            tasks.GetSuppliers();
+            EfCoreCodeFirstTasks.AddSuppliers();
+            EfCoreCodeFirstTasks.GetSuppliers();
 
-            tasks.AddProducts();
-            tasks.GetProducts();
+            EfCoreCodeFirstTasks.AddProducts();
+            EfCoreCodeFirstTasks.GetProducts();
         }
     }
 }
