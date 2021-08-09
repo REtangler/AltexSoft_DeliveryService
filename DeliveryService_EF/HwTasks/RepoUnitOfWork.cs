@@ -18,7 +18,9 @@ namespace DeliveryService_EF.HwTasks
             var productRepository = new ProductRepository(dbFactory);
             var repounit = new RepoUnitOfWorkTask(unitOfWork, productRepository);
 
-            repounit.RunTask();
+            repounit.RunTasks();
+            
+            unitOfWork.Commit();
         }
     }
 }

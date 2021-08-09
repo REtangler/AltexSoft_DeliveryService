@@ -20,18 +20,15 @@ namespace DeliveryService_EF.HwTasks
 
         public void RunTask()
         {
-            Console.WriteLine($"Were any products added? {AddProduct()}");
+            AddProduct();
         }
 
-        public bool AddProduct()
+        public void AddProduct()
         {
             var product = _productRepository.NewProduct($"productName_{Guid.NewGuid():N}", 
                 $"productDescription_{Guid.NewGuid():N}", (decimal)(new Random().Next(0, 500) + new Random().NextDouble()), 
                 new Random().Next(0, 99), 0, 
                 0, $"productType_{Guid.NewGuid():N}");
-
-            var saved = _unitOfWork.Commit();
-            return saved > 0;
         }
     }
 }
