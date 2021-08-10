@@ -18,7 +18,7 @@ namespace DeliveryService_EF.HwTasks
             _productRepository = productRepository;
         }
 
-        public void RunTask()
+        public void RunTasks()
         {
             AddProduct();
         }
