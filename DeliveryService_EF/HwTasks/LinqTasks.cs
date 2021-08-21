@@ -81,11 +81,11 @@ namespace DeliveryService_EF.HWtasks
         /// </summary>
         private static void Task2Id()
         {
-            Console.WriteLine("********** Task #2 using Supplier Id instead of an Supplier object **********");
+            Console.WriteLine("********** Task #2 using SupplierId Id instead of an SupplierId object **********");
 
             var products = Product.GetProducts()
                 .Join(Supplier.GetSuppliers(), 
-                    p => p.Supplier.Id, // here would be Supplier as actual integer instead of object
+                    p => p.Supplier.Id, // here would be SupplierId as actual integer instead of object
                     s => s.Id,
                     (p, s) => new {ProductName = p.Name, SupplierName = s.Name});
 
@@ -94,7 +94,7 @@ namespace DeliveryService_EF.HWtasks
                 Console.WriteLine($"Product name: {product.ProductName}\nSupplier name: {product.SupplierName}\n===============\n");
             }
 
-            Console.WriteLine("********** End of Task #2 using Supplier Id instead of an Supplier object **********\n\n");
+            Console.WriteLine("********** End of Task #2 using SupplierId Id instead of an SupplierId object **********\n\n");
         }
 
         private static void Task3()
@@ -109,7 +109,7 @@ namespace DeliveryService_EF.HWtasks
 
             foreach (var product in products)
             {
-                Console.WriteLine($"Category name: {product.CategoryName}\nCategory count: {product.CategoryProducts.Count()}\n===============\n");
+                Console.WriteLine($"CategoryId name: {product.CategoryName}\nCategory count: {product.CategoryProducts.Count()}\n===============\n");
             }
 
             Console.WriteLine("********** End of Task #3 **********\n\n");
@@ -128,7 +128,7 @@ namespace DeliveryService_EF.HWtasks
 
             foreach (var product in products)
             {
-                Console.WriteLine($"Supplier name: {product.SupplierName}\nProduct count: {product.ProductCount}\n===============\n");
+                Console.WriteLine($"SupplierId name: {product.SupplierName}\nProduct count: {product.ProductCount}\n===============\n");
             }
 
             Console.WriteLine("********** End of Task #4 **********\n\n");

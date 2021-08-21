@@ -19,19 +19,19 @@ namespace DeliveryService_EF.Models
                 {
                     Id = 1,
                     Name = "GPU",
-                    Description = "Category dedicated to - Graphics Processing Units"
+                    Description = "CategoryId dedicated to - Graphics Processing Units"
                 },
                 new Category
                 {
                     Id = 2,
                     Name = "CPU",
-                    Description = "Category dedicated to - Central Processing Units"
+                    Description = "CategoryId dedicated to - Central Processing Units"
                 },
                 new Category
                 {
                     Id = 3,
                     Name = "MB",
-                    Description = "Category dedicated to - Motherboards"
+                    Description = "CategoryId dedicated to - Motherboards"
                 }
             };
         }
