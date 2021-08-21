@@ -123,7 +123,7 @@ namespace DeliveryService.Utils
 
         public async Task<decimal> ConvertUahTo(decimal money, string convertTo)
         {
-            var exchangeRate = await _currencyRetriever.DeserializeResponseAsync(convertTo);
+            var exchangeRate = await _currencyRetriever.GetExchangeRatesAsync(convertTo);
 
             return money * exchangeRate;
         }
