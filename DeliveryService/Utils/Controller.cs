@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using DeliveryService.Interfaces;
 using DeliveryService.Models;
 
@@ -11,15 +12,17 @@ namespace DeliveryService.Utils
     {
         private readonly IStorable _storage;
         private readonly ISerializable _serializer;
+        private readonly ICurrencyRetriever _currencyRetriever;
         private readonly ICacheable _cache;
 
         private readonly Action<string> _debugHandler;
 
-        public Controller(IStorable storage, ISerializable serializer, ICacheable cache)
+        public Controller(IStorable storage, ISerializable serializer, ICurrencyRetriever currencyRetriever, ICacheable cache)
         {
+            _cache = cache;
             _storage = storage;
             _serializer = serializer;
-            _cache = cache;
+            _currencyRetriever = currencyRetriever;
             _debugHandler = listName => { Debug.WriteLine($"{listName} was added to cache"); };
         }
 
@@ -116,6 +119,18 @@ namespace DeliveryService.Utils
 
             _cache.AddObjectToCache(_storage.PcParts, _debugHandler);
             return _storage.PcParts;
+        }
+
+        public async Task<decimal> ConvertUahTo(decimal money, string convertTo)
+        {
+            var exchangeRate = await _currencyRetriever.DeserializeResponseAsync(convertTo);
+
+            return money * exchangeRate;
+        }
+
+        public Task<IList<string>> GetAllCurrencies()
+        {
+            return _currencyRetriever.GetAllCurrencies();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DeliveryService.Models;
 
 namespace DeliveryService.Interfaces
@@ -16,5 +17,6 @@ namespace DeliveryService.Interfaces
         IList<Order> GetOrders();
         IEnumerable<PcPeripheral> GetPcPeripherals();
         IEnumerable<PcPart> GetPcParts();
+        Task<decimal> ConvertUahTo(decimal money, string convertTo);
     }
 }

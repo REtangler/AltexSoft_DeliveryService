@@ -1,15 +1,18 @@
-﻿using System;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using DeliveryService.Interfaces;
-using DeliveryService.Utils;
 using DeliveryService.Models;
+using DeliveryService.Utils;
 
 namespace DeliveryService.UI
 {
-    public class Presenter : IPresentable, IMenuPresentable, IDialogue
+    public class Presenter : IPresentable, IMenuPresentable
     {
         private readonly IValidator _regExpressionValidator;
         private readonly Controller _controller;
         private readonly ILogger _logger;
+        private string _convertTo;
 
         public Presenter(Controller controller, IValidator regExp, ILogger logger)
         {
@@ -18,7 +21,7 @@ namespace DeliveryService.UI
             _logger = logger;
         }
 
-        public void Start()
+        public async Task Start()
         {
             while (true)
             {
@@ -28,7 +31,9 @@ namespace DeliveryService.UI
                 {
                     Console.Clear();
 
-                    StartBusinessDialogue();
+                    await ChooseCurrency();
+
+                    await StartBusinessDialogue();
 
                     Console.Clear();
                     continue;
@@ -38,7 +43,9 @@ namespace DeliveryService.UI
                 {
                     Console.Clear();
 
-                    var currentOrderId = StartClientDialogue();
+                    await ChooseCurrency();
+
+                    var currentOrderId = await StartClientDialogue();
 
                     _controller.DeleteEmptyOrder(currentOrderId);
 
@@ -51,7 +58,44 @@ namespace DeliveryService.UI
             }
         }
 
-        public void StartBusinessDialogue()
+        public async Task ChooseCurrency()
+        {
+            var currencies = await _controller.GetAllCurrencies();
+            while (true)
+            {
+                Console.WriteLine("Choose your preferred currency to convert to:");
+                foreach (var currency in currencies)
+                {
+                    Console.Write(currency + ", ");
+                }
+
+                Console.Write("\b\b.\n");
+
+                var input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Choose a currency to convert to!");
+                    continue;
+                }
+
+                var match = currencies.FirstOrDefault(x => x.Contains(input.ToUpper()));
+                if (match is null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Choose a currency to convert to from the list!");
+                    continue;
+                }
+
+                _convertTo = match;
+                break;
+            }
+
+            Console.Clear();
+        }
+
+        public async Task StartBusinessDialogue()
         {
             while (true)
             {
@@ -74,19 +118,19 @@ namespace DeliveryService.UI
                 else if (choice == 3)
                 {
                     Console.Clear();
-                    ShowPcParts();
+                    await ShowPcParts();
                 }
 
                 else if (choice == 4)
                 {
                     Console.Clear();
-                    ShowPcPeripherals();
+                    await ShowPcPeripherals();
                 }
 
                 else if (choice == 5)
                 {
                     Console.Clear();
-                    ShowOrders();
+                    await ShowOrders();
                 }
 
                 else if (choice == 0)
@@ -94,7 +138,7 @@ namespace DeliveryService.UI
             }
         }
 
-        public int StartClientDialogue()
+        public async Task<int> StartClientDialogue()
         {
             var currentOrder = _controller.CreateOrder(GetClientPhoneNumber(), GetClientAddress());
 
@@ -106,7 +150,7 @@ namespace DeliveryService.UI
                 {
                     while (true)
                     {
-                        int? itemId = AddPcPartsToOrder();
+                        int? itemId = await AddPcPartsToOrder();
                         if (itemId is null)
                             break;
 
@@ -120,7 +164,7 @@ namespace DeliveryService.UI
                 {
                     while (true)
                     {
-                        int? itemId = AddPcPeripheralsToOrder();
+                        int? itemId = await AddPcPeripheralsToOrder();
                         if (itemId is null)
                             break;
 
@@ -132,7 +176,7 @@ namespace DeliveryService.UI
 
                 else if (choice == 3)
                 {
-                    ShowOrder(currentOrder);
+                    await ShowOrder(currentOrder);
                 }
 
                 else if (choice == 0)
@@ -159,7 +203,7 @@ namespace DeliveryService.UI
             }
         }
 
-        public void ShowOrders()
+        public async Task ShowOrders()
         {
             var orders = _controller.GetOrders();
             if (orders.Count is 0)
@@ -167,37 +211,40 @@ namespace DeliveryService.UI
             
             foreach (var order in orders)
             {
+                var convertedCurrency = await _controller.ConvertUahTo(order.FullPrice, _convertTo);
                 Console.WriteLine($"Order Id #{order.Id}\n" +
                           $"Address: {order.Address}\n" +
                           $"Phone Number: {order.PhoneNumber}\n" +
-                          $"Full price: {order.FullPrice}\n\n");
+                          $"Full price: {order.FullPrice} UAH, {convertedCurrency} {_convertTo}\n\n");
             }
         }
 
-        public void ShowPcPeripherals()
+        public async Task ShowPcPeripherals()
         {
             var pcPeripherals = _controller.GetPcPeripherals();
             foreach (var pcPeripheral in pcPeripherals)
             {
+                var convertedCurrency = await _controller.ConvertUahTo(pcPeripheral.Price, _convertTo);
                 Console.WriteLine($"Id: {pcPeripheral.Id}\n" +
                           $"Name: {pcPeripheral.Name}\n" +
                           $"Category: {pcPeripheral.Category}\n" +
-                          $"Price: {pcPeripheral.Price}\n" +
+                          $"Price: {pcPeripheral.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                           $"Manufacturer: {pcPeripheral.Manufacturer}\n" +
                           $"Amount: {pcPeripheral.Amount}\n");
             }
             Console.WriteLine("----------END OF LIST----------\n");
         }
 
-        public void ShowPcParts()
+        public async Task ShowPcParts()
         {
             var pcParts = _controller.GetPcParts();
             foreach (var pcPart in pcParts)
             {
+                var convertedCurrency = await _controller.ConvertUahTo(pcPart.Price, _convertTo);
                 Console.WriteLine($"Id: {pcPart.Id}\n" +
                           $"Name: {pcPart.Name}\n" +
                           $"Category: {pcPart.Category}\n" +
-                          $"Price: {pcPart.Price}\n" +
+                          $"Price: {pcPart.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                           $"Manufacturer: {pcPart.Manufacturer}\n" +
                           $"Amount: {pcPart.Amount}\n");
             }
@@ -220,14 +267,14 @@ namespace DeliveryService.UI
                 Console.Clear();
             }
         }
-        public int? AddPcPartsToOrder()
+        public async Task<int?> AddPcPartsToOrder()
         {
             int choice;
 
             while (true)
             {
                 Console.Clear();
-                ShowPcParts();
+                await ShowPcParts();
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC parts.");
 
@@ -247,14 +294,14 @@ namespace DeliveryService.UI
             return choice;
         }
 
-        public int? AddPcPeripheralsToOrder()
+        public async Task<int?> AddPcPeripheralsToOrder()
         {
             int choice;
 
             while (true)
             {
                 Console.Clear();
-                ShowPcPeripherals();
+                await ShowPcPeripherals();
                 Console.WriteLine("Enter product Id to add it to your order.\n" +
                                   "Enter empty line to stop ordering PC peripherals.");
 
@@ -425,7 +472,7 @@ namespace DeliveryService.UI
             return choice;
         }
 
-        private static void ShowOrder(IOrder order)
+        private async Task ShowOrder(IOrder order)
         {
             Console.Clear();
 
@@ -443,11 +490,13 @@ namespace DeliveryService.UI
                 {
                     var pcPart = order.PcParts[i];
 
+                    var convertedCurrency = await _controller.ConvertUahTo(pcPart.Price, _convertTo);
+
                     Console.WriteLine($"PC part #{i + 1}\n" +
                               $"Id: {pcPart.Id}\n" +
                               $"Name: {pcPart.Name}\n" +
                               $"Category: {pcPart.Category}\n" +
-                              $"Price: {pcPart.Price}\n" +
+                              $"Price: {pcPart.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                               $"Manufacturer: {pcPart.Manufacturer}\n");
                 }
 
@@ -460,11 +509,13 @@ namespace DeliveryService.UI
                 {
                     var pcPeripheral = order.PcPeripherals[i];
 
+                    var convertedCurrency = await _controller.ConvertUahTo(pcPeripheral.Price, _convertTo);
+
                     Console.WriteLine($"PC peripheral #{i + 1}\n" +
                               $"Id: {pcPeripheral.Id}\n" +
                               $"Name: {pcPeripheral.Name}\n" +
                               $"Category: {pcPeripheral.Category}\n" +
-                              $"Price: {pcPeripheral.Price}\n" +
+                              $"Price: {pcPeripheral.Price} UAH, {convertedCurrency} {_convertTo}\n" +
                               $"Manufacturer: {pcPeripheral.Manufacturer}\n");
                 }
                 Console.WriteLine("----------END OF PC PERIPHERALS LIST----------\n");
