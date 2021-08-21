@@ -12,6 +12,11 @@ namespace DeliveryService_EF
             DapperHw.Run();
             EfCoreCodeFirst.RunTasks();
 
+            Console.WriteLine("================================");
+            Console.WriteLine("IRepository and IUnitOfWork Task:");
+
+            RepoUnitOfWork.RunTasks();
+
             Console.ReadLine();
         }
     }
