@@ -1,10 +1,6 @@
 ﻿using System;
-using System.IO;
-using DeliveryService_EF.Data;
-using DeliveryService_EF.Helpers;
 using DeliveryService_EF.HwTasks;
-using DeliveryService_EF.Repos;
-using Microsoft.Extensions.Configuration;
+using DeliveryService_EF.HWtasks;
 
 namespace DeliveryService_EF
 {
@@ -12,6 +8,8 @@ namespace DeliveryService_EF
     {
         private static void Main()
         {
+            LinqTasks.RunTasks();
+            DapperHw.Run();
             EfCoreCodeFirst.RunTasks();
 
             Console.WriteLine("================================");

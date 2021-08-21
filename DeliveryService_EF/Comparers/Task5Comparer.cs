@@ -3,7 +3,7 @@ using DeliveryService_EF.Models;
 
 namespace DeliveryService_EF.Comparers
 {
-    class Task5BComparer : IEqualityComparer<Product>
+    public class Task5Comparer : IEqualityComparer<Product>
     {
         public bool Equals(Product x, Product y)
         {

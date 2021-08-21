@@ -29,19 +29,7 @@ namespace DeliveryService_EF.HwTasks
                 Console.WriteLine($"===== {nameof(repo.GetProductByIdNested)} =====\n");
             }
             //commented to not add same copy every time the program is launched
-            /*{
-                Console.WriteLine($"===== {nameof(repo.AddProductNested)} =====");
-                var product = new Product
-                {
-                    Name = "AFOX GeForce GT1030",
-                    Description = "Budget graphics card.",
-                    Price = 2639.00m,
-                    AmountInStock = 98
-                };
-                var result = repo.AddProductNested(product, Category.GetCategory(2)); // put incorrect category to then update it to correct one (should be 1)
-                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}, {result.Category.Name}");
-                Console.WriteLine($"===== {nameof(repo.AddProductNested)} =====\n");
-            }*/
+            //AddProductsNested(repo);
 
             {
                 Console.WriteLine($"===== {nameof(repo.UpdateProductNested)} =====");
@@ -84,6 +72,21 @@ namespace DeliveryService_EF.HwTasks
             Console.WriteLine("***** ***** ***** ***** *****");
             Console.WriteLine($"***** {nameof(DapperNestedTasks)} *****");
             Console.WriteLine("***** ***** ***** ***** *****\n");
+        }
+
+        private static void AddProductsNested(DapperRepo repo)
+        {
+            Console.WriteLine($"===== {nameof(repo.AddProductNested)} =====");
+            var product = new Product
+            {
+                Name = "AFOX GeForce GT1030",
+                Description = "Budget graphics card.",
+                Price = 2639.00m,
+                AmountInStock = 98
+            };
+            var result = repo.AddProductNested(product, Category.GetCategory(2)); // put incorrect category to then update it to correct one (should be 1)
+            Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}, {result.Category.Name}");
+            Console.WriteLine($"===== {nameof(repo.AddProductNested)} =====\n");
         }
     }
 }

@@ -29,19 +29,7 @@ namespace DeliveryService_EF.HwTasks
                 Console.WriteLine($"===== {nameof(contribRepo.GetProductById)} =====\n");
             }
             //commented to not add same copy every time the program is launched
-            /*{
-                Console.WriteLine($"===== {nameof(contribRepo.AddProduct)} =====");
-                var product = new Product
-                {
-                    Name = "AMD Ryzen Threadripper PRO 3975WX",
-                    Description = "Ultra high performance CPU.",
-                    Price = 88358.00m,
-                    AmountInStock = 0
-                };
-                var result = contribRepo.AddProduct(product);
-                Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
-                Console.WriteLine($"===== {nameof(contribRepo.AddProduct)} =====\n");
-            }*/
+            //AddProduct(contribRepo);
 
             {
                Console.WriteLine($"===== {nameof(contribRepo.UpdateProduct)} =====");
@@ -71,6 +59,21 @@ namespace DeliveryService_EF.HwTasks
             Console.WriteLine("***** ***** ***** ***** *****");
             Console.WriteLine($"***** {nameof(DapperContribTasks)} ****");
             Console.WriteLine("***** ***** ***** ***** *****\n");
+        }
+
+        private static void AddProduct(DapperContribRepo contribRepo)
+        {
+            Console.WriteLine($"===== {nameof(contribRepo.AddProduct)} =====");
+            var product = new Product
+            {
+                Name = "AMD Ryzen Threadripper PRO 3975WX",
+                Description = "Ultra high performance CPU.",
+                Price = 88358.00m,
+                AmountInStock = 0
+            };
+            var result = contribRepo.AddProduct(product);
+            Console.WriteLine($"{result.Name}, {result.Description}, {result.Price}, {result.AmountInStock}");
+            Console.WriteLine($"===== {nameof(contribRepo.AddProduct)} =====\n");
         }
     }
 }
