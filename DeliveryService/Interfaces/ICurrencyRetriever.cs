@@ -6,7 +6,7 @@ namespace DeliveryService.Interfaces
 {
     public interface ICurrencyRetriever
     {
-        Task<decimal> DeserializeResponseAsync(string convertTo);
+        Task<decimal> GetExchangeRatesAsync(string convertTo);
         Task<IList<string>> GetAllCurrencies();
     }
 }

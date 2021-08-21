@@ -24,7 +24,7 @@ namespace DeliveryService.Utils
             ConvertFrom = "UAH";
         }
 
-        public async Task<decimal> DeserializeResponseAsync(string convertTo)
+        public async Task<decimal> GetExchangeRatesAsync(string convertTo)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, $"https://free.currconv.com/api/v7/convert?q={ConvertFrom}_{convertTo}&compact=ultra&apiKey={ApiKey}");
