@@ -37,7 +37,7 @@ namespace DeliveryService_EF.Repos
             var sql =
                 "SELECT [Products].[Id], [Products].[Name], [Products].[Description], [Price], [AmountInStock], [Categories].[Id], [Categories].[Name], [Categories].[Description] " +
                 "FROM [dbo].[Products] LEFT JOIN [dbo].[Categories] " +
-                "ON Categories.Id = Products.CategoryId ";
+                "ON Categories.Id = Products.Category ";
 
             using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
@@ -46,7 +46,7 @@ namespace DeliveryService_EF.Repos
             var products = connection.Query<Product, Category, Product>(sql,
                     (product, category) =>
                     {
-                        product.CategoryId = category;
+                        product.Category = category;
                         return product;
                     })
                 .Distinct()
@@ -94,7 +94,7 @@ namespace DeliveryService_EF.Repos
         public Product AddProductNested(Product product, Category category)
         {
             var sql = "INSERT INTO [dbo].[Products] " +
-                      "([Name] ,[Description] ,[Price] ,[AmountInStock], [CategoryId]) " +
+                      "([Name] ,[Description] ,[Price] ,[AmountInStock], [Category]) " +
                       $"VALUES (@ProductName, @ProductDescription, @ProductPrice, @ProductAmountInStock, @ProductCategoryId)";
 
             using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
@@ -132,7 +132,7 @@ namespace DeliveryService_EF.Repos
 
         public Product UpdateProductNested(int id, Category category)
         {
-            var sql = "UPDATE [dbo].[Products] SET [CategoryId] = @CategoryId WHERE Products.Id = @ID";
+            var sql = "UPDATE [dbo].[Products] SET [Category] = @Category WHERE Products.Id = @ID";
 
             using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
@@ -160,9 +160,9 @@ namespace DeliveryService_EF.Repos
 
         public IList<Product> DeleteProductNested(int categoryId)
         {
-            var sqlGetDeleted = "SELECT [Id], [Name], [Description], [Price], [AmountInStock], [CategoryId] " +
-                                "FROM [dbo].[Products] WHERE Products.CategoryId = @CategoryId";
-            var sql = "DELETE FROM [dbo].[Products] WHERE Products.CategoryId = @CategoryId";
+            var sqlGetDeleted = "SELECT [Id], [Name], [Description], [Price], [AmountInStock], [Category] " +
+                                "FROM [dbo].[Products] WHERE Products.Category = @Category";
+            var sql = "DELETE FROM [dbo].[Products] WHERE Products.Category = @Category";
 
             using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
@@ -171,11 +171,11 @@ namespace DeliveryService_EF.Repos
             var deletedProducts = connection.Query<Product, Category, Product>(sqlGetDeleted,
                     (product, category) =>
                     {
-                        product.CategoryId = category;
+                        product.Category = category;
                         return product;
                     },
                     new {CategoryId = categoryId},
-                    splitOn: "CategoryId")
+                    splitOn: "Category")
                 .Distinct()
                 .ToList();;
 

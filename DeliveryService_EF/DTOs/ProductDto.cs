@@ -27,10 +27,10 @@ namespace DeliveryService_EF.DTOs
                 Id = productsDto.Id,
                 Name = productsDto.Name,
                 AmountInStock = productsDto.AmountInStock,
-                CategoryId = productsDto.CategoryId == null ? null : Category.GetCategory((int)productsDto.CategoryId),
+                Category = productsDto.CategoryId == null ? null : Category.GetCategory((int)productsDto.CategoryId),
                 Description = productsDto.Description,
                 Price = productsDto.Price,
-                SupplierId = productsDto.SupplierId == null ? null : Supplier.GetSupplier((int)productsDto.SupplierId),
+                Supplier = productsDto.SupplierId == null ? null : Supplier.GetSupplier((int)productsDto.SupplierId),
                 Type = productsDto.Type
             };
         }
@@ -42,10 +42,10 @@ namespace DeliveryService_EF.DTOs
                 Id = product.Id,
                 Name = product.Name,
                 AmountInStock = product.AmountInStock,
-                CategoryId = product.CategoryId?.Id,
+                CategoryId = product.Category?.Id,
                 Description = product.Description,
                 Price = product.Price,
-                SupplierId = product.SupplierId?.Id,
+                SupplierId = product.Supplier?.Id,
                 Type = product.Type
             };
         }
