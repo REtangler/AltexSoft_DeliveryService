@@ -1,4 +1,4 @@
-﻿namespace DeliveryService_EF.Enums
+﻿namespace AltexFood_Delivery.DAL.Enums
 {
     public enum ParcelDimensions
     {

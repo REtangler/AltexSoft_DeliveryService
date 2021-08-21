@@ -1,8 +1,7 @@
 ﻿using System;
-using DeliveryService_EF.HwTasks;
-using DeliveryService_EF.HWtasks;
+using AltexFood_Delivery.DAL.HwTasks;
 
-namespace DeliveryService_EF
+namespace AltexFood_Delivery.DAL
 {
     public class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace DeliveryService.Interfaces
+﻿namespace AltexFood_Delivery.BLL.Interfaces
 {
     public interface IProduceable
     {

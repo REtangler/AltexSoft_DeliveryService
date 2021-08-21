@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using DeliveryService_EF.Models;
+using AltexFood_Delivery.DAL.Models;
 
-namespace DeliveryService_EF.Comparers
+namespace AltexFood_Delivery.DAL.Comparers
 {
     public class Task5Comparer : IEqualityComparer<Product>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DeliveryService.Extensions
+namespace AltexFood_Delivery.BLL.Extensions
 {
     public static class CurrencyExchangerExtension
     {

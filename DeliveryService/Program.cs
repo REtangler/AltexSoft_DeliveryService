@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using DeliveryService.Data;
-using DeliveryService.Utils;
-using DeliveryService.UI;
+using AltexFood_Delivery.BLL.Data;
+using AltexFood_Delivery.BLL.Utils;
+using AltexFood_Delivery.BLL.UI;
 
-namespace DeliveryService
+namespace AltexFood_Delivery.BLL
 {
     internal static class Program
     {

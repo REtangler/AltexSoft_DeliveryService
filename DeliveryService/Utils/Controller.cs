@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Diagnostics;
-using DeliveryService.Interfaces;
-using DeliveryService.Models;
+using AltexFood_Delivery.BLL.Interfaces;
+using AltexFood_Delivery.BLL.Models;
 
-namespace DeliveryService.Utils
+namespace AltexFood_Delivery.BLL.Utils
 {
     public class Controller : IControllable
     {
@@ -123,7 +123,7 @@ namespace DeliveryService.Utils
 
         public async Task<decimal> ConvertUahTo(decimal money, string convertTo)
         {
-            var exchangeRate = await _currencyRetriever.DeserializeResponseAsync(convertTo);
+            var exchangeRate = await _currencyRetriever.GetExchangeRatesAsync(convertTo);
 
             return money * exchangeRate;
         }

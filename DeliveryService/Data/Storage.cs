@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using DeliveryService.Interfaces;
-using DeliveryService.Models;
+using AltexFood_Delivery.BLL.Interfaces;
+using AltexFood_Delivery.BLL.Models;
 
-namespace DeliveryService.Data
+namespace AltexFood_Delivery.BLL.Data
 {
     public class Storage : IStorable
     {

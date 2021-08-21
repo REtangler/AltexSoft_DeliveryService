@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using DeliveryService_EF.Comparers;
-using DeliveryService_EF.Models;
+using AltexFood_Delivery.DAL.Comparers;
+using AltexFood_Delivery.DAL.Models;
 
-namespace DeliveryService_EF.HWtasks
+namespace AltexFood_Delivery.DAL.HwTasks
 {
     public static class LinqTasks
     {

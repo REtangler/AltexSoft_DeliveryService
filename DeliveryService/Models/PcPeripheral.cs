@@ -1,6 +1,6 @@
-﻿using DeliveryService.Interfaces;
+﻿using AltexFood_Delivery.BLL.Interfaces;
 
-namespace DeliveryService.Models
+namespace AltexFood_Delivery.BLL.Models
 {
     public class PcPeripheral : IProduceable
     {

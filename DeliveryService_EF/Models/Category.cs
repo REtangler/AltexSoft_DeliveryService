@@ -2,7 +2,7 @@
 using System.Linq;
 using Dapper.Contrib.Extensions;
 
-namespace DeliveryService_EF.Models
+namespace AltexFood_Delivery.DAL.Models
 {
     [Table("Categories")]
     public class Category

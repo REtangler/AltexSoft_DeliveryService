@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DeliveryService_EF.Migrations
+namespace AltexFood_Delivery.DAL.Migrations
 {
     public partial class createDbwithModels : Migration
     {

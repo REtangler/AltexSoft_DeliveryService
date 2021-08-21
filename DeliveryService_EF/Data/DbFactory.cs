@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace DeliveryService_EF.Data
+namespace AltexFood_Delivery.DAL.Data
 {
     public class DbFactory
     {

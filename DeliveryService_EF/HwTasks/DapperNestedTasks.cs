@@ -1,8 +1,8 @@
 ﻿using System;
-using DeliveryService_EF.Models;
-using DeliveryService_EF.Repos;
+using AltexFood_Delivery.DAL.Models;
+using AltexFood_Delivery.DAL.Repos;
 
-namespace DeliveryService_EF.HwTasks
+namespace AltexFood_Delivery.DAL.HwTasks
 {
     public static class DapperNestedTasks
     {

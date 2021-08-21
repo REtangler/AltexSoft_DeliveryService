@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Helpers;
-using DeliveryService_EF.Repos;
-using Microsoft.Extensions.Configuration;
+﻿using AltexFood_Delivery.DAL.Helpers;
+using AltexFood_Delivery.DAL.Repos;
 
-namespace DeliveryService_EF.HwTasks
+namespace AltexFood_Delivery.DAL.HwTasks
 {
     public static class AllDapperTasks
     {

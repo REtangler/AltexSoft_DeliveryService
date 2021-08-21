@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DeliveryService.Models;
+using AltexFood_Delivery.BLL.Models;
 
-namespace DeliveryService.Interfaces
+namespace AltexFood_Delivery.BLL.Interfaces
 {
     public interface IControllable
     {

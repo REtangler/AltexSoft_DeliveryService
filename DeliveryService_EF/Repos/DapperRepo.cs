@@ -3,11 +3,11 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using Dapper;
-using DeliveryService_EF.Interfaces;
-using DeliveryService_EF.Models;
+using AltexFood_Delivery.DAL.Interfaces;
+using AltexFood_Delivery.DAL.Models;
 using Microsoft.Extensions.Configuration;
 
-namespace DeliveryService_EF.Repos
+namespace AltexFood_Delivery.DAL.Repos
 {
     public class DapperRepo : IDapperRepository
     {
@@ -177,7 +177,7 @@ namespace DeliveryService_EF.Repos
                     new {Category = categoryId},
                     splitOn: "Category")
                 .Distinct()
-                .ToList();;
+                .ToList();
 
             connection.Execute(sql, new {Category = categoryId});
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DeliveryService_EF.Models
+namespace AltexFood_Delivery.DAL.Models
 {
     public class Supplier
     {

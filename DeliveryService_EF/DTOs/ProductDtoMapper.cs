@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Models;
+﻿using AltexFood_Delivery.DAL.Models;
 
-namespace DeliveryService_EF.DTOs
+namespace AltexFood_Delivery.DAL.DTOs
 {
     public static class ProductDtoMapper
     {

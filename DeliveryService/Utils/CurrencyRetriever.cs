@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DeliveryService.Extensions;
-using DeliveryService.Interfaces;
+using AltexFood_Delivery.BLL.Extensions;
+using AltexFood_Delivery.BLL.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace DeliveryService.Utils
+namespace AltexFood_Delivery.BLL.Utils
 {
     public class CurrencyRetriever : ICurrencyRetriever
     {

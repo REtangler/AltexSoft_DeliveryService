@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper.Contrib.Extensions;
-using DeliveryService_EF.DTOs;
-using DeliveryService_EF.Interfaces;
-using DeliveryService_EF.Models;
+using AltexFood_Delivery.DAL.DTOs;
+using AltexFood_Delivery.DAL.Interfaces;
+using AltexFood_Delivery.DAL.Models;
 using Microsoft.Extensions.Configuration;
 
-namespace DeliveryService_EF.Repos
+namespace AltexFood_Delivery.DAL.Repos
 {
     public class DapperContribRepo : IDapperRepository
     {

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Data;
-using DeliveryService_EF.Interfaces;
+using AltexFood_Delivery.DAL.Data;
+using AltexFood_Delivery.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace DeliveryService_EF.Repos
+namespace AltexFood_Delivery.DAL.Repos
 {
     public class Repository<T> : IRepository<T> where T : class
     {

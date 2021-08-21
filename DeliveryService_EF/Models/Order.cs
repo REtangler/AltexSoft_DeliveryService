@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using DeliveryService_EF.Enums;
+using AltexFood_Delivery.DAL.Enums;
 
-namespace DeliveryService_EF.Models
+namespace AltexFood_Delivery.DAL.Models
 {
     public class Order
     {

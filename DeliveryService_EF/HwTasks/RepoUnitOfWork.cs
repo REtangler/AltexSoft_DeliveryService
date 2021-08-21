@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Data;
-using DeliveryService_EF.Helpers;
-using DeliveryService_EF.Repos;
+﻿using AltexFood_Delivery.DAL.Data;
+using AltexFood_Delivery.DAL.Helpers;
+using AltexFood_Delivery.DAL.Repos;
 
-namespace DeliveryService_EF.HwTasks
+namespace AltexFood_Delivery.DAL.HwTasks
 {
     public static class RepoUnitOfWork
     {

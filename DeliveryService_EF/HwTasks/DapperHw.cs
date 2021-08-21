@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using DeliveryService_EF.Repos;
+using AltexFood_Delivery.DAL.Repos;
 using Microsoft.Extensions.Configuration;
 
-namespace DeliveryService_EF.HwTasks
+namespace AltexFood_Delivery.DAL.HwTasks
 {
     public static class DapperHw
     {

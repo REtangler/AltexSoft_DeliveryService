@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DeliveryService.Interfaces;
+using AltexFood_Delivery.BLL.Interfaces;
 
-namespace DeliveryService.Data
+namespace AltexFood_Delivery.BLL.Data
 {
     public class Cache : ICacheable
     {

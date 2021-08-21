@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Data;
-using DeliveryService_EF.DTOs;
-using DeliveryService_EF.Models;
-using Microsoft.EntityFrameworkCore;
+using AltexFood_Delivery.DAL.Data;
+using AltexFood_Delivery.DAL.Models;
 
-namespace DeliveryService_EF.HwTasks
+namespace AltexFood_Delivery.DAL.HwTasks
 {
     public static class EfCoreCodeFirstTasks
     {

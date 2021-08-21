@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DeliveryService_EF.Models
+namespace AltexFood_Delivery.DAL.Models
 {
     public class Client
     {

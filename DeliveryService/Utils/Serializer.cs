@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
-using DeliveryService.Data;
-using DeliveryService.Interfaces;
+using AltexFood_Delivery.BLL.Data;
+using AltexFood_Delivery.BLL.Interfaces;
 
-namespace DeliveryService.Utils
+namespace AltexFood_Delivery.BLL.Utils
 {
     public class Serializer : ISerializable
     {

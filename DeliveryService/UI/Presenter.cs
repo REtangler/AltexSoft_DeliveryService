@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DeliveryService.Interfaces;
-using DeliveryService.Models;
-using DeliveryService.Utils;
+using AltexFood_Delivery.BLL.Interfaces;
+using AltexFood_Delivery.BLL.Models;
+using AltexFood_Delivery.BLL.Utils;
 
-namespace DeliveryService.UI
+namespace AltexFood_Delivery.BLL.UI
 {
     public class Presenter : IPresentable, IMenuPresentable
     {

@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Interfaces;
+using AltexFood_Delivery.DAL.Interfaces;
 
-namespace DeliveryService_EF.HwTasks
+namespace AltexFood_Delivery.DAL.HwTasks
 {
     public class RepoUnitOfWorkTask
     {
