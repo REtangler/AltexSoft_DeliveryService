@@ -63,7 +63,7 @@ namespace DeliveryService.UI
             var currencies = await _controller.GetAllCurrencies();
             while (true)
             {
-                Console.WriteLine("Choose your preferred currency:");
+                Console.WriteLine("Choose your preferred currency to convert to:");
                 foreach (var currency in currencies)
                 {
                     Console.Write(currency + ", ");
@@ -76,7 +76,7 @@ namespace DeliveryService.UI
                 if (string.IsNullOrEmpty(input))
                 {
                     Console.Clear();
-                    Console.WriteLine("Choose a currency!");
+                    Console.WriteLine("Choose a currency to convert to!");
                     continue;
                 }
 
@@ -84,7 +84,7 @@ namespace DeliveryService.UI
                 if (match is null)
                 {
                     Console.Clear();
-                    Console.WriteLine("Choose a currency from the list!");
+                    Console.WriteLine("Choose a currency to convert to from the list!");
                     continue;
                 }
 
@@ -211,7 +211,7 @@ namespace DeliveryService.UI
             
             foreach (var order in orders)
             {
-                var convertedCurrency = await _controller.ExchangeCurrency(order.FullPrice, _convertTo);
+                var convertedCurrency = await _controller.ConvertUahTo(order.FullPrice, _convertTo);
                 Console.WriteLine($"Order Id #{order.Id}\n" +
                           $"Address: {order.Address}\n" +
                           $"Phone Number: {order.PhoneNumber}\n" +
@@ -224,7 +224,7 @@ namespace DeliveryService.UI
             var pcPeripherals = _controller.GetPcPeripherals();
             foreach (var pcPeripheral in pcPeripherals)
             {
-                var convertedCurrency = await _controller.ExchangeCurrency(pcPeripheral.Price, _convertTo);
+                var convertedCurrency = await _controller.ConvertUahTo(pcPeripheral.Price, _convertTo);
                 Console.WriteLine($"Id: {pcPeripheral.Id}\n" +
                           $"Name: {pcPeripheral.Name}\n" +
                           $"Category: {pcPeripheral.Category}\n" +
@@ -240,7 +240,7 @@ namespace DeliveryService.UI
             var pcParts = _controller.GetPcParts();
             foreach (var pcPart in pcParts)
             {
-                var convertedCurrency = await _controller.ExchangeCurrency(pcPart.Price, _convertTo);
+                var convertedCurrency = await _controller.ConvertUahTo(pcPart.Price, _convertTo);
                 Console.WriteLine($"Id: {pcPart.Id}\n" +
                           $"Name: {pcPart.Name}\n" +
                           $"Category: {pcPart.Category}\n" +
@@ -490,7 +490,7 @@ namespace DeliveryService.UI
                 {
                     var pcPart = order.PcParts[i];
 
-                    var convertedCurrency = await _controller.ExchangeCurrency(pcPart.Price, _convertTo);
+                    var convertedCurrency = await _controller.ConvertUahTo(pcPart.Price, _convertTo);
 
                     Console.WriteLine($"PC part #{i + 1}\n" +
                               $"Id: {pcPart.Id}\n" +
@@ -509,7 +509,7 @@ namespace DeliveryService.UI
                 {
                     var pcPeripheral = order.PcPeripherals[i];
 
-                    var convertedCurrency = await _controller.ExchangeCurrency(pcPeripheral.Price, _convertTo);
+                    var convertedCurrency = await _controller.ConvertUahTo(pcPeripheral.Price, _convertTo);
 
                     Console.WriteLine($"PC peripheral #{i + 1}\n" +
                               $"Id: {pcPeripheral.Id}\n" +

@@ -121,12 +121,9 @@ namespace DeliveryService.Utils
             return _storage.PcParts;
         }
 
-        public async Task<decimal> ExchangeCurrency(decimal money, string convertTo)
+        public async Task<decimal> ConvertUahTo(decimal money, string convertTo)
         {
-            _currencyRetriever.ConvertTo = convertTo;
-            
-            var response = await _currencyRetriever.GetExchangeRatesAsync();
-            var exchangeRate = await _currencyRetriever.DeserializeResponseAsync(response);
+            var exchangeRate = await _currencyRetriever.DeserializeResponseAsync(convertTo);
 
             return money * exchangeRate;
         }

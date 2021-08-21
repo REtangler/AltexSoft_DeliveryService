@@ -12,10 +12,10 @@ namespace DeliveryService.Utils
 {
     public class CurrencyRetriever : ICurrencyRetriever
     {
-        private const string CurrencyUri = "https://free.currconv.com/api/v7/currencies?apiKey=ce0787c762396ee4fc33";
+        private const string ApiKey = "YourApiKey";
+        private readonly string _currencyUri = $"https://free.currconv.com/api/v7/currencies?apiKey={ApiKey}";
 
         private string ConvertFrom { get; }
-        public string ConvertTo { get; set; }
         private IList<string> Currencies { get; set; }
         private DateTime LastCurrencyCheck { get; set; }
 
@@ -24,22 +24,17 @@ namespace DeliveryService.Utils
             ConvertFrom = "UAH";
         }
 
-        public async Task<Stream> GetExchangeRatesAsync()
+        public async Task<decimal> DeserializeResponseAsync(string convertTo)
         {
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, $"https://free.currconv.com/api/v7/convert?q={ConvertFrom}_{ConvertTo}&compact=ultra&apiKey=ce0787c762396ee4fc33");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://free.currconv.com/api/v7/convert?q={ConvertFrom}_{convertTo}&compact=ultra&apiKey={ApiKey}");
             var response = await client.SendAsync(request);
 
-            return await response.Content.ReadAsStreamAsync();
-        }
-
-        public async Task<decimal> DeserializeResponseAsync(Stream responseStream)
-        {
-            using var streamReader = new StreamReader(responseStream);
+            using var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync());
             var jsonString = await streamReader.ReadToEndAsync();
 
             var parsedObject = JObject.Parse(jsonString);
-            var exchangeRate = (decimal)parsedObject.SelectToken($"{ConvertFrom}_{ConvertTo}");
+            var exchangeRate = (decimal)parsedObject.SelectToken($"{ConvertFrom}_{convertTo}");
 
             return exchangeRate;
         }
@@ -50,7 +45,7 @@ namespace DeliveryService.Utils
                 return Currencies;
 
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, CurrencyUri);
+            var request = new HttpRequestMessage(HttpMethod.Get, _currencyUri);
             var response = await client.SendAsync(request);
 
             using var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync());

@@ -17,6 +17,6 @@ namespace DeliveryService.Interfaces
         IList<Order> GetOrders();
         IEnumerable<PcPeripheral> GetPcPeripherals();
         IEnumerable<PcPart> GetPcParts();
-        Task<decimal> ExchangeCurrency(decimal money, string convertTo);
+        Task<decimal> ConvertUahTo(decimal money, string convertTo);
     }
 }
