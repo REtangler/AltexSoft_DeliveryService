@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DeliveryService_EF.Comparers;
 using DeliveryService_EF.Models;
 

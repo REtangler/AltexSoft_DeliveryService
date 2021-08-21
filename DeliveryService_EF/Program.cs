@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
 using DeliveryService_EF.HwTasks;
 using DeliveryService_EF.HWtasks;
-using DeliveryService_EF.Repos;
-using Microsoft.Extensions.Configuration;
 
 namespace DeliveryService_EF
 {
@@ -15,7 +12,5 @@ namespace DeliveryService_EF
             DapperHw.Run();
             Console.ReadLine();
         }
-
-        
     }
 }
