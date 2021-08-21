@@ -17,8 +17,8 @@ namespace DeliveryService_EF.DTOs
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int AmountInStock { get; set; }
-        public int Category { get; set; }
-        public int Supplier { get; set; }
+        public int CategoryId { get; set; }
+        public int SupplierId { get; set; }
         public string Type { get; set; }
 
         public static Product MapToProduct(ProductDto productsDto)
@@ -28,12 +28,12 @@ namespace DeliveryService_EF.DTOs
                 Id = productsDto.Id,
                 Name = productsDto.Name,
                 AmountInStock = productsDto.AmountInStock,
-                CategoryId = productsDto.Category,
-                Category = Models.Category.GetCategory(productsDto.Category),
+                CategoryId = productsDto.CategoryId,
+                Category = Models.Category.GetCategory(productsDto.CategoryId),
                 Description = productsDto.Description,
                 Price = productsDto.Price,
-                SupplierId = productsDto.Supplier,
-                Supplier = Models.Supplier.GetSupplier(productsDto.Supplier),
+                SupplierId = productsDto.SupplierId,
+                Supplier = Models.Supplier.GetSupplier(productsDto.SupplierId),
                 Type = productsDto.Type
             };
         }
@@ -45,10 +45,10 @@ namespace DeliveryService_EF.DTOs
                 Id = product.Id,
                 Name = product.Name,
                 AmountInStock = product.AmountInStock,
-                Category = product.Category.Id,
+                CategoryId = product.CategoryId,
                 Description = product.Description,
                 Price = product.Price,
-                Supplier = product.Supplier.Id,
+                SupplierId = product.SupplierId,
                 Type = product.Type
             };
         }

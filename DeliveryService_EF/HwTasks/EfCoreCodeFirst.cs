@@ -31,17 +31,17 @@ namespace DeliveryService_EF.HwTasks
                 new Category
                 {
                     Name = "GPU",
-                    Description = "Category dedicated to - Graphics Processing Units"
+                    Description = "CategoryId dedicated to - Graphics Processing Units"
                 },
                 new Category
                 {
                     Name = "CPU",
-                    Description = "Category dedicated to - Central Processing Units"
+                    Description = "CategoryId dedicated to - Central Processing Units"
                 },
                 new Category
                 {
                     Name = "MB",
-                    Description = "Category dedicated to - Motherboards"
+                    Description = "CategoryId dedicated to - Motherboards"
                 }
             };
             EfCoreCodeFirstTasks.AddCategories(categories);

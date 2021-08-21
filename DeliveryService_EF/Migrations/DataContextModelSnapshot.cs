@@ -19,7 +19,7 @@ namespace DeliveryService_EF.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DeliveryService_EF.Models.Category", b =>
+            modelBuilder.Entity("DeliveryService_EF.Models.CategoryId", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -199,7 +199,7 @@ namespace DeliveryService_EF.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("DeliveryService_EF.Models.Supplier", b =>
+            modelBuilder.Entity("DeliveryService_EF.Models.SupplierId", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -255,21 +255,21 @@ namespace DeliveryService_EF.Migrations
 
             modelBuilder.Entity("DeliveryService_EF.Models.Product", b =>
                 {
-                    b.HasOne("DeliveryService_EF.Models.Category", "Category")
+                    b.HasOne("DeliveryService_EF.Models.CategoryId", "CategoryId")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DeliveryService_EF.Models.Supplier", "Supplier")
+                    b.HasOne("DeliveryService_EF.Models.SupplierId", "SupplierId")
                         .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("CategoryId");
 
-                    b.Navigation("Supplier");
+                    b.Navigation("SupplierId");
                 });
 #pragma warning restore 612, 618
         }
