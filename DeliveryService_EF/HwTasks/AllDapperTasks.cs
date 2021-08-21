@@ -23,7 +23,5 @@ namespace DeliveryService_EF.HwTasks
 
             DapperContribTasks.RunTasks(contribRepo);
         }
-
-        
     }
 }

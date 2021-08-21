@@ -30,7 +30,7 @@ namespace DeliveryService_EF.Repos
                 var products = new List<Product>();
                 foreach (var productsDto in productsDtos)
                 {
-                    products.Add(ProductDto.MapToProduct(productsDto));
+                    products.Add(ProductDtoMapper.MapToProduct(productsDto));
                 }
 
                 return products;
@@ -50,7 +50,7 @@ namespace DeliveryService_EF.Repos
 
                 var productDto = connection.Get<ProductDto>(id);
 
-                return ProductDto.MapToProduct(productDto);
+                return ProductDtoMapper.MapToProduct(productDto);
             }
         }
 
@@ -65,7 +65,7 @@ namespace DeliveryService_EF.Repos
             {
                 connection.Open();
 
-                connection.Insert(ProductDto.MapToDto(product));
+                connection.Insert(ProductDtoMapper.MapToDto(product));
 
                 var addedProduct = GetProducts().LastOrDefault();
 
@@ -87,7 +87,7 @@ namespace DeliveryService_EF.Repos
                 var product = GetProductById(id);
                 product.AmountInStock = amountInStock;
 
-                connection.Update(ProductDto.MapToDto(product));
+                connection.Update(ProductDtoMapper.MapToDto(product));
 
                 return GetProductById(id);
             }
@@ -106,7 +106,7 @@ namespace DeliveryService_EF.Repos
 
                 var deletedProduct = GetProductById(id);
 
-                connection.Delete(ProductDto.MapToDto(deletedProduct));
+                connection.Delete(ProductDtoMapper.MapToDto(deletedProduct));
 
                 return deletedProduct;
             }
