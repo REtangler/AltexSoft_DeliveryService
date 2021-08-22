@@ -7,13 +7,6 @@ namespace AltexFood_Delivery.DAL
     {
         private static void Main()
         {
-            LinqTasks.RunTasks();
-            DapperHw.Run();
-            EfCoreCodeFirst.RunTasks();
-
-            Console.WriteLine("================================");
-            Console.WriteLine("IRepository and IUnitOfWork Task:");
-
             RepoUnitOfWork.RunTasks();
 
             Console.ReadLine();

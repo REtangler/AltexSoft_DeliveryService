@@ -12,7 +12,7 @@ namespace AltexFood_Delivery.DAL.Repos
         private readonly DbFactory _dbFactory;
         private DbSet<T> _dbSet;
 
-        protected DbSet<T> DbSet => _dbSet ?? (_dbSet = _dbFactory.DbContext.Set<T>());
+        private DbSet<T> DbSet => _dbSet ??= _dbFactory.DbContext.Set<T>();
 
         public Repository(DbFactory dbFactory)
         {
