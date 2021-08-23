@@ -1,5 +1,6 @@
 ﻿using System;
 using AltexFood_Delivery.BLL.Interfaces;
+using AltexFood_Delivery.BLL.Services;
 using AltexFood_Delivery.BLL.Utils;
 using AltexFood_Delivery.DAL.Data;
 using AltexFood_Delivery.DAL.Helpers;
@@ -30,7 +31,8 @@ namespace AltexFood_Delivery.Api.Extensions
         {
             return services
                 .AddScoped(typeof(IRepository<>), typeof(Repository<>))
-                .AddScoped<IProductRepository, ProductRepository>();
+                .AddScoped<IProductRepository, ProductRepository>()
+                .AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         public static IServiceCollection AddBll(this IServiceCollection services)
