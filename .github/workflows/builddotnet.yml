@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore "DeliveryService_EF/DeliveryService_EF.csproj"
+      run: dotnet restore "AltexFood Delivery/AltexFood Delivery.sln"
     - name: Build
-      run: dotnet build "DeliveryService_EF/DeliveryService_EF.csproj" --no-restore
+      run: dotnet build "AltexFood Delivery/AltexFood Delivery.sln" --no-restore
     - name: Test
-      run: dotnet test "DeliveryService_EF/DeliveryService_EF.csproj" --no-build --verbosity normal
+      run: dotnet test "AltexFood Delivery/AltexFood Delivery.sln" --no-build --verbosity normal
