@@ -13,6 +13,11 @@ namespace AltexFood_Delivery.DAL.Data
         public DbSet<Deliveryman> Deliverymen { get; set; }
         public DbSet<Order> Orders { get; set; }
 
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=EFCoreCodeFirst;Trusted_Connection=True;MultipleActiveResultSets=True");

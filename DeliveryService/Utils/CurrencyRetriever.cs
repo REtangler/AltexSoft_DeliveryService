@@ -12,7 +12,7 @@ namespace AltexFood_Delivery.BLL.Utils
 {
     public class CurrencyRetriever : ICurrencyRetriever
     {
-        private const string ApiKey = "YourApiKey";
+        private const string ApiKey = "ce0787c762396ee4fc33";
         private readonly string _currencyUri = $"https://free.currconv.com/api/v7/currencies?apiKey={ApiKey}";
 
         private string ConvertFrom { get; }

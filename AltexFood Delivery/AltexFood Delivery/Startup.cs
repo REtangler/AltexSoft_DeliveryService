@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AltexFood_Delivery.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,12 @@ namespace AltexFood_Delivery.Api
         {
 
             services.AddControllers();
+
+            services
+                .AddDatabase(Configuration)
+                .AddRepositories()
+                .AddBll();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AltexFood_Delivery", Version = "v1" });
