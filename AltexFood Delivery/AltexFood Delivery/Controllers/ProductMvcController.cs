@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AltexFood_Delivery.BLL.Services;
-using AltexFood_Delivery.DAL.Data;
+﻿using AltexFood_Delivery.BLL.Services;
 using AltexFood_Delivery.DAL.Interfaces;
 using AltexFood_Delivery.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,24 +17,28 @@ namespace AltexFood_Delivery.Api.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        // GET products
         [HttpGet]
         public IActionResult Index()
         {
             return View(_ps.GetProducts());
         }
 
+        // GET product by id
         [HttpGet("{id}")]
         public IActionResult GetProduct(int id)
         {
             return View(_ps.GetProduct(id));
         }
 
+        // GET product creation page
         [HttpGet("add")]
         public IActionResult Create()
         {
             return View();
         }
 
+        // POST product
         [HttpPost("add")]
         public IActionResult Create(Product product)
         {
@@ -51,6 +50,7 @@ namespace AltexFood_Delivery.Api.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET product edit page
         [HttpGet("edit")]
         public IActionResult Edit(int id)
         {
@@ -60,6 +60,7 @@ namespace AltexFood_Delivery.Api.Controllers
             return NotFound();
         }
 
+        // POST update product
         [HttpPost("edit")]
         public IActionResult Edit(Product product)
         {
@@ -71,6 +72,7 @@ namespace AltexFood_Delivery.Api.Controllers
             return RedirectToAction("Index");
         }
 
+        // POST delete product
         [HttpPost]
         public IActionResult Delete(int id)
         {

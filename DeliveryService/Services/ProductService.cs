@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AltexFood_Delivery.BLL.Interfaces;
 using AltexFood_Delivery.DAL.Data;
 using AltexFood_Delivery.DAL.Interfaces;
 using AltexFood_Delivery.DAL.Models;
@@ -56,17 +55,8 @@ namespace AltexFood_Delivery.BLL.Services
             return product;
         }
 
-        public Product UpdateProduct(/*int id, string name, string description*/ Product product)
+        public Product UpdateProduct(Product product)
         {
-            /*var product = _db.Products.SingleOrDefault(p => p.Id == id);
-            if (product is not null)
-            {
-                if (!(name is null || name.Equals("")))
-                    product.Name = name;
-                if (!(description is null || description.Equals("")))
-                    product.Description = description;
-                _productRepository.Update(product);
-            }*/
             _productRepository.Update(product);
             return product;
         }
