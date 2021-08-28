@@ -27,5 +27,11 @@ namespace AltexFood_Delivery.DAL.Repos
             Add(product);
             return product;
         }
+
+        public Product NewProduct(Product product)
+        {
+            Add(product);
+            return product;
+        }
     }
 }

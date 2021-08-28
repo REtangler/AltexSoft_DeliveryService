@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace AltexFood_Delivery.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class CategoriesController : ControllerBase
+    [Route("api/[controller]")]
+    public class CategoryController : ControllerBase
     {
-        private readonly CategoriesService _controller;
+        private readonly CategoryService _cs;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoriesController(CategoriesService controller, IUnitOfWork unitOfWork)
+        public CategoryController(CategoryService cs, IUnitOfWork unitOfWork)
         {
-            _controller = controller;
+            _cs = cs;
             _unitOfWork = unitOfWork;
         }
 
@@ -23,21 +23,21 @@ namespace AltexFood_Delivery.Api.Controllers
         [HttpGet]
         public IEnumerable<Category> GetCategories()
         {
-            return _controller.GetCategories();
+            return _cs.GetCategories();
         }
 
         // GET category by id
         [HttpGet("{id}")]
         public Category GetCategory(int id)
         {
-            return _controller.GetCategory(id);
+            return _cs.GetCategory(id);
         }
 
         // POST category
         [HttpPost]
         public Category AddCategory(string name, string description)
         {
-            var category = _controller.AddCategory(name, description);
+            var category = _cs.AddCategory(name, description);
             _unitOfWork.Commit();
             return category;
         }
@@ -46,7 +46,7 @@ namespace AltexFood_Delivery.Api.Controllers
         [HttpDelete]
         public Category DeleteCategory(int id)
         {
-            var category = _controller.DeleteCategory(id);
+            var category = _cs.DeleteCategory(id);
             _unitOfWork.Commit();
             return category;
         }
@@ -55,7 +55,7 @@ namespace AltexFood_Delivery.Api.Controllers
         [HttpPut]
         public Category UpdateCategory(int id, string name, string description)
         {
-            var category = _controller.UpdateCategory(id, name, description);
+            var category = _cs.UpdateCategory(id, name, description);
             _unitOfWork.Commit();
             return category;
         }

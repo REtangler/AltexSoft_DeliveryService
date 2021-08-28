@@ -6,12 +6,12 @@ using AltexFood_Delivery.DAL.Models;
 
 namespace AltexFood_Delivery.BLL.Services
 {
-    public class CategoriesService
+    public class CategoryService
     {
         private readonly DataContext _db;
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoriesService(DataContext db, ICategoryRepository categoryRepository)
+        public CategoryService(DataContext db, ICategoryRepository categoryRepository)
         {
             _db = db;
             _categoryRepository = categoryRepository;

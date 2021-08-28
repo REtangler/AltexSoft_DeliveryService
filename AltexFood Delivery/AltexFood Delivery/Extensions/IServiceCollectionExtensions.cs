@@ -38,7 +38,8 @@ namespace AltexFood_Delivery.Api.Extensions
         public static IServiceCollection AddBll(this IServiceCollection services)
         {
             return services
-                .AddScoped<CategoriesService>()
+                .AddScoped<CategoryService>()
+                .AddScoped<ProductService>()
                 .AddScoped<ICurrencyRetriever, CurrencyRetriever>();
         }
     }
