@@ -16,13 +16,8 @@ namespace AltexFood_Delivery.DAL.Repos
 
         }
 
-        public Category NewCategory(string name, string description)
+        public Category AddCategory(Category category)
         {
-            var category = new Category
-            {
-                Name = name,
-                Description = description
-            };
             Add(category);
             return category;
         }
