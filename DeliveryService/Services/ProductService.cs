@@ -44,7 +44,7 @@ namespace AltexFood_Delivery.BLL.Services
 
         public Product AddProduct(Product product)
         {
-            return _productRepository.NewProduct(product);
+            return _productRepository.AddProduct(product);
         }
 
         public Product DeleteProduct(int id)
