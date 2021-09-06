@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DeliveryService.Interfaces
+namespace AltexFood_Delivery.BLL.Interfaces
 {
     public interface ICacheable
     {

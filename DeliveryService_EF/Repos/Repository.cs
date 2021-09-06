@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Data;
-using DeliveryService_EF.Interfaces;
+using AltexFood_Delivery.DAL.Data;
+using AltexFood_Delivery.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace DeliveryService_EF.Repos
+namespace AltexFood_Delivery.DAL.Repos
 {
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly DbFactory _dbFactory;
         private DbSet<T> _dbSet;
 
-        protected DbSet<T> DbSet => _dbSet ?? (_dbSet = _dbFactory.DbContext.Set<T>());
+        private DbSet<T> DbSet => _dbSet ??= _dbFactory.DbContext.Set<T>();
 
         public Repository(DbFactory dbFactory)
         {

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>AltexFood_Delivery.Api</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DeliveryService\AltexFood_Delivery.BLL.csproj" />
+    <ProjectReference Include="..\..\DeliveryService_EF\AltexFood_Delivery.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

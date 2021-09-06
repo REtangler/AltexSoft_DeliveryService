@@ -1,6 +1,6 @@
-﻿using DeliveryService_EF.Enums;
+﻿using AltexFood_Delivery.DAL.Enums;
 
-namespace DeliveryService_EF.Models
+namespace AltexFood_Delivery.DAL.Models
 {
     public class DeliveryTariff
     {

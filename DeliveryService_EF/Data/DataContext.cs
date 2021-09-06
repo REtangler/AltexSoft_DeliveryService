@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.DTOs;
-using DeliveryService_EF.Models;
+﻿using AltexFood_Delivery.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
-namespace DeliveryService_EF.Data
+namespace AltexFood_Delivery.DAL.Data
 {
     public class DataContext : DbContext
     {
@@ -19,6 +12,11 @@ namespace DeliveryService_EF.Data
         public DbSet<DeliveryTariff> DeliveryTariffs { get; set; }
         public DbSet<Deliveryman> Deliverymen { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

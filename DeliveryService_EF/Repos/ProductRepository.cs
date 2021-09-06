@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeliveryService_EF.Data;
-using DeliveryService_EF.Interfaces;
-using DeliveryService_EF.Models;
+﻿using AltexFood_Delivery.DAL.Data;
+using AltexFood_Delivery.DAL.Interfaces;
+using AltexFood_Delivery.DAL.Models;
 
-namespace DeliveryService_EF.Repos
+namespace AltexFood_Delivery.DAL.Repos
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {

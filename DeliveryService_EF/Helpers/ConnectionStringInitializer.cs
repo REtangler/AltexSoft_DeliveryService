@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace DeliveryService_EF.Helpers
+namespace AltexFood_Delivery.DAL.Helpers
 {
     public static class ConnectionStringInitializer
     {

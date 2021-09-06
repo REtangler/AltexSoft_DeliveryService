@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace DeliveryService_EF.Data
+namespace AltexFood_Delivery.DAL.Data
 {
     public class DbFactory
     {
-        private Func<DataContext> _instanceFunc;
+        private readonly Func<DataContext> _instanceFunc;
         private DbContext _dbContext;
         public DbContext DbContext => _dbContext ??= _instanceFunc.Invoke();
 

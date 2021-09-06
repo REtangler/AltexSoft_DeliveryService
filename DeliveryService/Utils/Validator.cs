@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using DeliveryService.Interfaces;
+using AltexFood_Delivery.BLL.Interfaces;
 
-namespace DeliveryService.Utils
+namespace AltexFood_Delivery.BLL.Utils
 {
     public class Validator : IValidator
     {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
-namespace DeliveryService.Interfaces
+namespace AltexFood_Delivery.BLL.Interfaces
 {
     public interface ICurrencyRetriever
     {
