@@ -9,12 +9,10 @@ namespace AltexFood_Delivery.Api.Controllers
     public class ProductMvcController : Controller
     {
         private readonly ProductService _productService;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductMvcController(ProductService productService, IUnitOfWork unitOfWork)
+        public ProductMvcController(ProductService productService)
         {
             _productService = productService;
-            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -42,7 +40,6 @@ namespace AltexFood_Delivery.Api.Controllers
                 return View();
 
             _productService.AddProduct(product);
-            _unitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -62,7 +59,6 @@ namespace AltexFood_Delivery.Api.Controllers
                 return View();
 
             _productService.UpdateProduct(product);
-            _unitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -74,7 +70,6 @@ namespace AltexFood_Delivery.Api.Controllers
                 return NotFound();
 
             _productService.DeleteProduct(id);
-            _unitOfWork.Commit();
             return RedirectToAction("Index");
         }
     }
