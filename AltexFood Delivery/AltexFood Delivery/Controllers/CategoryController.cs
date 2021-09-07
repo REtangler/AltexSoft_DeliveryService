@@ -35,11 +35,11 @@ namespace AltexFood_Delivery.Api.Controllers
 
         // POST category
         [HttpPost]
-        public Category AddCategory(string name, string description)
+        public Category AddCategory(Category category)
         {
-            var category = _cs.AddCategory(name, description);
+            var addedCategory = _cs.AddCategory(category);
             _unitOfWork.Commit();
-            return category;
+            return addedCategory;
         }
 
         // DELETE category
@@ -53,11 +53,11 @@ namespace AltexFood_Delivery.Api.Controllers
 
         // PUT update category
         [HttpPut]
-        public Category UpdateCategory(int id, string name, string description)
+        public Category UpdateCategory(int id, Category category)
         {
-            var category = _cs.UpdateCategory(id, name, description);
+            var updatedCategory = _cs.UpdateCategory(category);
             _unitOfWork.Commit();
-            return category;
+            return updatedCategory;
         }
     }
 }

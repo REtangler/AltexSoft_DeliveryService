@@ -4,6 +4,6 @@ namespace AltexFood_Delivery.DAL.Interfaces
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        Category NewCategory(string name, string description);
+        Category AddCategory(Category category);
     }
 }

@@ -27,9 +27,9 @@ namespace AltexFood_Delivery.BLL.Services
             return _db.Categories.SingleOrDefault(c => c.Id == id);
         }
 
-        public Category AddCategory(string name, string description)
+        public Category AddCategory(Category category)
         {
-            return _categoryRepository.NewCategory(name, description);
+            return _categoryRepository.AddCategory(category);
         }
 
         public Category DeleteCategory(int id)
@@ -40,18 +40,18 @@ namespace AltexFood_Delivery.BLL.Services
             return category;
         }
 
-        public Category UpdateCategory(int id, string name, string description)
+        public Category UpdateCategory(Category category)
         {
-            var category = _db.Categories.SingleOrDefault(c => c.Id == id);
-            if (category is not null)
+            var updatedCategory = _db.Categories.SingleOrDefault(c => c.Id == category.Id);
+            if (updatedCategory is not null)
             {
-                if (!(name is null || name.Equals("")))
-                    category.Name = name;
-                if (!(description is null || description.Equals("")))
-                    category.Description = description;
-                _categoryRepository.Update(category);
+                if (!(category.Name is null || category.Name.Equals("")))
+                    updatedCategory.Name = category.Name;
+                if (!(category.Description is null || category.Description.Equals("")))
+                    updatedCategory.Description = category.Description;
+                _categoryRepository.Update(updatedCategory);
             }
-            return category;
+            return updatedCategory;
         }
     }
 }
