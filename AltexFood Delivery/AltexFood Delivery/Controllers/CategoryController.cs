@@ -10,54 +10,41 @@ namespace AltexFood_Delivery.Api.Controllers
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {
-        private readonly CategoryService _cs;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly CategoryService _categoryService;
 
-        public CategoryController(CategoryService cs, IUnitOfWork unitOfWork)
+        public CategoryController(CategoryService categoryService)
         {
-            _cs = cs;
-            _unitOfWork = unitOfWork;
+            _categoryService = categoryService;
         }
 
-        // GET categories
         [HttpGet]
         public IEnumerable<Category> GetCategories()
         {
-            return _cs.GetCategories();
+            return _categoryService.GetCategories();
         }
 
-        // GET category by id
         [HttpGet("{id}")]
         public Category GetCategory(int id)
         {
-            return _cs.GetCategory(id);
+            return _categoryService.GetCategory(id);
         }
 
-        // POST category
         [HttpPost]
         public Category AddCategory(Category category)
         {
-            var addedCategory = _cs.AddCategory(category);
-            _unitOfWork.Commit();
-            return addedCategory;
+            return _categoryService.AddCategory(category);
         }
 
-        // DELETE category
         [HttpDelete]
         public Category DeleteCategory(int id)
         {
-            var category = _cs.DeleteCategory(id);
-            _unitOfWork.Commit();
-            return category;
+            return _categoryService.DeleteCategory(id);
         }
 
-        // PUT update category
         [HttpPut]
-        public Category UpdateCategory(int id, Category category)
+        public Category UpdateCategory(Category category)
         {
-            var updatedCategory = _cs.UpdateCategory(category);
-            _unitOfWork.Commit();
-            return updatedCategory;
+            return _categoryService.UpdateCategory(category);
         }
     }
 }

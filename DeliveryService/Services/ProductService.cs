@@ -10,11 +10,13 @@ namespace AltexFood_Delivery.BLL.Services
     {
         private readonly DataContext _db;
         private readonly IProductRepository _productRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductService(DataContext db, IProductRepository productRepository)
+        public ProductService(DataContext db, IProductRepository productRepository, IUnitOfWork unitOfWork)
         {
             _db = db;
             _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<Product> GetProducts()
@@ -44,7 +46,9 @@ namespace AltexFood_Delivery.BLL.Services
 
         public Product AddProduct(Product product)
         {
-            return _productRepository.AddProduct(product);
+            var addedProduct = _productRepository.AddProduct(product);
+            _unitOfWork.Commit();
+            return addedProduct;
         }
 
         public Product DeleteProduct(int id)
@@ -52,12 +56,14 @@ namespace AltexFood_Delivery.BLL.Services
             var product = _db.Products.SingleOrDefault(p => p.Id == id);
             if (product is not null)
                 _productRepository.Delete(product);
+            _unitOfWork.Commit();
             return product;
         }
 
         public Product UpdateProduct(Product product)
         {
             _productRepository.Update(product);
+            _unitOfWork.Commit();
             return product;
         }
     }

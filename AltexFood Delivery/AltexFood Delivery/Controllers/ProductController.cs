@@ -10,54 +10,41 @@ namespace AltexFood_Delivery.Api.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService _ps;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ProductService _productService;
 
-        public ProductController(ProductService ps, IUnitOfWork unitOfWork)
+        public ProductController(ProductService productService)
         {
-            _ps = ps;
-            _unitOfWork = unitOfWork;
+            _productService = productService;
         }
 
-        // GET Products
         [HttpGet]
         public IEnumerable<Product> GetProducts()
         {
-            return _ps.GetProducts();
+            return _productService.GetProducts();
         }
 
-        // GET Product by id
         [HttpGet("{id}")]
         public Product GetProduct(int id)
         {
-            return _ps.GetProduct(id);
+            return _productService.GetProduct(id);
         }
 
-        // POST Product
         [HttpPost]
         public Product AddProduct(Product product)
         {
-            var addedProduct = _ps.AddProduct(product);
-            _unitOfWork.Commit();
-            return addedProduct;
+            return _productService.AddProduct(product);
         }
 
-        // DELETE Product
         [HttpDelete]
         public Product DeleteProduct(int id)
         {
-            var product = _ps.DeleteProduct(id);
-            _unitOfWork.Commit();
-            return product;
+            return _productService.DeleteProduct(id);
         }
 
-        // PUT update Product
         [HttpPut]
         public Product UpdateProduct(Product product)
         {
-            var updatedProduct = _ps.UpdateProduct(product);
-            _unitOfWork.Commit();
-            return updatedProduct;
+            return _productService.UpdateProduct(product);
         }
     }
 }
