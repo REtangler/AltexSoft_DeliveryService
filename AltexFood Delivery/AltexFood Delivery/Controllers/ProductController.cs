@@ -33,21 +33,21 @@ namespace AltexFood_Delivery.Api.Controllers
         public IActionResult AddProduct(Product product)
         {
             var addedProduct = _productService.AddProduct(product);
-            return addedProduct is null ? (IActionResult) BadRequest() : Ok();
+            return addedProduct is null ? BadRequest() : Ok();
         }
 
         [HttpDelete]
         public IActionResult DeleteProduct(int id)
         {
             var deletedProduct = _productService.DeleteProduct(id);
-            return deletedProduct is null ? (IActionResult) BadRequest() : Ok();
+            return deletedProduct is null ? BadRequest() : Ok();
         }
 
         [HttpPut]
         public IActionResult UpdateProduct(Product product)
         {
             var updatedProduct = _productService.UpdateProduct(product);
-            return updatedProduct is null ? (IActionResult) BadRequest() : Ok();
+            return updatedProduct is null ? BadRequest() : Ok();
         }
     }
 }

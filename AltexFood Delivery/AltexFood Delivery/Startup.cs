@@ -1,4 +1,5 @@
 using AltexFood_Delivery.Api.Extensions;
+using AltexFood_Delivery.Api.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +34,8 @@ namespace AltexFood_Delivery.Api
             });
 
             services.AddMvc();
+
+            services.AddSingleton<ConsoleLogActionFilter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
