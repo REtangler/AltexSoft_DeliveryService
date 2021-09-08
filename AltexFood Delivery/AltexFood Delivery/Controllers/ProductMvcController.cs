@@ -1,4 +1,5 @@
-﻿using AltexFood_Delivery.Api.Filters;
+﻿using System;
+using AltexFood_Delivery.Api.Filters;
 using AltexFood_Delivery.BLL.Services;
 using AltexFood_Delivery.DAL.Interfaces;
 using AltexFood_Delivery.DAL.Models;
@@ -20,6 +21,7 @@ namespace AltexFood_Delivery.Api.Controllers
         [ServiceFilter(typeof(ConsoleLogActionFilter))]
         public IActionResult Index()
         {
+            throw new Exception("Critical failure, the PC will reboot now!");
             return View(_productService.GetProducts());
         }
 

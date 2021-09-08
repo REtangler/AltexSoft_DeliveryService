@@ -21,6 +21,11 @@ namespace AltexFood_Delivery.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureLogging(l =>
+                {
+                    l.ClearProviders();
+                    l.AddConsole();
                 });
     }
 }

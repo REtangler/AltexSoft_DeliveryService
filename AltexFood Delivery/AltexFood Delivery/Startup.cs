@@ -36,6 +36,7 @@ namespace AltexFood_Delivery.Api
             services.AddMvc();
 
             services.AddSingleton<ConsoleLogActionFilter>();
+            services.AddControllers(o => { o.Filters.Add<ConsoleLogExceptionFilter>(); });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
