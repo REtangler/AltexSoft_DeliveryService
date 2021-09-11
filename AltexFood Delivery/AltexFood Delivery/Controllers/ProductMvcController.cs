@@ -25,7 +25,6 @@ namespace AltexFood_Delivery.Api.Controllers
         [ServiceFilter(typeof(ConsoleLogActionFilter))]
         public IActionResult Index()
         {
-            throw new Exception("Critical failure, the PC will reboot now!");
             ViewBag.Dev = false;
             if (_env.IsDevelopment())
                 ViewBag.Dev = true;
@@ -42,6 +41,7 @@ namespace AltexFood_Delivery.Api.Controllers
         [HttpGet("add")]
         public IActionResult Create()
         {
+            throw new Exception("Critical failure, the PC will reboot now!");
             return View();
         }
 
