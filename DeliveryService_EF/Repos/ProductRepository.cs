@@ -10,7 +10,7 @@ namespace AltexFood_Delivery.DAL.Repos
         {
         }
 
-        public Product NewProduct(string name, string description, decimal price, int amountInStock, int categoryId, int supplierId, string type)
+        public Product AddProduct(string name, string description, decimal price, int amountInStock, int categoryId, int supplierId, string type)
         {
             var product = new Product
             {
@@ -24,6 +24,12 @@ namespace AltexFood_Delivery.DAL.Repos
                 SupplierId = supplierId,
                 Type = type
             };
+            Add(product);
+            return product;
+        }
+
+        public Product AddProduct(Product product)
+        {
             Add(product);
             return product;
         }

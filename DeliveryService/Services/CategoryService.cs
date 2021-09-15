@@ -6,15 +6,17 @@ using AltexFood_Delivery.DAL.Models;
 
 namespace AltexFood_Delivery.BLL.Services
 {
-    public class CategoriesService
+    public class CategoryService
     {
         private readonly DataContext _db;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoriesService(DataContext db, ICategoryRepository categoryRepository)
+        public CategoryService(DataContext db, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
         {
             _db = db;
             _categoryRepository = categoryRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<Category> GetCategories()
@@ -29,7 +31,9 @@ namespace AltexFood_Delivery.BLL.Services
 
         public Category AddCategory(Category category)
         {
-            return _categoryRepository.AddCategory(category);
+            var addedCategory = _categoryRepository.AddCategory(category);
+            _unitOfWork.Commit();
+            return addedCategory;
         }
 
         public Category DeleteCategory(int id)
@@ -37,6 +41,7 @@ namespace AltexFood_Delivery.BLL.Services
             var category = _db.Categories.SingleOrDefault(c => c.Id == id);
             if (category is not null)
                 _categoryRepository.Delete(category);
+            _unitOfWork.Commit();
             return category;
         }
 
@@ -45,11 +50,12 @@ namespace AltexFood_Delivery.BLL.Services
             var updatedCategory = _db.Categories.SingleOrDefault(c => c.Id == category.Id);
             if (updatedCategory is not null)
             {
-                if (!(category.Name is null || category.Name.Equals("")))
+                if (!string.IsNullOrEmpty(category.Name))
                     updatedCategory.Name = category.Name;
-                if (!(category.Description is null || category.Description.Equals("")))
+                if (!string.IsNullOrEmpty(category.Description))
                     updatedCategory.Description = category.Description;
                 _categoryRepository.Update(updatedCategory);
+                _unitOfWork.Commit();
             }
             return updatedCategory;
         }

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Product>
+
+<a asp-controller="ProductMvc" asp-action="Create">Add New Product</a>
+
+@if (Model.Any())
+{
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="ProductMvc" asp-route-id="@product.Id" asp-action="GetProduct">@product.Name</a>
+                    </td>
+                    <td>@product.Price</td>
+                    <td>@product.Category.Name</td>
+                    <td>@product.Supplier.Name</td>
+                    <td>
+                        <a asp-controller="ProductMvc" asp-route-id="@product.Id" asp-action="Edit">Edit</a>
+                    </td>
+                    <td>
+                        <form method="post">
+                            <input type="submit" asp-controller="ProductMvc" asp-route-id="@product.Id" asp-action="Delete" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products available.</p>
+}

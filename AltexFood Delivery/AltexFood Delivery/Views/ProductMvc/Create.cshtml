@@ -1,0 +1,71 @@
+﻿@model Product
+
+<form method="post" asp-action="Create">
+    <div asp-validation-summary="ModelOnly"></div>
+    <h2>Add Product</h2>
+    
+    <div>
+        <section>
+            <div>
+                <label asp-for="Name"></label>
+            </div>
+            <div>
+                <input asp-for="Name" />
+                <span asp-validation-for="Name"></span>
+            </div>
+        </section>
+        <section>
+            <div>
+                <label asp-for="Description"></label>
+            </div>
+            <div>
+                @Html.TextAreaFor(p => p.Description, new { @rows = "5" })
+            </div>
+        </section>
+        <section>
+            <div>
+                <label asp-for="Price"></label>
+            </div>
+            <div>
+                <input type="text" id="Price" name="Price" value="0,01" />
+                <span asp-validation-for="Price"></span>
+            </div>
+        </section>
+        <section>
+            <div>
+                <label asp-for="AmountInStock"></label>
+            </div>
+            <div>
+                <input asp-for="AmountInStock" />
+                <span asp-validation-for="AmountInStock"></span>
+            </div>
+        </section>
+        <section>
+            <div>
+                <label asp-for="CategoryId"></label>
+            </div>
+            <div>
+                <input asp-for="CategoryId" />
+            </div>
+        </section>
+        <section>
+            <div>
+                <label asp-for="SupplierId"></label>
+            </div>
+            <div>
+                <input asp-for="SupplierId" />
+            </div>
+        </section>
+        <section>
+            <div>
+                <label asp-for="Type"></label>
+            </div>
+            <div>
+                <input asp-for="Type" />
+            </div>
+        </section>
+    </div>
+    <div>
+        <input type="submit" value="Create"/>
+    </div>
+</form>
