@@ -2,6 +2,11 @@
 
 <a asp-controller="ProductMvc" asp-action="Create">Add New Product</a>
 
+@if (ViewBag.Dev.Equals(true))
+{
+<p>App is running in Development Mode</p>
+}
+
 @if (Model.Any())
 {
     <table>

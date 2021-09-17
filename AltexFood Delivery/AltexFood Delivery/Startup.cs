@@ -6,6 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace AltexFood_Delivery.Api
 {
@@ -20,7 +24,6 @@ namespace AltexFood_Delivery.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             services
@@ -43,9 +46,15 @@ namespace AltexFood_Delivery.Api
         {
             if (env.IsDevelopment())
             {
+                Console.WriteLine("### Application is running in Development environment. ###");
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v2/swagger.json", "AltexFood_Delivery v2"));
+            }
+
+            if (env.IsProduction())
+            {
+                Console.WriteLine("### Application is running in Production environment. ###");
             }
 
             app.UseHttpsRedirection();

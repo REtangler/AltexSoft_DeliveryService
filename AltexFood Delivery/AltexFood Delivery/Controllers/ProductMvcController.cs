@@ -3,7 +3,9 @@ using AltexFood_Delivery.Api.Filters;
 using AltexFood_Delivery.BLL.Services;
 using AltexFood_Delivery.DAL.Interfaces;
 using AltexFood_Delivery.DAL.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace AltexFood_Delivery.Api.Controllers
 {
@@ -11,21 +13,26 @@ namespace AltexFood_Delivery.Api.Controllers
     public class ProductMvcController : Controller
     {
         private readonly ProductService _productService;
+        private readonly IWebHostEnvironment _env;
 
-        public ProductMvcController(ProductService productService)
+        public ProductMvcController(ProductService productService, IWebHostEnvironment env)
         {
             _productService = productService;
+            _env = env;
         }
 
         [HttpGet]
         [ServiceFilter(typeof(ConsoleLogActionFilter))]
         public IActionResult Index()
         {
-            throw new Exception("Critical failure, the PC will reboot now!");
+            ViewBag.Dev = false;
+            if (_env.IsDevelopment())
+                ViewBag.Dev = true;
             return View(_productService.GetProducts());
         }
 
         [HttpGet("{id}")]
+        [ResponseCache(Duration = 120, Location = ResponseCacheLocation.Any)]
         public IActionResult GetProduct(int id)
         {
             return View(_productService.GetProduct(id));

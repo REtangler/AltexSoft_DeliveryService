@@ -20,7 +20,7 @@ namespace AltexFood_Delivery.DAL.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=EFCoreCodeFirst;Trusted_Connection=True;MultipleActiveResultSets=True");
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
