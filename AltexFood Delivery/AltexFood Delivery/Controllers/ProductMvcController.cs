@@ -41,7 +41,6 @@ namespace AltexFood_Delivery.Api.Controllers
         [HttpGet("add")]
         public IActionResult Create()
         {
-            throw new Exception("Critical failure, the PC will reboot now!");
             return View();
         }
 
